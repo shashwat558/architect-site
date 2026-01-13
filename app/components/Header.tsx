@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
 import { useEffect, useState } from "react";
 import MenuOverlay from "./MenuOverlay";
@@ -43,28 +44,17 @@ export default function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
           <Magnetic>
-          <motion.div 
-            className="flex items-center justify-center p-2"
-            whileHover={{ rotate: 180 }}
-            transition={{ duration: 0.5 }}
-          >
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <circle cx="18" cy="12" r="6" fill="#D97706" />
-              <circle cx="10" cy="22" r="6" fill="#D97706" />
-              <circle cx="26" cy="22" r="6" fill="#D97706" />
-              <circle cx="18" cy="18" r="4" fill="#FAF6F1" />
-            </svg>
-          </motion.div>
+             <div className="relative w-32 h-10">
+               <Image 
+                 src="/logo.png" 
+                 alt="AD.RS Design Studio" 
+                 fill 
+                 className="object-contain object-left" 
+                 priority
+               />
+             </div>
           </Magnetic>
-          <motion.span 
-            className="text-[#3D2B1F] font-medium text-sm tracking-wide"
-            whileHover={{ x: 3 }}
-            transition={{ duration: 0.2 }}
-          >
-            AD.RS DESIGN
-          </motion.span>
         </Link>
-
 
         {/* Navigation */}
         <nav className="flex items-center gap-4">
