@@ -30,7 +30,7 @@ export default function Header() {
     <MenuOverlay isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     
     <motion.header 
-      className={`fixed top-0 left-0 right-0 z-50 py-4 px-6 md:px-12 lg:px-20 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 py-4 px-4 sm:px-6 md:px-12 lg:px-20 transition-all duration-300 ${
         scrolled ? "bg-white/70 backdrop-blur-md shadow-sm" : "bg-transparent"
       }`}
       variants={{
@@ -58,27 +58,29 @@ export default function Header() {
 
         {/* Navigation */}
         <nav className="flex items-center gap-4">
-          <Magnetic>
-          <motion.div>
-            <Link
-              href="/contact"
-              className="bg-[#D97706] hover:bg-[#B45309] text-white px-5 py-2.5 rounded-md text-sm font-medium flex items-center gap-2 transition-colors shadow-md hover:shadow-lg"
-            >
-              CONTACT
-              <motion.svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                whileHover={{ x: 2, y: -2 }}
-              >
-                <path d="M7 17L17 7M17 7H7M17 7V17" />
-              </motion.svg>
-            </Link>
-          </motion.div>
-          </Magnetic>
+          <div className="hidden md:block">
+            <Magnetic>
+              <motion.div>
+                <Link
+                  href="/contact"
+                  className="bg-[#D97706] hover:bg-[#B45309] text-white px-5 py-2.5 rounded-md text-sm font-medium flex items-center gap-2 transition-colors shadow-md hover:shadow-lg"
+                >
+                  CONTACT
+                  <motion.svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    whileHover={{ x: 2, y: -2 }}
+                  >
+                    <path d="M7 17L17 7M17 7H7M17 7V17" />
+                  </motion.svg>
+                </Link>
+              </motion.div>
+            </Magnetic>
+          </div>
           
           <Magnetic>
           <motion.button 

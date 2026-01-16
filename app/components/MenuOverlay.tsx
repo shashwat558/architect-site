@@ -10,9 +10,10 @@ interface MenuOverlayProps {
 
 const mainLinks = [
   { name: "Welcome", href: "/" },
-  { name: "Achievements", href: "/projects" },
+  { name: "Work", href: "/projects" },
   { name: "Offers", href: "/offers" },
   { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
   { name: "Resources", href: "/resources" },
 ];
 
@@ -46,8 +47,8 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
             {/* Modal Container */}
             <motion.div 
               className="fixed z-70 flex flex-col overflow-hidden rounded-xl shadow-2xl bg-[#FAF6F1] origin-top-right
-                top-4 right-4 bottom-4 left-4 
-                md:left-auto md:w-[85vw] lg:w-[75vw] xl:w-300"
+                top-2 right-2 bottom-2 left-2 
+                md:top-4 md:right-4 md:bottom-4 md:left-auto md:w-[85vw] lg:w-[75vw] xl:w-300"
               initial={{ scale: 0.8, opacity: 0, y: -20, x: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0, x: 0 }}
               exit={{ scale: 0.9, opacity: 0 }}

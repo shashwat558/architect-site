@@ -6,10 +6,9 @@ import CursorImageTrail from "./ui/ImagePath";
 export default function ProjectCTA() {
   return (
     <section className="py-16 px-6 md:px-12 lg:px-20 bg-transparent">
-      <div className="w-full">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-12">
-          {/* Left Content */}
-          <div className="space-y-6 max-w-lg">
+      <CursorImageTrail className="w-full rounded-2xl bg-[#EDE5D8]/30 border border-[#3D2B1F]/10 overflow-hidden hover:bg-[#EDE5D8]/50 transition-colors duration-500">
+        <div className="flex flex-col items-center justify-center py-24 md:py-32 text-center relative z-10 px-6">
+          <div className="space-y-8 max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-5xl lg:text-7xl text-[#3D2B1F] leading-[1.1]">
               <span className="font-serif italic font-light block mb-2">Do you have a</span>
               <span className="font-serif">project in mind?</span>
@@ -21,7 +20,7 @@ export default function ProjectCTA() {
             </p>
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-2 border border-[#3D2B1F] hover:bg-[#3D2B2F] hover:text-[#FAF6F1] text-[#3D2B1F] px-8 py-4 rounded-full text-sm tracking-widest uppercase transition-all duration-300"
+              className="group inline-flex items-center gap-2 border border-[#3D2B1F] hover:bg-[#3D2B2F] hover:text-[#FAF6F1] text-[#3D2B1F] px-8 py-4 rounded-full text-sm tracking-widest uppercase transition-all duration-300 relative pointer-events-auto"
             >
               Get in touch
               <svg
@@ -37,16 +36,13 @@ export default function ProjectCTA() {
               </svg>
             </Link>
           </div>
-
-         
-          <div className="relative w-full lg:w-1/2 h-100 lg:h-150 rounded-2xl bg-[#EDE5D8]/30 border border-[#3D2B1F]/10 flex items-center justify-center cursor-none overflow-hidden hover:bg-[#EDE5D8]/50 transition-colors duration-500">
-            <CursorImageTrail />
-            <p className="text-[#9B8B7A] text-sm tracking-widest uppercase pointer-events-none opacity-60">
+        </div>
+        <div className="absolute bottom-6 left-0 right-0 text-center pointer-events-none">
+           <p className="text-[#9B8B7A] text-sm tracking-widest uppercase opacity-60">
               ( Explore )
             </p>
-          </div>
         </div>
-      </div>
+      </CursorImageTrail>
     </section>
   );
 }

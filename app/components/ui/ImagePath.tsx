@@ -21,7 +21,7 @@ const projectImages = [
   "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&q=80",
 ];
 
-export default function CursorImageTrail() {
+export default function CursorImageTrail({ children, className }: { children?: React.ReactNode, className?: string }) {
   const [items, setItems] = useState<ImageItem[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageIndex = useRef(0);
@@ -65,38 +65,43 @@ export default function CursorImageTrail() {
   }, []);
 
   return (
-    <div ref={containerRef} className="absolute inset-0 pointer-events-auto overflow-hidden">
-      <AnimatePresence>
-        {items.map((item) => (
-          <motion.img
-            key={item.id}
-            src={item.src}
-            initial={{
-              opacity: 0,
-              scale: item.scale,
-              rotate: item.rotate,
-              x: item.x - 56,
-              y: item.y - 40,
-            }}
-            animate={{
-              opacity: 1,
-              y: item.y - 60,
-            }}
-            exit={{
-              opacity: 0,
-              scale: item.scale * 0.8,
-            }}
-            transition={{
-              duration: 0.6,
-              ease: "easeOut",
-            }}
-            style={{
-              left: item.x - 56,
-            }}
-            className="absolute w-28 h-20 object-cover rounded-lg shadow-lg pointer-events-none"
-          />
-        ))}
-      </AnimatePresence>
+    <div ref={containerRef} className={`relative overflow-hidden cursor-crosshair ${className}`}>
+      <div className="absolute inset-0 pointer-events-none z-50">
+        <AnimatePresence>
+          {items.map((item) => (
+            <motion.img
+              key={item.id}
+              src={item.src}
+              initial={{
+                opacity: 0,
+                scale: item.scale,
+                rotate: item.rotate,
+                x: item.x - 56,
+                y: item.y - 40,
+              }}
+              animate={{
+                opacity: 0.8,
+                y: item.y - 60,
+              }}
+              exit={{
+                opacity: 0,
+                scale: item.scale * 0.8,
+              }}
+              transition={{
+                duration: 0.8,
+                ease: "easeOut",
+              }}
+              style={{
+                left: item.x - 56,
+                position: "absolute",
+                top: 0
+              }}
+              className="w-28 h-20 object-cover rounded-lg shadow-lg"
+            />
+          ))}
+        </AnimatePresence>
+      </div>
+      <div className="relative z-10">{children}</div>
     </div>
   );
 }

@@ -7,9 +7,10 @@ import Magnetic from "./ui/Magnetic";
 
 const pages = [
   { name: "Welcome", href: "/" },
-  { name: "Achievements", href: "/achievements" },
+  { name: "Work", href: "/projects" },
   { name: "Offers", href: "/offers" },
   { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
   { name: "Resources", href: "/resources" },
 ];
 
