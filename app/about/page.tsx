@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ProjectCTA from "../components/ProjectCTA";
 import Pillars from "../components/Pillars";
+import TeamSection from "../components/TeamSection";
 
 export default function About() {
   return (
@@ -64,36 +65,12 @@ export default function About() {
             <h2 className="font-serif text-4xl md:text-5xl mb-12 text-center">Our Philosophy</h2>
             <Pillars />
         </div>
+      </main>
 
-        {/* Team Section */}
-        <section className="mb-24">
-            <motion.div
-               initial={{ opacity: 0, y: 20 }}
-               whileInView={{ opacity: 1, y: 0 }}
-               viewport={{ once: true }}
-               transition={{ duration: 0.6 }}
-            >
-                <div className="flex flex-col md:flex-row justify-between items-end mb-16">
-                    <h2 className="font-serif text-4xl md:text-5xl">The Visionaries</h2>
-                    <p className="text-[var(--muted)] md:max-w-md mt-4 md:mt-0 text-right">
-                        A collective of architects, designers, and thinkers dedicated to excellence.
-                    </p>
-                </div>
+      {/* Team Section - Full Width */}
+      <TeamSection />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {[1, 2, 3].map((item) => (
-                        <div key={item} className="group">
-                            <div className="relative aspect-[3/4] overflow-hidden rounded-lg mb-6 bg-[#E5DDD0]">
-                                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
-                            </div>
-                            <h3 className="font-serif text-2xl mb-1 group-hover:text-[var(--accent)] transition-colors">Member Name</h3>
-                            <p className="text-[var(--muted)] text-sm uppercase tracking-wide">Principal Architect</p>
-                        </div>
-                    ))}
-                </div>
-            </motion.div>
-        </section>
-
+      <main className="px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto">
         <ProjectCTA />
       </main>
 
