@@ -10,6 +10,7 @@ import Offers from "./components/Offers";
 import ProjectCTA from "./components/ProjectCTA";
 import Footer from "./components/Footer";
 import IntroLoader from "./components/IntroLoader";
+import { AuroraBackground } from "./components/ui/AuroraBackground";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -31,7 +32,9 @@ export default function Home() {
       
       <Header />
       <main>
-        <Hero />
+        <AuroraBackground className="justify-start h-auto min-h-screen">
+          <Hero />
+        </AuroraBackground>
         <Projects />
         <Pillars />
         <Offers />

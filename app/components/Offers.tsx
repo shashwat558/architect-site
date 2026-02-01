@@ -28,7 +28,7 @@ export default function Offers() {
       <div className="w-full">
         {/* Section Header */}
         <motion.h2 
-          className="text-sm font-medium text-[#3D2B1F] tracking-wide uppercase mb-8"
+          className="text-sm font-medium text-[#3D2B1F] tracking-wide uppercase mb-8 vibrate-text"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
@@ -52,7 +52,7 @@ export default function Offers() {
               }}
             >
               <motion.h3 
-                className="text-3xl md:text-4xl font-serif text-[#C4956A] italic"
+                className="text-3xl md:text-4xl font-serif text-[#C4956A] italic vibrate-text"
                 whileHover={{ x: 10 }}
                 transition={{ duration: 0.3 }}
               >

@@ -9,7 +9,7 @@ export default function ProjectCTA() {
       <CursorImageTrail className="w-full rounded-2xl bg-[#EDE5D8]/30 border border-[#3D2B1F]/10 overflow-hidden hover:bg-[#EDE5D8]/50 transition-colors duration-500">
         <div className="flex flex-col items-center justify-center py-24 md:py-32 text-center relative z-10 px-6">
           <div className="space-y-8 max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-5xl lg:text-7xl text-[#3D2B1F] leading-[1.1]">
+            <h2 className="text-3xl md:text-5xl lg:text-7xl text-[#3D2B1F] leading-[1.1] vibrate-text">
               <span className="font-serif italic font-light block mb-2">Do you have a</span>
               <span className="font-serif">project in mind?</span>
             </h2>

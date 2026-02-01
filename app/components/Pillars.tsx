@@ -77,7 +77,7 @@ const PillarCard = ({ pillar, index }: { pillar: any, index: number }) => {
 
         {/* Title */}
         <motion.h3 
-          className="text-3xl font-serif text-[#3D2B1F] mb-6 relative inline-block"
+          className="text-3xl font-serif text-[#3D2B1F] mb-6 relative inline-block vibrate-text"
         >
           {pillar.title}
           <span className="block h-px bg-[#3D2B1F] w-0 group-hover:w-full transition-all duration-500 mt-2" />
@@ -147,7 +147,7 @@ export default function Pillars() {
                 ref={headerRef}
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                className="text-[#D97706] text-xs font-bold tracking-widest uppercase mb-4"
+                className="text-[#D97706] text-xs font-bold tracking-widest uppercase mb-4 vibrate-text"
              >
                 Core Values
             </motion.span>
@@ -155,7 +155,7 @@ export default function Pillars() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#3D2B1F]"
+                className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#3D2B1F] vibrate-text"
             >
                 Designed for <span className="italic text-[#C4956A]">life.</span>
             </motion.h2>

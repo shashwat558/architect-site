@@ -69,8 +69,8 @@ export default function Projects() {
           transition={{ duration: 0.6 }}
         >
           <div>
-             <span className="text-[#D97706] text-xs font-bold tracking-widest uppercase mb-4 block">Selected Works</span>
-             <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif text-[#3D2B1F] leading-tight">
+             <span className="text-[#D97706] text-xs font-bold tracking-widest uppercase mb-4 block vibrate-text">Selected Works</span>
+             <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif text-[#3D2B1F] leading-tight vibrate-text">
                 Crafting Spaces <br/>
                 <span className="italic opacity-60">with Soul.</span>
              </h2>
@@ -143,7 +143,7 @@ export default function Projects() {
                     {/* Info Below Image */}
                     <div className="mt-6 flex justify-between items-start border-t border-[#3D2B1F]/10 pt-4">
                         <div>
-                            <h3 className="text-2xl md:text-3xl font-serif text-[#3D2B1F] group-hover:italic transition-all duration-300">{project.title}</h3>
+                            <h3 className="text-2xl md:text-3xl font-serif text-[#3D2B1F] group-hover:italic transition-all duration-300 vibrate-text">{project.title}</h3>
                             <p className="text-[#9B8B7A] text-sm mt-1">{project.category}</p>
                         </div>
                          <span className="text-[#3D2B1F] font-mono text-sm opacity-60">{project.year}</span>

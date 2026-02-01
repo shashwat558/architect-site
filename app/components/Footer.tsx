@@ -8,6 +8,7 @@ import Magnetic from "./ui/Magnetic";
 const pages = [
   { name: "Welcome", href: "/" },
   { name: "Work", href: "/projects" },
+  { name: "Process", href: "/process" },
   { name: "Offers", href: "/offers" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
@@ -91,7 +92,7 @@ export default function Footer() {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide">
+            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">
               Pages
             </h4>
             <ul className="space-y-2">
@@ -120,7 +121,7 @@ export default function Footer() {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide">
+            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">
               Achievements
             </h4>
             <ul className="space-y-2">
@@ -149,7 +150,7 @@ export default function Footer() {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide">
+            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">
               Resources
             </h4>
             <ul className="space-y-2">
@@ -209,7 +210,7 @@ export default function Footer() {
 
             {/* Latest Releases */}
             <div className="space-y-3">
-              <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide">
+              <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">
                 Latest Releases
               </h4>
               <div className="space-y-2 max-h-40 overflow-y-auto">
@@ -242,7 +243,7 @@ export default function Footer() {
         >
           {/* Networks */}
           <div className="flex items-center gap-6">
-            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide">
+            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">
               Networks
             </h4>
             <div className="flex gap-4">

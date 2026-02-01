@@ -11,6 +11,7 @@ interface MenuOverlayProps {
 const mainLinks = [
   { name: "Welcome", href: "/" },
   { name: "Work", href: "/projects" },
+  { name: "Process", href: "/process" },
   { name: "Offers", href: "/offers" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },

@@ -21,7 +21,7 @@ export default function About() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-12 relative leading-tight">
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-12 relative leading-tight vibrate-text">
               Crafting Spaces <br/>
               <span className="italic text-[var(--muted)]">with Soul & Purpose.</span>
             </h1>
@@ -46,11 +46,11 @@ export default function About() {
                  <div className="pt-4">
                     <div className="flex gap-12">
                         <div>
-                            <h3 className="font-serif text-4xl text-[var(--accent)] mb-2">15+</h3>
+                            <h3 className="font-serif text-4xl text-[var(--accent)] mb-2 vibrate-text">15+</h3>
                             <p className="text-sm uppercase tracking-widest text-[var(--muted)]">Years Experience</p>
                         </div>
                         <div>
-                            <h3 className="font-serif text-4xl text-[var(--accent)] mb-2">100+</h3>
+                            <h3 className="font-serif text-4xl text-[var(--accent)] mb-2 vibrate-text">100+</h3>
                             <p className="text-sm uppercase tracking-widest text-[var(--muted)]">Projects Completed</p>
                         </div>
                     </div>
@@ -62,7 +62,7 @@ export default function About() {
 
         {/* Philosophy / Values Reused */}
         <div className="mb-24">
-            <h2 className="font-serif text-4xl md:text-5xl mb-12 text-center">Our Philosophy</h2>
+            <h2 className="font-serif text-4xl md:text-5xl mb-12 text-center vibrate-text">Our Philosophy</h2>
             <Pillars />
         </div>
       </main>

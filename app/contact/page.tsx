@@ -17,7 +17,7 @@ export default function Contact() {
             transition={{ duration: 0.8 }}
             className="mb-20"
         >
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-6">
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-6 vibrate-text">
                 Get in Touch
             </h1>
             <p className="text-xl text-[var(--muted)] max-w-2xl">
@@ -35,7 +35,7 @@ export default function Contact() {
             >
                 <div className="space-y-8">
                     <div>
-                        <h3 className="font-serif text-2xl mb-4 text-[var(--foreground)]">Visit Us</h3>
+                        <h3 className="font-serif text-2xl mb-4 text-[var(--foreground)] vibrate-text">Visit Us</h3>
                         <address className="not-italic text-[var(--muted)] text-lg leading-relaxed">
                             AD.RS Design Studio<br/>
                             123 Arera Colony, E-7 Sector<br/>
@@ -45,7 +45,7 @@ export default function Contact() {
                     </div>
 
                     <div>
-                        <h3 className="font-serif text-2xl mb-4 text-[var(--foreground)]">Contact</h3>
+                        <h3 className="font-serif text-2xl mb-4 text-[var(--foreground)] vibrate-text">Contact</h3>
                         <p className="text-[var(--muted)] text-lg mb-2">
                            <a href="mailto:hello@adrs-studio.com" className="hover:text-[var(--accent)] transition-colors">hello@adrs-studio.com</a>
                         </p>

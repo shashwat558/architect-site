@@ -87,7 +87,7 @@ export default function ProjectsPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="font-serif text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-8"
+                className="font-serif text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-8 vibrate-text"
             >
                 Selected Works
             </motion.h1>
@@ -141,7 +141,7 @@ export default function ProjectsPage() {
                         
                         <div className="flex justify-between items-start">
                             <div>
-                                <h3 className="font-serif text-3xl mb-2 group-hover:text-[var(--accent)] transition-colors">
+                                <h3 className="font-serif text-3xl mb-2 group-hover:text-[var(--accent)] transition-colors vibrate-text">
                                     {project.title}
                                 </h3>
                                 <p className="text-[var(--muted)]">{project.location}</p>
