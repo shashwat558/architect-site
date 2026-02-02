@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView, useSpring } from "motion/react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -149,6 +149,7 @@ const StepCard = ({ step, index }: { step: typeof processSteps[0]; index: number
 
 export default function ProcessPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [showBeams, setShowBeams] = useState(false);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
@@ -160,14 +161,35 @@ export default function ProcessPage() {
     restDelta: 0.001
   });
 
+  useEffect(() => {
+    const updateBeams = () => {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      const isLargeScreen = window.matchMedia("(min-width: 1024px)").matches;
+      setShowBeams(!prefersReducedMotion && isLargeScreen);
+    };
+
+    updateBeams();
+    window.addEventListener("resize", updateBeams);
+
+    return () => {
+      window.removeEventListener("resize", updateBeams);
+    };
+  }, []);
+
   return (
     <div className="bg-[#FAF6F1] min-h-screen text-[#3D2B1F]" ref={containerRef}>
       <Header />
       
       {/* Background Ambience - Full Hero Span */}
       <div className="absolute top-0 left-0 w-full h-[110vh] overflow-hidden pointer-events-none z-0">
-          <BackgroundBeams className="opacity-40" />
-           <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-[#FAF6F1] to-transparent" />
+          {showBeams ? (
+            <BackgroundBeams className="opacity-40" />
+          ) : (
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,#D97706_0%,transparent_55%)] opacity-10" />
+          )}
+          <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-[#FAF6F1] to-transparent" />
       </div>
 
       <main className="relative z-10 pt-32 pb-20 px-4 md:px-12 max-w-7xl mx-auto overflow-hidden">
