@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
+import { usePathname } from "next/navigation";
 import { useCursor } from "@/app/context/CursorContext";
 
 export default function CustomCursor() {
-  const { cursorVariant, cursorText } = useCursor();
+  const { cursorVariant, setCursorVariant } = useCursor();
+  const pathname = usePathname();
+  const [isEnabled, setIsEnabled] = useState(false);
   
   // Mouse position state
   const mouseX = useMotionValue(-100);
@@ -17,6 +20,33 @@ export default function CustomCursor() {
   const cursorY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
+    const checkSupport = () => {
+      const finePointer = window.matchMedia("(pointer: fine)").matches;
+      const hoverCapable = window.matchMedia("(hover: hover)").matches;
+      setIsEnabled(finePointer && hoverCapable);
+    };
+
+    checkSupport();
+    window.addEventListener("resize", checkSupport);
+
+    return () => {
+      window.removeEventListener("resize", checkSupport);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Reset variant on route change to avoid sticky state
+    setCursorVariant("default");
+  }, [pathname, setCursorVariant]);
+
+  useEffect(() => {
+    if (!isEnabled) {
+      document.body.style.cursor = "auto";
+      const style = document.getElementById("cursor-style");
+      if (style) style.remove();
+      return;
+    }
+
     const moveCursor = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
@@ -42,7 +72,7 @@ export default function CustomCursor() {
       const style = document.getElementById('cursor-style');
       if(style) style.remove();
     };
-  }, [mouseX, mouseY]);
+  }, [isEnabled, mouseX, mouseY]);
 
   // Variants for cursor animation
   const variants = {
@@ -71,6 +101,8 @@ export default function CustomCursor() {
         mixBlendMode: "difference" as const,
     }
   };
+
+  if (!isEnabled) return null;
 
   return (
     <>

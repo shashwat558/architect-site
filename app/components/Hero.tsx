@@ -51,7 +51,7 @@ export default function Hero() {
   const y2 = useTransform(scrollY, [0, 500], [0, 100]);
 
   return (
-    <section className="pt-32 pb-8 bg-transparent overflow-hidden">
+    <section className="pt-32 pb-8 bg-transparent overflow-hidden" aria-label="Hero section featuring AD.RS design services">
       <div className="w-full px-6 md:px-12 lg:px-20">
         {/* Hero Text Section with Stagger Animation */}
         <div className="flex flex-col lg:flex-row justify-between items-start gap-8 mb-16">

@@ -1,12 +1,13 @@
-"use client";
-
+"use client"; 
 import { motion } from "motion/react";
-import Image from "next/image";
+
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ProjectCTA from "../components/ProjectCTA";
 import Pillars from "../components/Pillars";
 import TeamSection from "../components/TeamSection";
+
+
 
 export default function About() {
   return (

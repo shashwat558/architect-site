@@ -1,9 +1,11 @@
-"use client";
-
+"use client"
 import { motion } from "motion/react";
+
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import ProjectCTA from "../components/ProjectCTA";
+
+
+
 
 export default function Contact() {
   return (

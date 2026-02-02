@@ -12,9 +12,10 @@ import ProjectCTA from "./components/ProjectCTA";
 import Footer from "./components/Footer";
 import { AuroraBackground } from "./components/ui/AuroraBackground";
 
+const ActiveLoader = getActiveLoader();
+
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  const ActiveLoader = getActiveLoader();
 
   // Prevent scrolling while loading
   useEffect(() => {
