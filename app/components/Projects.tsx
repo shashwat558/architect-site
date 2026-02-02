@@ -134,6 +134,9 @@ export default function Projects() {
                             alt={project.title}
                             fill
                             className="object-cover"
+                            sizes="(max-width: 768px) 85vw, (max-width: 1024px) 500px, 600px"
+                            loading={index < 2 ? "eager" : "lazy"}
+                            quality={75}
                             />
                             {/* Dark gradient overlay on hover */}
                             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />

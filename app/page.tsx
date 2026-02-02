@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { AnimatePresence } from "motion/react";
+import { getActiveLoader } from "./components/loaders/loaderConfig";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Projects from "./components/Projects";
@@ -9,11 +10,11 @@ import Pillars from "./components/Pillars";
 import Offers from "./components/Offers";
 import ProjectCTA from "./components/ProjectCTA";
 import Footer from "./components/Footer";
-import IntroLoader from "./components/IntroLoader";
 import { AuroraBackground } from "./components/ui/AuroraBackground";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const ActiveLoader = getActiveLoader();
 
   // Prevent scrolling while loading
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-transparent relative">
       <AnimatePresence mode="wait">
-        {loading && <IntroLoader onComplete={() => setLoading(false)} />}
+        {loading && <ActiveLoader onComplete={() => setLoading(false)} />}
       </AnimatePresence>
       
       <Header />

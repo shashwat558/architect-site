@@ -140,6 +140,9 @@ export default function Hero() {
                 alt={image.alt}
                 fill
                 className="object-cover transition-transform duration-500 hover:scale-110"
+                sizes="(max-width: 768px) 75vw, (max-width: 1024px) 95vw, 600px"
+                loading={index < 3 ? "eager" : "lazy"}
+                quality={75}
               />
               {/* Hover overlay */}
               <motion.div

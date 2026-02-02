@@ -15,6 +15,15 @@ export default function IntroLoader({ onComplete }: { onComplete: () => void }) 
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    // Check if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    // Faster timing - 2.5s total instead of 4s
+    const imageDuration = prefersReducedMotion ? 100 : 300;
+    const totalDuration = (introImages.length * imageDuration) + 300;
+
     // Cycle through images
     const interval = setInterval(() => {
         setIndex((prev) => {
@@ -23,12 +32,12 @@ export default function IntroLoader({ onComplete }: { onComplete: () => void }) 
             }
             return prev + 1;
         });
-    }, 500); // Change image every 500ms
+    }, imageDuration);
 
     // End loader after all images shown + slight delay
     const timeout = setTimeout(() => {
       onComplete();
-    }, (introImages.length * 500) + 800);
+    }, totalDuration);
 
     return () => {
       clearInterval(interval);
@@ -59,7 +68,9 @@ export default function IntroLoader({ onComplete }: { onComplete: () => void }) 
                         alt="Intro" 
                         fill 
                         className="object-cover opacity-60"
-                        priority
+                        priority={index === 0}
+                        quality={60}
+                        sizes="100vw"
                     />
                     <div className="absolute inset-0 bg-black/20" />
                 </div>

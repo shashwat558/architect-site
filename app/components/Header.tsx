@@ -30,7 +30,7 @@ export default function Header() {
     <MenuOverlay isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     
     <motion.header 
-      className={`fixed top-0 left-0 right-0 z-50 py-4 px-4 sm:px-6 md:px-12 lg:px-20 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 py-4 px-4 sm:px-6 md:px-12 lg:px-20 transition-all duration-300 min-h-20 flex items-center ${
         scrolled ? "bg-white/70 backdrop-blur-md shadow-sm" : "bg-transparent"
       }`}
       variants={{
@@ -42,7 +42,7 @@ export default function Header() {
     >
       <div className="w-full flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
+        <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
           <Magnetic>
              <div className="relative w-32 h-10">
                <Image 
@@ -51,13 +51,14 @@ export default function Header() {
                  fill 
                  className="object-contain object-left" 
                  priority
+                 sizes="128px"
                />
              </div>
           </Magnetic>
         </Link>
 
         {/* Navigation */}
-        <nav className="flex items-center gap-4">
+        <nav className="flex items-center gap-4 flex-shrink-0">
           <div className="hidden md:block">
             <Magnetic>
               <motion.div>
