@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const { name, title, image, bio } = body;
+    const { name, title, image, bio, gallery } = body;
 
     if (!name || !title) {
       return NextResponse.json(
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
         title,
         image: image || "",
         bio: bio || "",
-        gallery: [],
+        gallery: gallery || [],
       },
       include: {
         socials: true,

@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const { title, category, year, location, image, slug, link } = body;
+    const { title, category, year, location, image, slug, link, heroImage, gallery } = body;
 
     if (!title || !category || !slug || !link) {
       return NextResponse.json(
@@ -68,7 +68,8 @@ export async function POST(request: NextRequest) {
         image: image || "",
         slug,
         link,
-        gallery: [],
+        heroImage: heroImage || "",
+        gallery: gallery || [],
       },
       include: {
         meta: true,

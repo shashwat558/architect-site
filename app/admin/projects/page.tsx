@@ -1,0 +1,335 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { ImageUpload } from "../components/ImageUpload";
+import { MultiImageUpload } from "../components/MultiImageUpload";
+
+interface Project {
+  id: string;
+  title: string;
+  category: string;
+  year: number;
+  location: string;
+  image: string;
+  heroImage: string;
+  gallery: string[];
+  slug: string;
+  link: string;
+  createdAt: string;
+}
+
+export default function ProjectsPage() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "",
+    year: new Date().getFullYear(),
+    location: "",
+    image: "",
+    heroImage: "",
+    gallery: [] as string[],
+    slug: "",
+    link: "",
+  });
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    try {
+      const res = await fetch("/api/projects");
+      const data = await res.json();
+      setProjects(data.projects || []);
+    } catch (error) {
+      console.error("Failed to fetch projects:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const url = editingProject
+        ? `/api/projects/${editingProject.id}`
+        : "/api/projects";
+      const method = editingProject ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        fetchProjects();
+        resetForm();
+      } else {
+        const error = await res.json();
+        alert(error.error || "Failed to save project");
+      }
+    } catch (error) {
+      console.error("Failed to save project:", error);
+      alert("Failed to save project");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this project?")) return;
+
+    try {
+      const res = await fetch(`/api/projects/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        fetchProjects();
+      }
+    } catch (error) {
+      console.error("Failed to delete project:", error);
+    }
+  };
+
+  const handleEdit = (project: Project) => {
+    setEditingProject(project);
+    setFormData({
+      title: project.title,
+      category: project.category,
+      year: project.year,
+      location: project.location,
+      image: project.image,
+      heroImage: project.heroImage || "",
+      gallery: project.gallery || [],
+      slug: project.slug,
+      link: project.link,
+    });
+    setShowForm(true);
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      category: "",
+      year: new Date().getFullYear(),
+      location: "",
+      image: "",
+      heroImage: "",
+      gallery: [],
+      slug: "",
+      link: "",
+    });
+    setEditingProject(null);
+    setShowForm(false);
+  };
+
+  if (loading) {
+    return <div className="text-center py-12">Loading...</div>;
+  }
+
+  return (
+    <div className="px-4 sm:px-0">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+        >
+          {showForm ? "Cancel" : "Add Project"}
+        </button>
+      </div>
+
+      {showForm && (
+        <div className="bg-white shadow rounded-lg p-6 mb-8">
+          <h2 className="text-xl font-semibold mb-4">
+            {editingProject ? "Edit Project" : "Create Project"}
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Title *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Category *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.category}
+                  onChange={(e) =>
+                    setFormData({ ...formData, category: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Year *
+                </label>
+                <input
+                  type="number"
+                  required
+                  value={formData.year}
+                  onChange={(e) =>
+                    setFormData({ ...formData, year: parseInt(e.target.value) })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Location
+                </label>
+                <input
+                  type="text"
+                  value={formData.location}
+                  onChange={(e) =>
+                    setFormData({ ...formData, location: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Slug * (URL-friendly)
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.slug}
+                  onChange={(e) =>
+                    setFormData({ ...formData, slug: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="my-project-slug"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Link *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.link}
+                  onChange={(e) =>
+                    setFormData({ ...formData, link: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="/projects/my-project"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <ImageUpload
+                  value={formData.image}
+                  onChange={(url) => setFormData({ ...formData, image: url })}
+                  folder="adrs/projects"
+                  label="Thumbnail Image"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <ImageUpload
+                  value={formData.heroImage}
+                  onChange={(url) => setFormData({ ...formData, heroImage: url })}
+                  folder="adrs/projects"
+                  label="Hero Image"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <MultiImageUpload
+                  value={formData.gallery}
+                  onChange={(urls) => setFormData({ ...formData, gallery: urls })}
+                  folder="adrs/projects/gallery"
+                  label="Project Gallery"
+                  maxImages={20}
+                />
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+              >
+                {editingProject ? "Update" : "Create"}
+              </button>
+              <button
+                type="button"
+                onClick={resetForm}
+                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      <div className="bg-white shadow overflow-hidden sm:rounded-md">
+        <ul className="divide-y divide-gray-200">
+          {projects.length === 0 ? (
+            <li className="px-6 py-8 text-center text-gray-500">
+              No projects yet. Create your first project!
+            </li>
+          ) : (
+            projects.map((project) => (
+              <li key={project.id}>
+                <div className="px-6 py-4 flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-4">
+                      {project.image && (
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          className="w-16 h-16 object-cover rounded"
+                        />
+                      )}
+                      <div>
+                        <h3 className="text-lg font-medium text-gray-900">
+                          {project.title}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {project.category} • {project.year}
+                          {project.location && ` • ${project.location}`}
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          Slug: {project.slug}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEdit(project)}
+                      className="text-indigo-600 hover:text-indigo-900 px-3 py-1 text-sm"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(project.id)}
+                      className="text-red-600 hover:text-red-900 px-3 py-1 text-sm"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </li>
+            ))
+          )}
+        </ul>
+      </div>
+    </div>
+  );
+}

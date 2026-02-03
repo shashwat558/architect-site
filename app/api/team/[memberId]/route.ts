@@ -4,13 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { memberId: string } }
 ) {
   try {
-    const { id } = params;
+    const { memberId } = params;
 
     const member = await prisma.teamMember.findUnique({
-      where: { id },
+      where: { id: memberId },
       include: {
         socials: true,
         projects: {
@@ -30,7 +30,7 @@ export async function GET(
 
     return NextResponse.json(member, { status: 200 });
   } catch (error) {
-    console.error(`GET /api/team/[id] error:`, error);
+    console.error(`GET /api/team/[memberId] error:`, error);
     return NextResponse.json(
       { error: "Failed to fetch team member" },
       { status: 500 }
@@ -40,14 +40,14 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { memberId: string } }
 ) {
   try {
-    const { id } = params;
+    const { memberId } = params;
     const body = await request.json();
 
     const member = await prisma.teamMember.findUnique({
-      where: { id },
+      where: { id: memberId },
     });
 
     if (!member) {
@@ -58,7 +58,7 @@ export async function PUT(
     }
 
     const updated = await prisma.teamMember.update({
-      where: { id },
+      where: { id: memberId },
       data: {
         name: body.name ?? member.name,
         title: body.title ?? member.title,
@@ -78,7 +78,7 @@ export async function PUT(
 
     return NextResponse.json(updated, { status: 200 });
   } catch (error) {
-    console.error(`PUT /api/team/[id] error:`, error);
+    console.error(`PUT /api/team/[memberId] error:`, error);
     return NextResponse.json(
       { error: "Failed to update team member" },
       { status: 500 }
@@ -88,13 +88,13 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { memberId: string } }
 ) {
   try {
-    const { id } = params;
+    const { memberId } = params;
 
     const member = await prisma.teamMember.findUnique({
-      where: { id },
+      where: { id: memberId },
     });
 
     if (!member) {
@@ -105,7 +105,7 @@ export async function DELETE(
     }
 
     await prisma.teamMember.delete({
-      where: { id },
+      where: { id: memberId },
     });
 
     return NextResponse.json(
@@ -113,7 +113,7 @@ export async function DELETE(
       { status: 200 }
     );
   } catch (error) {
-    console.error(`DELETE /api/team/[id] error:`, error);
+    console.error(`DELETE /api/team/[memberId] error:`, error);
     return NextResponse.json(
       { error: "Failed to delete team member" },
       { status: 500 }
