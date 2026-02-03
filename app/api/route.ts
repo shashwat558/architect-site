@@ -49,10 +49,14 @@
  * === CONTACT ===
  * POST   /contact                     - Submit contact form (public)
  * GET    /contact                     - List contact submissions (admin)
-
+ *
  * === SUBSCRIBERS ===
  * POST   /subscribers                 - Subscribe via email (public)
  * GET    /subscribers                 - List subscribers (admin)
+ *
+ * === UPLOAD ===
+ * POST   /upload                      - Upload image to Cloudinary (returns URL)
+ * GET    /upload                      - Upload endpoint info
  *
  * === VALIDATION ===
  * - All endpoints validate required fields
