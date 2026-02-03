@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ===== PROJECTS =====
+model Project {
+  id        String   @id @default(cuid())
+  title     String
+  category  String
+  year      Int
+  location  String
+  image     String   // Cloudinary URL
+  slug      String   @unique
+  link      String
+  
+  meta      ProjectMeta[]
+  materials Material[]
+  team      TeamOnProject[]
+  gallery   String[] // Cloudinary URLs
+  testimonial Testimonial?
+  heroImage String   // Cloudinary URL
+  nextProject String? // slug reference
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProjectMeta {
+  id        String   @id @default(cuid())
+  label     String
+  value     String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+}
+
+model Material {
+  id        String   @id @default(cuid())
+  name      String
+  description String?
+  image     String?  // Cloudinary URL
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+}
+
+// ===== TEAM =====
+model TeamMember {
+  id          String   @id @default(cuid())
+  name        String
+  title       String
+  image       String   // Cloudinary URL
+  bio         String   @db.Text
+  gallery     String[] // Cloudinary URLs
+  
+  socials     Social[]
+  projects    TeamOnProject[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Social {
+  id        String   @id @default(cuid())
+  name      String
+  url       String
+  member    TeamMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId  String
+}
+
+model TeamOnProject {
+  member      TeamMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId    String
+  project     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+  role        String?
+  
+  @@id([memberId, projectId])
+}
+
+// ===== SERVICES/OFFERS =====
+model Offer {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  link        String
+  ctaLabel    String
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ===== TESTIMONIALS =====
+model Testimonial {
+  id        String   @id @default(cuid())
+  text      String   @db.Text
+  author    String
+  role      String?
+  image     String?  // Cloudinary URL
+  
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String   @unique
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ===== CONTACT SUBMISSIONS =====
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  phone     String?
+  projectType String?
+  message   String   @db.Text
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ===== SUBSCRIBERS =====
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  
+  createdAt DateTime @default(now())
+}
