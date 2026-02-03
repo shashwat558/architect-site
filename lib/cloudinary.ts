@@ -20,7 +20,10 @@ export async function uploadImage(
   folder: string = "adrs"
 ): Promise<string> {
   try {
-    const result = await cloudinary.uploader.upload(file, {
+    const fileToUpload = Buffer.isBuffer(file)
+      ? `data:image/png;base64,${file.toString("base64")}`
+      : file;
+    const result = await cloudinary.uploader.upload(fileToUpload, {
       folder: folder,
       resource_type: "image",
       transformation: [
