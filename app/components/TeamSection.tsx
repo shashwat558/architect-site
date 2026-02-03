@@ -1,145 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
   AnimatePresence,
   motion,
+  type Variants,
   useMotionTemplate,
   useMotionValue,
   useSpring,
   useTransform,
 } from "framer-motion";
 import Image from "next/image";
-import { MouseEvent, useRef, useState, useEffect } from "react";
+import { MouseEvent, useRef, useState } from "react";
+import type { TeamMember, TeamSectionData } from "../data/dummyData";
 
-// --- Types ---
-
-interface Social {
-  name: string;
-  url: string;
-}
-
-interface TeamMember {
-  id: number;
-  name: string;
-  title: string;
-  image: string;
-  bio: string;
-  gallery: string[];
-  socials: Social[];
-}
-
-// --- Data ---
-
-const teamMembers: TeamMember[] = [
-  {
-    id: 1,
-    name: "Elena Rodriguez",
-    title: "Principal Architect",
-    image:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=1000&fit=crop",
-    bio: "Elena serves as the visionary force behind AD.RS Design. With over 15 years of experience in high-end residential and commercial architecture, she believes that spaces should allow life to unfold naturally. Her approach combines rigorous structural logic with a deep sensitivity to light and material.",
-    gallery: [
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=80"
-    ],
-    socials: [
-      { name: "LinkedIn", url: "#" },
-      { name: "Instagram", url: "#" },
-      { name: "Email", url: "#" },
-    ],
-  },
-  {
-    id: 2,
-    name: "Marcus Chen",
-    title: "Lead Designer",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=800&h=1000&fit=crop",
-    bio: "Marcus brings a sculptor's eye to interior spaces. A graduate of RISD, his philosophy centers on the dialogue between object and void. He specializes in bespoke furniture design and spatial planning, ensuring that every centimeter of a project serves both function and contemplation.",
-    gallery: [
-      "https://images.unsplash.com/photo-1600607686527-6fb886090705?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600566752355-35792bedcfe1?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80"
-    ],
-    socials: [
-      { name: "LinkedIn", url: "#" },
-      { name: "Behance", url: "#" },
-      { name: "Email", url: "#" },
-    ],
-  },
-  {
-    id: 3,
-    name: "Sophia Williams",
-    title: "Interior Specialist",
-    image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800&h=1000&fit=crop",
-    bio: "Sophia is the master of atmosphere. With a background in textile design, she curates palettes that evoke warmth and serenity. She oversees the selection of fabrics, finishes, and fixtures, ensuring a cohesive tactile experience throughout every AD.RS project.",
-    gallery: [
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=1200&q=80"
-    ],
-    socials: [
-      { name: "LinkedIn", url: "#" },
-      { name: "Instagram", url: "#" },
-      { name: "Email", url: "#" },
-    ],
-  },
-  {
-    id: 4,
-    name: "Daniel Foster",
-    title: "Project Manager",
-    image:
-      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&h=1000&fit=crop",
-    bio: "Daniel is the bridge between vision and reality. He ensures that complex designs are executed with precision, on time and on budget. His technical expertise and calm leadership style make him indispensable in navigating the complexities of construction and renovation.",
-    gallery: [
-      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600566752355-35792bedcfe1?w=1200&q=80"
-    ],
-    socials: [
-      { name: "LinkedIn", url: "#" },
-      { name: "Email", url: "#" },
-    ],
-  },
-  {
-    id: 5,
-    name: "Amara Okonkwo",
-    title: "Sustainability Lead",
-    image:
-      "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&h=1000&fit=crop",
-    bio: "Amara champions the ecological conscience of the studio. She researches and integrates bio-sourced materials and energy-efficient systems. Her goal is to prove that luxury and sustainability are not mutually exclusive, but rather synergistic.",
-    gallery: [
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80",
-      "https://images.unsplash.com/photo-1518005052304-a32d18df52fa?w=1200&q=80"
-    ],
-    socials: [
-      { name: "LinkedIn", url: "#" },
-      { name: "Twitter", url: "#" },
-      { name: "Email", url: "#" },
-    ],
-  },
-  {
-    id: 6,
-    name: "Luca Moretti",
-    title: "Technical Director",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=1000&fit=crop",
-    bio: "Luca translates abstract concepts into buildable structures. With a background in structural engineering, he solves the most challenging design problems. He loves pushing the boundaries of what materials can do, exploring new joinery techniques and structural systems.",
-    gallery: [
-      "https://images.unsplash.com/photo-1594498653385-d51755754540?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=80"
-    ],
-    socials: [
-      { name: "LinkedIn", url: "#" },
-      { name: "GitHub", url: "#" },
-      { name: "Email", url: "#" },
-    ],
-  },
-];
+export type TeamSectionProps = {
+  data: TeamSectionData;
+};
 
 
 // --- Modal Component ---
@@ -173,7 +49,7 @@ const itemVariants = {
 };
 
 // 3D Tilt Component for Modal Blocks
-const TiltBlock = ({ children, className, variants }: { children: React.ReactNode, className?: string, variants?: any }) => {
+const TiltBlock = ({ children, className, variants }: { children: React.ReactNode; className?: string; variants?: Variants }) => {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -293,7 +169,7 @@ const TeamMemberModal = ({ member, onClose }: { member: TeamMember; onClose: () 
                 </div>
 
                 <div className="flex-grow overflow-y-auto custom-scrollbar pr-4 relative z-10">
-                     <p className="text-[#6B5B4F] leading-relaxed font-light text-lg md:text-xl font-semibold                                                                                           ">
+                     <p className="text-[#6B5B4F] leading-relaxed font-light text-lg md:text-xl">
                         {member.bio}
                     </p>
                     
@@ -520,7 +396,7 @@ const TeamMemberCard = ({
 
 // --- Main Section ---
 
-export default function TeamSection() {
+export default function TeamSection({ data }: TeamSectionProps) {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
   return (
@@ -547,10 +423,10 @@ export default function TeamSection() {
               >
                   <div className="flex items-center gap-4 mb-4">
                       <span className="h-[1px] w-12 bg-[#D97706]"></span>
-                      <span className="text-[#D97706] uppercase tracking-widest text-sm font-semibold vibrate-text">Our People</span>
+                        <span className="text-[#D97706] uppercase tracking-widest text-sm font-semibold vibrate-text">{data.eyebrow}</span>
                   </div>
                   <h2 className="font-serif text-6xl md:text-7xl lg:text-8xl text-[#3D2B1F] leading-[0.9] vibrate-text">
-                      Meet the <br/> <span className="italic opacity-80">Visionaries.</span>
+                        {data.title} <br/> <span className="italic opacity-80">{data.subtitle}</span>
                   </h2>
               </motion.div>
 
@@ -561,13 +437,13 @@ export default function TeamSection() {
                  transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
                  className="text-[#3D2B1F]/70 text-lg md:text-xl max-w-md text-right leading-relaxed font-light"
               >
-                  We are a constellation of thinkers and makers, united by a passion for spaces that resonate with the human spirit.
+                  {data.description}
               </motion.p>
           </div>
 
           {/* Grid Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-            {teamMembers.map((member, index) => (
+            {data.members.map((member, index) => (
                <div key={member.id} className={`${index % 2 === 1 ? "md:mt-20" : ""}`}>
                   <TeamMemberCard 
                       member={member} 

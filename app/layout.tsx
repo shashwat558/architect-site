@@ -98,15 +98,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Preconnect to image CDN */}
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
-        {/* DNS prefetch for image service */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        
-        {/* Canonical URL */}
         <link rel="canonical" href="https://adrs-design.com" />
-        
-        {/* Alternative URLs */}
         <link rel="alternate" href="https://adrs-design.com" hrefLang="en-IN" />
         <link rel="alternate" href="https://adrs-design.com" hrefLang="en" />
         

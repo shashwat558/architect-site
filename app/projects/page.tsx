@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ProjectCTA from "../components/ProjectCTA";
 import ProjectsContent from "../components/ProjectsContent";
+import { projectCTAData, projectsContentData } from "../data/dummyData";
 
 export const metadata: Metadata = {
   title: "Design Projects Portfolio | AD.RS Design Studio",
@@ -22,10 +23,10 @@ export default function ProjectsPage() {
       <Header />
       
       <main className="pt-32 pb-20 px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto">
-        <ProjectsContent />
+        <ProjectsContent data={projectsContentData} />
 
         <div className="mt-32">
-          <ProjectCTA />
+          <ProjectCTA data={projectCTAData} />
         </div>
       </main>
 

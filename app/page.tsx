@@ -2,17 +2,38 @@
 
 import { useState, useEffect } from "react";
 import { AnimatePresence } from "motion/react";
+import dynamic from "next/dynamic";
 import { getActiveLoader } from "./components/loaders/loaderConfig";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import Projects from "./components/Projects";
-import Pillars from "./components/Pillars";
-import Offers from "./components/Offers";
-import ProjectCTA from "./components/ProjectCTA";
 import Footer from "./components/Footer";
 import { AuroraBackground } from "./components/ui/AuroraBackground";
+import {
+  heroData,
+  offersSectionData,
+  pillarsSectionData,
+  projectCTAData,
+  projectsSectionData,
+} from "./data/dummyData";
 
 const ActiveLoader = getActiveLoader();
+
+const Projects = dynamic(() => import("./components/Projects"), {
+  ssr: false,
+  loading: () => <div className="h-24" />,
+});
+const Pillars = dynamic(() => import("./components/Pillars"), {
+  ssr: false,
+  loading: () => <div className="h-24" />,
+});
+const Offers = dynamic(() => import("./components/Offers"), {
+  ssr: false,
+  loading: () => <div className="h-24" />,
+});
+const ProjectCTA = dynamic(() => import("./components/ProjectCTA"), {
+  ssr: false,
+  loading: () => <div className="h-24" />,
+});
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -35,12 +56,12 @@ export default function Home() {
       <Header />
       <main>
         <AuroraBackground className="justify-start h-auto min-h-screen">
-          <Hero />
+          <Hero data={heroData} />
         </AuroraBackground>
-        <Projects />
-        <Pillars />
-        <Offers />
-        <ProjectCTA />
+        <Projects data={projectsSectionData} />
+        <Pillars data={pillarsSectionData} />
+        <Offers data={offersSectionData} />
+        <ProjectCTA data={projectCTAData} />
       </main>
       <Footer />
     </div>

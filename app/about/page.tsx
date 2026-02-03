@@ -1,13 +1,23 @@
 "use client"; 
 import { motion } from "motion/react";
+import dynamic from "next/dynamic";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import ProjectCTA from "../components/ProjectCTA";
-import Pillars from "../components/Pillars";
-import TeamSection from "../components/TeamSection";
+import { pillarsSectionData, projectCTAData, teamSectionData } from "../data/dummyData";
 
-
+const Pillars = dynamic(() => import("../components/Pillars"), {
+  ssr: false,
+  loading: () => <div className="h-24" />,
+});
+const TeamSection = dynamic(() => import("../components/TeamSection"), {
+  ssr: false,
+  loading: () => <div className="h-24" />,
+});
+const ProjectCTA = dynamic(() => import("../components/ProjectCTA"), {
+  ssr: false,
+  loading: () => <div className="h-24" />,
+});
 
 export default function About() {
   return (
@@ -64,15 +74,15 @@ export default function About() {
         {/* Philosophy / Values Reused */}
         <div className="mb-24">
             <h2 className="font-serif text-4xl md:text-5xl mb-12 text-center vibrate-text">Our Philosophy</h2>
-            <Pillars />
+            <Pillars data={pillarsSectionData} />
         </div>
       </main>
 
       {/* Team Section - Full Width */}
-      <TeamSection />
+      <TeamSection data={teamSectionData} />
 
       <main className="px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto">
-        <ProjectCTA />
+        <ProjectCTA data={projectCTAData} />
       </main>
 
       <Footer />

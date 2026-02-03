@@ -3,44 +3,18 @@
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import type { HeroData } from "../data/dummyData";
 
-const images = [
-  {
-    src: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80",
-    alt: "Modern living room interior",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
-    alt: "Contemporary design space",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80",
-    alt: "Elegant bedroom design",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80",
-    alt: "Kitchen interior design",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
-    alt: "Luxury home exterior",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80",
-    alt: "Modern bathroom design",
-  },
-];
+export type HeroProps = {
+  data: HeroData;
+};
 
-// Triple images for seamless infinite scroll
-const duplicatedImages = [...images, ...images, ...images];
-
-export default function Hero() {
+export default function Hero({ data }: HeroProps) {
   const [carouselWidth, setCarouselWidth] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (carouselRef.current) {
-      // Calculate width of one set of images
       const singleSetWidth = carouselRef.current.scrollWidth / 3;
       setCarouselWidth(singleSetWidth);
     }
@@ -50,10 +24,11 @@ export default function Hero() {
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const y2 = useTransform(scrollY, [0, 500], [0, 100]);
 
+  const duplicatedImages = [...data.images, ...data.images, ...data.images];
+
   return (
     <section className="pt-32 pb-8 bg-transparent overflow-hidden" aria-label="Hero section featuring AD.RS design services">
       <div className="w-full px-6 md:px-12 lg:px-20">
-        {/* Hero Text Section with Stagger Animation */}
         <div className="flex flex-col lg:flex-row justify-between items-start gap-8 mb-16">
           <motion.h1
             style={{ y: y1 }}
@@ -62,7 +37,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            {"Crafting timeless spaces,".split(" ").map((word, index) => (
+            {data.headline.split(" ").map((word, index) => (
               <motion.span
                 key={index}
                 className="inline-block mr-[0.25em]"
@@ -79,7 +54,7 @@ export default function Hero() {
             ))}
             <br />
             <span className="italic font-light text-[#C4956A]">
-              {"where architecture meets emotion.".split(" ").map((word, index) => (
+              {data.highlighted.split(" ").map((word, index) => (
                 <motion.span
                   key={index + 10}
                   className="inline-block mr-[0.25em]"
@@ -103,9 +78,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
           >
-            AD.RS Design Studio orchestrates unique spatial experiences. 
-            From sustainable foundations to ephemeral scenography, we design 
-            with precision for the essential.
+            {data.description}
           </motion.p>
         </div>
 

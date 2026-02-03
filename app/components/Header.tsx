@@ -41,7 +41,6 @@ export default function Header() {
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
       <div className="w-full flex items-center justify-between">
-        {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
           <Magnetic>
              <div className="relative w-32 h-10">
@@ -57,7 +56,6 @@ export default function Header() {
           </Magnetic>
         </Link>
 
-        {/* Navigation */}
         <nav className="flex items-center gap-4 flex-shrink-0">
           <div className="hidden md:block">
             <Magnetic>

@@ -267,10 +267,7 @@ export default function ProjectDetail() {
     <div className="bg-[#FAF6F1] min-h-screen text-[#3D2B1F] selection:bg-[#D97706] selection:text-white" ref={containerRef}>
       <Header />
 
-      {/* --- HERO SECTION --- */}
       <section className="relative min-h-[110vh] flex flex-col justify-between pt-32 pb-12 overflow-hidden">
-          
-          {/* Background Label */}
           <div className="absolute top-0 right-0 p-4 md:p-12 opacity-30">
               <span className="text-[10vw] md:text-[8vw] leading-none font-serif text-[#ECE5D9] select-none">
                   2024
@@ -313,7 +310,6 @@ export default function ProjectDetail() {
           </motion.div>
       </section>
 
-      {/* --- META GRID --- */}
       <section className="px-6 md:px-12 lg:px-20 py-20 bg-[#FAF6F1] relative z-20">
          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 border-t border-[#3D2B1F]/20 pt-8">
              {project.meta.map((item, i) => (
@@ -325,10 +321,7 @@ export default function ProjectDetail() {
          </div>
       </section>
 
-      {/* --- EDITORIAL CONTENT --- */}
       <main className="px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto pb-32">
-        
-        {/* Narrative Section 1 */}
         <section className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 py-20 md:py-32">
              <div className="md:col-span-4 lg:col-span-3">
                  <div className="sticky top-32">
@@ -362,16 +355,12 @@ export default function ProjectDetail() {
              </div>
         </section>
 
-        {/* Transformation Section - NEW */}
         <TransformationSection />
 
-        {/* Material Board - NEW COMPONENT */}
         <MaterialBoard materials={project.materials} />
 
-        {/* Full Width Image Break */}
         <ParallaxImage src={project.heroImage} alt="Detail" aspectRatio="aspect-[21/9]" className="mb-32 grayscale-[10%]" />
 
-        {/* Gallery Grid with Design Thinking Toggle */}
         <section className="space-y-12">
             <div className="flex justify-end px-4">
                 <ToggleSwitch isOn={showProcess} onToggle={() => setShowProcess(!showProcess)} />
@@ -421,17 +410,12 @@ export default function ProjectDetail() {
             </div>
         </section>
 
-        {/* Testimonial - NEW COMPONENT */}
         <Testimonial data={project.testimonial} />
 
-        {/* Project Credits - NEW COMPONENT */}
         <ProjectCredits team={project.team} />
 
-        {/* --- NEXT PROJECT NAV --- */}
         <section className="mt-40 md:mt-60 border-t border-[#3D2B1F]">
              <Link href={`/projects/${project.nextProject.slug}`} className="group block relative overflow-hidden pt-20 pb-20 md:pt-32 md:pb-32">
-                 
-                 {/* Hover Reveal Image */}
                  <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
                      <Image 
                         src={project.nextProject.image} 

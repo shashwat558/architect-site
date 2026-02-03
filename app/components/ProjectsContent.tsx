@@ -5,73 +5,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useCursor } from "../context/CursorContext";
+import type { ProjectsContentData } from "../data/dummyData";
 
-const allProjects = [
-  {
-    id: 1,
-    title: "Modern Residence",
-    category: "Residential",
-    year: "2024",
-    location: "Bhopal, India",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
-    link: "/projects/modern-residence",
-  },
-  {
-    id: 2,
-    title: "Green Living Space",
-    category: "Sustainable",
-    year: "2023",
-    location: "Indore, India",
-    image: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&q=80",
-    link: "/projects/green-living-space",
-  },
-  {
-    id: 3,
-    title: "Rustic Chalet",
-    category: "Hospitality",
-    year: "2024",
-    location: "Manali, India",
-    image: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80",
-    link: "/projects/rustic-chalet",
-  },
-  {
-    id: 4,
-    title: "Urban Loft",
-    category: "Renovation",
-    year: "2022",
-    location: "Mumbai, India",
-    image: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80",
-    link: "/projects/urban-loft",
-  },
-  {
-    id: 5,
-    title: "Corporate HQ",
-    category: "Commercial",
-    year: "2023",
-    location: "Delhi, India",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80",
-    link: "/projects/corporate-hq",
-  },
-  {
-    id: 6,
-    title: "Lakeside Villa",
-    category: "Residential",
-    year: "2023",
-    location: "Udaipur, India",
-    image: "https://images.unsplash.com/photo-1600596542815-bfad4c1539a9?w=1200&q=80",
-    link: "/projects/lakeside-villa",
-  },
-];
+export type ProjectsContentProps = {
+  data: ProjectsContentData;
+};
 
-const categories = ["All", "Residential", "Commercial", "Hospitality", "Sustainable", "Renovation"];
-
-export default function ProjectsContent() {
-  const [filter, setFilter] = useState("All");
+export default function ProjectsContent({ data }: ProjectsContentProps) {
+  const [filter, setFilter] = useState(data.categories[0] ?? "All");
   const { setCursorVariant } = useCursor();
 
   const filteredProjects = filter === "All" 
-    ? allProjects 
-    : allProjects.filter(p => p.category === filter);
+    ? data.projects 
+    : data.projects.filter(p => p.category === filter);
 
   return (
     <>
@@ -82,7 +28,7 @@ export default function ProjectsContent() {
           transition={{ duration: 0.8 }}
           className="font-serif text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-8 vibrate-text"
         >
-          Selected Works
+          {data.heading}
         </motion.h1>
         
         {/* Filters */}
@@ -92,7 +38,7 @@ export default function ProjectsContent() {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="flex flex-wrap gap-4 md:gap-8 border-b border-[#E5DDD0] pb-6"
         >
-          {categories.map((cat) => (
+          {data.categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
@@ -154,7 +100,7 @@ export default function ProjectsContent() {
       {/* Empty State */}
       {filteredProjects.length === 0 && (
         <div className="py-32 text-center text-[var(--muted)]">
-          <p className="font-serif text-2xl">No projects found in this category.</p>
+          <p className="font-serif text-2xl">{data.emptyMessage}</p>
         </div>
       )}
     </>

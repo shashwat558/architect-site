@@ -5,52 +5,21 @@ import Link from "next/link";
 import { motion, useInView } from "motion/react";
 import { useRef, useState, useEffect } from "react";
 import { useCursor } from "../context/CursorContext";
+import type { ProjectsSectionData } from "../data/dummyData";
 
-const projects = [
-  {
-    id: 1,
-    title: "Modern Residence",
-    category: "Residential",
-    year: "2024",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
-    link: "/projects/modern-residence",
-  },
-  {
-    id: 2,
-    title: "Green Living Space",
-    category: "Sustainable",
-    year: "2023",
-    image:
-      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&q=80",
-    link: "/projects/green-living-space",
-  },
-  {
-    id: 3,
-    title: "Rustic Chalet",
-    category: "Hospitality",
-    year: "2024",
-    image:
-      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80",
-    link: "/projects/rustic-chalet",
-  },
-  {
-    id: 4,
-    title: "Urban Loft",
-    category: "Renovation",
-    year: "2022",
-    image:
-      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80",
-    link: "/projects/urban-loft",
-  },
-];
+export type ProjectsProps = {
+  data: ProjectsSectionData;
+};
 
-export default function Projects() {
+export default function Projects({ data }: ProjectsProps) {
   const { setCursorVariant } = useCursor();
   const ref = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [width, setWidth] = useState(0);
+
+  const totalCount = data.projects.length;
+  const totalLabel = String(totalCount).padStart(2, "0");
 
   useEffect(() => {
     if (carouselRef.current) {
@@ -69,21 +38,21 @@ export default function Projects() {
           transition={{ duration: 0.6 }}
         >
           <div>
-             <span className="text-[#D97706] text-xs font-bold tracking-widest uppercase mb-4 block vibrate-text">Selected Works</span>
+             <span className="text-[#D97706] text-xs font-bold tracking-widest uppercase mb-4 block vibrate-text">{data.eyebrow}</span>
              <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif text-[#3D2B1F] leading-tight vibrate-text">
-                Crafting Spaces <br/>
-                <span className="italic opacity-60">with Soul.</span>
+               {data.title} <br/>
+               <span className="italic opacity-60">{data.subtitle}</span>
              </h2>
           </div>
           
           <div className="flex items-center gap-4">
-            <span className="text-[#9B8B7A] text-sm uppercase tracking-wider hidden md:block">Drag to explore</span>
+            <span className="text-[#9B8B7A] text-sm uppercase tracking-wider hidden md:block">{data.dragHint}</span>
             <div className="w-12 h-px bg-[#3D2B1F] hidden md:block" />
             <Link
-                href="/projects"
+              href={data.ctaHref}
                 className="group flex items-center gap-2 text-[#3D2B1F] border border-[#3D2B1F] px-6 py-3 rounded-full hover:bg-[#3D2B1F] hover:text-[#FAF6F1] transition-all duration-300"
             >
-                <span className="text-sm font-medium uppercase tracking-wider">All Projects</span>
+              <span className="text-sm font-medium uppercase tracking-wider">{data.ctaLabel}</span>
             </Link>
           </div>
         </motion.div>
@@ -101,7 +70,7 @@ export default function Projects() {
             dragConstraints={{ right: 0, left: -width }} 
             className="flex gap-8 md:gap-12 w-fit pr-20"
         >
-            {projects.map((project, index) => (
+            {data.projects.map((project, index) => (
             <motion.div
                 key={project.id}
                 className="relative group min-w-[85vw] md:min-w-125 lg:min-w-150"
@@ -121,7 +90,7 @@ export default function Projects() {
                     >
                          {/* Card Number */}
                          <div className="absolute top-4 left-4 z-20 mix-blend-difference text-white/80 font-mono text-sm tracking-widest backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">
-                            0{index + 1} / 04
+                           {String(index + 1).padStart(2, "0")} / {totalLabel}
                          </div>
 
                         <motion.div

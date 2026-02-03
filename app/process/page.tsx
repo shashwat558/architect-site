@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useInView, useSpring } from "motion/react";
+import Link from "next/link";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { cn } from "@/lib/utils";
@@ -233,13 +234,13 @@ export default function ProcessPage() {
                 <p className="text-[#FAF6F1]/70 text-lg md:text-xl font-light mb-10 max-w-lg mx-auto relative z-10">
                     Your space is waiting to be found. Step 1 is just a conversation.
                 </p>
-                <a href="/contact" className="relative z-10 inline-flex items-center gap-3 px-10 py-5 bg-[#D97706] text-white rounded-full text-lg font-medium transition-all hover:bg-white hover:text-[#D97706] hover:scale-105 shadow-xl group">
+                <Link href="/contact" className="relative z-10 inline-flex items-center gap-3 px-10 py-5 bg-[#D97706] text-white rounded-full text-lg font-medium transition-all hover:bg-white hover:text-[#D97706] hover:scale-105 shadow-xl group">
                     <span>Book Consultation</span>
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="transition-transform duration-300 group-hover:translate-x-1">
                         <path d="M4.16669 10H15.8334" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         <path d="M10 4.16669L15.8333 10L10 15.8334" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                </a>
+                </Link>
             </motion.div>
         </div>
       </main>

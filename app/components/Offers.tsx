@@ -3,23 +3,13 @@
 import Link from "next/link";
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import type { OffersSectionData } from "../data/dummyData";
 
-const offers = [
-  {
-    title: "Limited-time offers",
-    description:
-      "We carry out turnkey decoration and interior architecture projects throughout India for your professional events, pop-ups, stands or showrooms.",
-    link: "/offers/limited-time",
-  },
-  {
-    title: "Long-term offers",
-    description:
-      "We carry out turnkey interior design and architecture projects throughout India for your residences, coworking offices, commercial premises, restaurant, cafe, bar or hotel.",
-    link: "/offers/long-term",
-  },
-];
+export type OffersProps = {
+  data: OffersSectionData;
+};
 
-export default function Offers() {
+export default function Offers({ data }: OffersProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -33,12 +23,12 @@ export default function Offers() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
         >
-          Our Offers
+          {data.eyebrow}
         </motion.h2>
 
         {/* Offers Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {offers.map((offer, index) => (
+          {data.offers.map((offer, index) => (
             <motion.div
               key={index}
               className="bg-[#EDE5D8] rounded-lg p-8 md:p-10 space-y-6 cursor-pointer"
@@ -72,7 +62,7 @@ export default function Offers() {
                 href={offer.link}
                 className="text-[#D97706] text-sm font-medium flex items-center gap-2 hover:underline group"
               >
-                View all offers
+                {offer.ctaLabel}
                 <motion.svg
                   width="14"
                   height="14"

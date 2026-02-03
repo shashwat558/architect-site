@@ -1,45 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import Link from "next/link";
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import type { PillarItem, PillarsSectionData } from "../data/dummyData";
 
-const pillars = [
-  {
-    id: "01",
-    title: "Eco-design",
-    description:
-      "We prioritize the use of sustainable, recycled, or responsibly sourced materials, collaborating as much as possible with local suppliers and artisans. This approach allows us to design environmentally friendly spaces while ensuring a refined and contemporary aesthetic.",
-    link: "/eco-design",
-  },
-  {
-    id: "02",
-    title: "Our method",
-    points: [
-      { highlight: "Everything has its place.", text: "We optimize every corner, reveal the potential of the spaces, create invisible storage and fluid circulation. Nothing is left to chance." },
-      { highlight: "Each space breathes.", text: "No accumulation, no excess. Only the essentials: what serves you, what touches you, what reflects who you are." },
-      { highlight: "Every project takes time.", text: "Bio-sourced materials, refurbished second-hand furniture, local craftsmen: Because a beautiful space should never cost the environment dearly." },
-    ],
-    link: "/our-method",
-  },
-  {
-    id: "03",
-    title: "Our convictions",
-    description:
-      'The future of housing lies not in "bigger", but in "better designed".',
-    points: [
-      { text: "Fewer square meters, more meaning." },
-      { text: "Fewer possessions, more well-being." },
-      { text: "Less waste, more intelligence." },
-    ],
-    outro:
-      "AD.RS Design is the art of creating harmonious, sustainable and perfectly optimized living spaces where every square centimeter finds its purpose and where you find your balance.",
-    link: "/our-convictions",
-  },
-];
+export type PillarsProps = {
+  data: PillarsSectionData;
+};
 
-const PillarCard = ({ pillar, index }: { pillar: any, index: number }) => {
+const PillarCard = ({ pillar, index }: { pillar: PillarItem; index: number }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -91,7 +61,7 @@ const PillarCard = ({ pillar, index }: { pillar: any, index: number }) => {
 
           {pillar.points && (
              <ul className="space-y-6">
-                {pillar.points.map((point: any, i: number) => (
+                {pillar.points.map((point, i) => (
                     <li key={i} className="flex flex-col gap-1">
                         {point.highlight && <span className="font-medium text-[#3D2B1F]">{point.highlight}</span>}
                         <span className="font-light">{point.text}</span>
@@ -127,7 +97,7 @@ const PillarCard = ({ pillar, index }: { pillar: any, index: number }) => {
   );
 };
 
-export default function Pillars() {
+export default function Pillars({ data }: PillarsProps) {
   const headerRef = useRef(null);
   const isInView = useInView(headerRef, { once: true, margin: "-100px" });
 
@@ -137,7 +107,7 @@ export default function Pillars() {
       {/* Background decorative big text */}
       <div className="absolute top-0 left-0 w-full overflow-hidden pointer-events-none opacity-[0.03]">
         <h2 className="text-[20vw] leading-[0.8] font-serif text-[#3D2B1F] whitespace-nowrap -ml-[5vw]">
-            PHILOSOPHY
+          {data.backgroundText}
         </h2>
       </div>
 
@@ -149,7 +119,7 @@ export default function Pillars() {
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 className="text-[#D97706] text-xs font-bold tracking-widest uppercase mb-4 vibrate-text"
              >
-                Core Values
+                {data.eyebrow}
             </motion.span>
             <motion.h2
                 initial={{ opacity: 0, y: 30 }}
@@ -157,12 +127,12 @@ export default function Pillars() {
                 transition={{ delay: 0.1 }}
                 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#3D2B1F] vibrate-text"
             >
-                Designed for <span className="italic text-[#C4956A]">life.</span>
+                {data.title} <span className="italic text-[#C4956A]">{data.subtitle}</span>
             </motion.h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3">
-          {pillars.map((pillar, index) => (
+          {data.pillars.map((pillar, index) => (
             <PillarCard key={pillar.id} pillar={pillar} index={index} />
           ))}
           
