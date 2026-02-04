@@ -17,6 +17,7 @@ datasource db {
 model Project {
   id        String   @id @default(cuid())
   title     String
+  subtitle  String?  @db.Text
   category  String
   year      Int
   location  String
@@ -24,10 +25,15 @@ model Project {
   slug      String   @unique
   link      String
   
+  // Content fields
+  brief     String?  @db.Text
+  approach  String?  @db.Text
+  
   meta      ProjectMeta[]
   materials Material[]
   team      TeamOnProject[]
   gallery   String[] // Cloudinary URLs
+  processGallery String[] // Cloudinary URLs for sketches/process images
   testimonial Testimonial?
   heroImage String   // Cloudinary URL
   nextProject String? // slug reference
@@ -47,6 +53,8 @@ model ProjectMeta {
 model Material {
   id        String   @id @default(cuid())
   name      String
+  origin    String?  // Where material is from
+  texture   String?  // Cloudinary URL for texture image
   description String?
   image     String?  // Cloudinary URL
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)

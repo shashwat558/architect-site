@@ -86,6 +86,17 @@ export async function PUT(
       }
     }
 
+    // Delete removed process gallery images
+    if (body.processGallery && project.processGallery) {
+      const newProcessGallery = body.processGallery as string[];
+      const oldProcessGallery = project.processGallery as string[];
+      const removedProcessImages = oldProcessGallery.filter(img => !newProcessGallery.includes(img));
+      
+      if (removedProcessImages.length > 0) {
+        deletePromises.push(deleteMultipleImages(removedProcessImages));
+      }
+    }
+
     // Execute all deletions in parallel (non-blocking)
     if (deletePromises.length > 0) {
       Promise.allSettled(deletePromises).catch(err => 
@@ -97,14 +108,18 @@ export async function PUT(
       where: { id: projectId },
       data: {
         title: body.title ?? project.title,
+        subtitle: body.subtitle !== undefined ? body.subtitle : project.subtitle,
         category: body.category ?? project.category,
         year: body.year ?? project.year,
         location: body.location ?? project.location,
+        brief: body.brief !== undefined ? body.brief : project.brief,
+        approach: body.approach !== undefined ? body.approach : project.approach,
         image: body.image ?? project.image,
         heroImage: body.heroImage ?? project.heroImage,
         slug: body.slug ?? project.slug,
         link: body.slug ? `/projects/${body.slug}` : project.link,
         gallery: body.gallery ?? project.gallery,
+        processGallery: body.processGallery ?? project.processGallery,
         nextProject: body.nextProject ?? project.nextProject,
       },
       include: {
@@ -147,7 +162,8 @@ export async function DELETE(
     const imagesToDelete = [
       project.image,
       project.heroImage,
-      ...(project.gallery || [])
+      ...(project.gallery || []),
+      ...(project.processGallery || [])
     ].filter(Boolean);
 
     // Delete images from Cloudinary (non-blocking)

@@ -7,12 +7,16 @@ import { MultiImageUpload } from "../components/MultiImageUpload";
 interface Project {
   id: string;
   title: string;
+  subtitle?: string;
   category: string;
   year: number;
   location: string;
+  brief?: string;
+  approach?: string;
   image: string;
   heroImage: string;
   gallery: string[];
+  processGallery?: string[];
   slug: string;
   link: string;
   createdAt: string;
@@ -26,12 +30,16 @@ export default function ProjectsPage() {
 
   const [formData, setFormData] = useState({
     title: "",
+    subtitle: "",
     category: "",
     year: new Date().getFullYear(),
     location: "",
+    brief: "",
+    approach: "",
     image: "",
     heroImage: "",
     gallery: [] as string[],
+    processGallery: [] as string[],
     slug: "",
   });
 
@@ -105,12 +113,16 @@ export default function ProjectsPage() {
     setEditingProject(project);
     setFormData({
       title: project.title,
+      subtitle: project.subtitle || "",
       category: project.category,
       year: project.year,
       location: project.location,
+      brief: project.brief || "",
+      approach: project.approach || "",
       image: project.image,
       heroImage: project.heroImage || "",
       gallery: project.gallery || [],
+      processGallery: project.processGallery || [],
       slug: project.slug,
     });
     setShowForm(true);
@@ -119,12 +131,16 @@ export default function ProjectsPage() {
   const resetForm = () => {
     setFormData({
       title: "",
+      subtitle: "",
       category: "",
       year: new Date().getFullYear(),
       location: "",
+      brief: "",
+      approach: "",
       image: "",
       heroImage: "",
       gallery: [],
+      processGallery: [],
       slug: "",
     });
     setEditingProject(null);
@@ -180,6 +196,20 @@ export default function ProjectsPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Subtitle
+                </label>
+                <input
+                  type="text"
+                  value={formData.subtitle}
+                  onChange={(e) =>
+                    setFormData({ ...formData, subtitle: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="A tagline for the project"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Category *
                 </label>
                 <input
@@ -221,6 +251,35 @@ export default function ProjectsPage() {
               </div>
 
               <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Brief
+                </label>
+                <textarea
+                  value={formData.brief}
+                  onChange={(e) =>
+                    setFormData({ ...formData, brief: e.target.value })
+                  }
+                  rows={4}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="Client's requirements and context..."
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Approach
+                </label>
+                <textarea
+                  value={formData.approach}
+                  onChange={(e) =>
+                    setFormData({ ...formData, approach: e.target.value })
+                  }
+                  rows={4}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="Design strategy and approach..."
+                />
+              </div>
+
+              <div className="sm:col-span-2">
                 <ImageUpload
                   value={formData.image}
                   onChange={(url) => setFormData({ ...formData, image: url })}
@@ -243,6 +302,15 @@ export default function ProjectsPage() {
                   folder="adrs/projects/gallery"
                   label="Project Gallery"
                   maxImages={20}
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <MultiImageUpload
+                  value={formData.processGallery}
+                  onChange={(urls) => setFormData({ ...formData, processGallery: urls })}
+                  folder="adrs/projects/process"
+                  label="Process Gallery (Sketches, Diagrams)"
+                  maxImages={15}
                 />
               </div>
             </div>

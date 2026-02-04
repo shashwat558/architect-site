@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const { title, category, year, location, image, slug, heroImage, gallery } = body;
+    const { title, subtitle, category, year, location, brief, approach, image, slug, heroImage, gallery, processGallery } = body;
 
     if (!title || !category || !slug) {
       return NextResponse.json(
@@ -62,14 +62,18 @@ export async function POST(request: NextRequest) {
     const project = await prisma.project.create({
       data: {
         title,
+        subtitle: subtitle || null,
         category,
         year: year || new Date().getFullYear(),
         location: location || "",
+        brief: brief || null,
+        approach: approach || null,
         image: image || "",
         slug,
         link: `/projects/${slug}`,
         heroImage: heroImage || "",
         gallery: gallery || [],
+        processGallery: processGallery || [],
       },
       include: {
         meta: true,
