@@ -39,11 +39,11 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const { title, category, year, location, image, slug, link, heroImage, gallery } = body;
+    const { title, category, year, location, image, slug, heroImage, gallery } = body;
 
-    if (!title || !category || !slug || !link) {
+    if (!title || !category || !slug) {
       return NextResponse.json(
-        { error: "Missing required fields: title, category, slug, link" },
+        { error: "Missing required fields: title, category, slug" },
         { status: 400 }
       );
     }
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
         location: location || "",
         image: image || "",
         slug,
-        link,
+        link: `/projects/${slug}`,
         heroImage: heroImage || "",
         gallery: gallery || [],
       },

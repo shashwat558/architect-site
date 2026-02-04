@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { deleteMultipleImages, safeDeleteImage } from "@/lib/cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -61,6 +62,37 @@ export async function PUT(
       );
     }
 
+    // Delete old images from Cloudinary if they're being replaced
+    const deletePromises = [];
+    
+    // Delete old main image if replaced
+    if (body.image && body.image !== project.image && project.image) {
+      deletePromises.push(safeDeleteImage(project.image));
+    }
+    
+    // Delete old hero image if replaced
+    if (body.heroImage && body.heroImage !== project.heroImage && project.heroImage) {
+      deletePromises.push(safeDeleteImage(project.heroImage));
+    }
+    
+    // Delete removed gallery images
+    if (body.gallery && project.gallery) {
+      const newGallery = body.gallery as string[];
+      const oldGallery = project.gallery as string[];
+      const removedImages = oldGallery.filter(img => !newGallery.includes(img));
+      
+      if (removedImages.length > 0) {
+        deletePromises.push(deleteMultipleImages(removedImages));
+      }
+    }
+
+    // Execute all deletions in parallel (non-blocking)
+    if (deletePromises.length > 0) {
+      Promise.allSettled(deletePromises).catch(err => 
+        console.error("Failed to delete some old images:", err)
+      );
+    }
+
     const updated = await prisma.project.update({
       where: { id: projectId },
       data: {
@@ -70,7 +102,8 @@ export async function PUT(
         location: body.location ?? project.location,
         image: body.image ?? project.image,
         heroImage: body.heroImage ?? project.heroImage,
-        link: body.link ?? project.link,
+        slug: body.slug ?? project.slug,
+        link: body.slug ? `/projects/${body.slug}` : project.link,
         gallery: body.gallery ?? project.gallery,
         nextProject: body.nextProject ?? project.nextProject,
       },
@@ -110,6 +143,21 @@ export async function DELETE(
       );
     }
 
+    // Collect all images to delete from Cloudinary
+    const imagesToDelete = [
+      project.image,
+      project.heroImage,
+      ...(project.gallery || [])
+    ].filter(Boolean);
+
+    // Delete images from Cloudinary (non-blocking)
+    if (imagesToDelete.length > 0) {
+      deleteMultipleImages(imagesToDelete).catch(err => 
+        console.error("Failed to delete some images from Cloudinary:", err)
+      );
+    }
+
+    // Delete project from database
     await prisma.project.delete({
       where: { id: projectId },
     });

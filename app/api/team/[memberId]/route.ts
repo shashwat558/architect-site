@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { deleteMultipleImages, safeDeleteImage } from "@/lib/cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -57,6 +58,32 @@ export async function PUT(
       );
     }
 
+    // Delete old images from Cloudinary if they're being replaced
+    const deletePromises = [];
+    
+    // Delete old main image if replaced
+    if (body.image && body.image !== member.image && member.image) {
+      deletePromises.push(safeDeleteImage(member.image));
+    }
+    
+    // Delete removed gallery images
+    if (body.gallery && member.gallery) {
+      const newGallery = body.gallery as string[];
+      const oldGallery = member.gallery as string[];
+      const removedImages = oldGallery.filter(img => !newGallery.includes(img));
+      
+      if (removedImages.length > 0) {
+        deletePromises.push(deleteMultipleImages(removedImages));
+      }
+    }
+
+    // Execute all deletions in parallel (non-blocking)
+    if (deletePromises.length > 0) {
+      Promise.allSettled(deletePromises).catch(err => 
+        console.error("Failed to delete some old team member images:", err)
+      );
+    }
+
     const updated = await prisma.teamMember.update({
       where: { id: memberId },
       data: {
@@ -101,6 +128,19 @@ export async function DELETE(
       return NextResponse.json(
         { error: "Team member not found" },
         { status: 404 }
+      );
+    }
+
+    // Collect all images to delete from Cloudinary
+    const imagesToDelete = [
+      member.image,
+      ...(member.gallery || [])
+    ].filter(Boolean);
+
+    // Delete images from Cloudinary (non-blocking)
+    if (imagesToDelete.length > 0) {
+      deleteMultipleImages(imagesToDelete).catch(err => 
+        console.error("Failed to delete team member images from Cloudinary:", err)
       );
     }
 

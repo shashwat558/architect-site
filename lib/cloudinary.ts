@@ -65,3 +65,33 @@ export function extractPublicId(url: string): string | null {
     return null;
   }
 }
+
+/**
+ * Safely delete image from Cloudinary URL (doesn't throw on error)
+ * @param url - Full Cloudinary URL
+ */
+export async function safeDeleteImage(url: string): Promise<void> {
+  if (!url) return;
+  
+  try {
+    const publicId = extractPublicId(url);
+    if (publicId) {
+      await cloudinary.uploader.destroy(publicId);
+    }
+  } catch (error) {
+    console.error(`Failed to delete image ${url}:`, error);
+    // Don't throw - we don't want to fail the entire operation if image deletion fails
+  }
+}
+
+/**
+ * Delete multiple images from Cloudinary
+ * @param urls - Array of Cloudinary URLs
+ */
+export async function deleteMultipleImages(urls: string[]): Promise<void> {
+  const deletePromises = urls
+    .filter(url => url) // Filter out empty strings
+    .map(url => safeDeleteImage(url));
+  
+  await Promise.allSettled(deletePromises);
+}

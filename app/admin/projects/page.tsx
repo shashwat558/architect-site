@@ -33,8 +33,17 @@ export default function ProjectsPage() {
     heroImage: "",
     gallery: [] as string[],
     slug: "",
-    link: "",
   });
+
+  // Auto-generate slug from title
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-'); // Replace multiple hyphens with single hyphen
+  };
 
   useEffect(() => {
     fetchProjects();
@@ -103,7 +112,6 @@ export default function ProjectsPage() {
       heroImage: project.heroImage || "",
       gallery: project.gallery || [],
       slug: project.slug,
-      link: project.link,
     });
     setShowForm(true);
   };
@@ -118,7 +126,6 @@ export default function ProjectsPage() {
       heroImage: "",
       gallery: [],
       slug: "",
-      link: "",
     });
     setEditingProject(null);
     setShowForm(false);
@@ -155,11 +162,21 @@ export default function ProjectsPage() {
                   type="text"
                   required
                   value={formData.title}
-                  onChange={(e) =>
-                    setFormData({ ...formData, title: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const newTitle = e.target.value;
+                    setFormData({ 
+                      ...formData, 
+                      title: newTitle,
+                      slug: generateSlug(newTitle)
+                    });
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 />
+                {formData.slug && (
+                  <p className="mt-1 text-sm text-gray-500">
+                    URL: <span className="font-mono text-indigo-600">/projects/{formData.slug}</span>
+                  </p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -202,36 +219,7 @@ export default function ProjectsPage() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Slug * (URL-friendly)
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.slug}
-                  onChange={(e) =>
-                    setFormData({ ...formData, slug: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="my-project-slug"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Link *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.link}
-                  onChange={(e) =>
-                    setFormData({ ...formData, link: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="/projects/my-project"
-                />
-              </div>
+
               <div className="sm:col-span-2">
                 <ImageUpload
                   value={formData.image}
