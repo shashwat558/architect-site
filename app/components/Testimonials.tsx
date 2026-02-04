@@ -146,7 +146,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
             <div className="relative">
               {/* Quote Mark */}
               <span className="absolute -top-8 -left-4 text-[12vw] md:text-[8vw] lg:text-[6vw] leading-none text-[#D97706] opacity-10 font-serif pointer-events-none">
-                "
+                
               </span>
 
               {/* Testimonial Text */}
@@ -245,6 +245,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
                   setIsAutoPlaying(false);
                 }}
                 className={`group relative aspect-square rounded-lg overflow-hidden transition-all duration-300 ${
+                  
                   index === activeIndex 
                     ? 'ring-4 ring-[#D97706] scale-105 shadow-xl' 
                     : 'ring-2 ring-[#3D2B1F]/10 hover:ring-[#D97706]/50 hover:scale-105'
