@@ -4,9 +4,11 @@ import { motion, useScroll, useTransform, useInView, MotionValue, useSpring, Ani
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import TestimonialSection from "../../components/TestimonialSection";
+import ProjectReviewForm from "../../components/ProjectReviewForm";
 import { BeforeAfterSlider } from "../../components/ui/BeforeAfterSlider";
 
 // --- Mock Data ---
@@ -192,25 +194,6 @@ const MaterialBoard = ({ materials }: { materials: typeof projectData.materials 
             </div>
         </section>
     );
-}
-
-const Testimonial = ({ data }: { data: typeof projectData.testimonial }) => {
-    return (
-        <section className="py-20 md:py-32 bg-[#EDE5D8] -mx-6 md:-mx-12 lg:-mx-20 px-6 md:px-12 lg:px-20 grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-            <div className="md:col-span-4">
-                 <span className="text-[10vw] md:text-[8vw] leading-none text-[#D97706] opacity-20 font-serif">“</span>
-            </div>
-            <div className="md:col-span-8">
-                 <p className="font-serif text-2xl md:text-3xl lg:text-4xl text-[#3D2B1F] leading-tight mb-8">
-                    {data.text}
-                 </p>
-                 <div>
-                     <p className="font-bold text-sm uppercase tracking-widest text-[#3D2B1F]">{data.author}</p>
-                     <p className="text-xs text-[#6B5B4F] uppercase tracking-widest mt-1">{data.role}</p>
-                 </div>
-            </div>
-        </section>
-    )
 }
 
 const ProjectCredits = ({ team }: { team: typeof projectData.team }) => {
@@ -410,7 +393,15 @@ export default function ProjectDetail() {
             </div>
         </section>
 
-        <Testimonial data={project.testimonial} />
+                <TestimonialSection
+                    data={{
+                        ...project.testimonial,
+                        eyebrow: "Client Story",
+                        title: "A home that feels timeless",
+                    }}
+                />
+
+                <ProjectReviewForm projectTitle={project.title} />
 
         <ProjectCredits team={project.team} />
 

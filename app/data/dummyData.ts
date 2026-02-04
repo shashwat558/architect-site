@@ -103,6 +103,23 @@ export type TeamSectionData = {
   members: TeamMember[];
 };
 
+export type Testimonial = {
+  id: number;
+  text: string;
+  author: string;
+  role: string;
+  project?: string;
+  image?: string;
+  rating?: number;
+};
+
+export type TestimonialsSectionData = {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  testimonials: Testimonial[];
+};
+
 export const heroData: HeroData = {
   headline: "Crafting timeless spaces,",
   highlighted: "where architecture meets emotion.",
@@ -450,6 +467,68 @@ export const teamSectionData: TeamSectionData = {
         { name: "GitHub", url: "#" },
         { name: "Email", url: "#" },
       ],
+    },
+  ],
+};
+
+export const testimonialsSectionData: TestimonialsSectionData = {
+  eyebrow: "Client Stories",
+  title: "Words that",
+  subtitle: "inspire us.",
+  testimonials: [
+    {
+      id: 1,
+      text: "Working with AD.RS was transformative. They didn't just design our home—they understood how we live, breathe, and dream. Every corner feels intentional, every detail speaks to us. It's not just a space; it's an extension of who we are.",
+      author: "Priya & Arjun Malhotra",
+      role: "Homeowners",
+      project: "Modern Residence",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop",
+      rating: 5,
+    },
+    {
+      id: 2,
+      text: "The team at AD.RS brought our vision to life in ways we never imagined. Their attention to sustainability without compromising luxury was impressive. Our guests constantly ask who designed our space.",
+      author: "Vikram Chandra",
+      role: "CEO",
+      project: "Corporate HQ",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
+      rating: 5,
+    },
+    {
+      id: 3,
+      text: "From the first consultation to the final reveal, AD.RS exceeded every expectation. They turned our dated loft into a sanctuary of light and space. Their ability to balance aesthetics with functionality is unmatched.",
+      author: "Sarah Martinez",
+      role: "Entrepreneur",
+      project: "Urban Loft",
+      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop",
+      rating: 5,
+    },
+    {
+      id: 4,
+      text: "The design philosophy at AD.RS is remarkable. They create spaces that feel timeless yet contemporary. Our villa is not just beautiful—it's a joy to live in every single day.",
+      author: "Rajesh & Meera Sharma",
+      role: "Business Owners",
+      project: "Lakeside Villa",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      rating: 5,
+    },
+    {
+      id: 5,
+      text: "AD.RS transformed our boutique hotel into an unforgettable experience. Their attention to material quality and guest flow has significantly enhanced our brand. We've seen a remarkable increase in positive reviews.",
+      author: "Kavita Desai",
+      role: "Hospitality Director",
+      project: "Rustic Chalet",
+      image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop",
+      rating: 5,
+    },
+    {
+      id: 6,
+      text: "The level of craftsmanship and thoughtfulness in every decision was extraordinary. AD.RS created a home that grows with us—functional today, adaptable for tomorrow. True design intelligence.",
+      author: "Michael & Lisa Chen",
+      role: "Family",
+      project: "Green Living Space",
+      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop",
+      rating: 5,
     },
   ],
 };

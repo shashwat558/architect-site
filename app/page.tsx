@@ -14,6 +14,7 @@ import {
   pillarsSectionData,
   projectCTAData,
   projectsSectionData,
+  testimonialsSectionData,
 } from "./data/dummyData";
 
 const ActiveLoader = getActiveLoader();
@@ -31,6 +32,10 @@ const Offers = dynamic(() => import("./components/Offers"), {
   loading: () => <div className="h-24" />,
 });
 const ProjectCTA = dynamic(() => import("./components/ProjectCTA"), {
+  ssr: false,
+  loading: () => <div className="h-24" />,
+});
+const Testimonials = dynamic(() => import("./components/Testimonials"), {
   ssr: false,
   loading: () => <div className="h-24" />,
 });
@@ -61,6 +66,7 @@ export default function Home() {
         <Projects data={projectsSectionData} />
         <Pillars data={pillarsSectionData} />
         <Offers data={offersSectionData} />
+        <Testimonials data={testimonialsSectionData} />
         <ProjectCTA data={projectCTAData} />
       </main>
       <Footer />
