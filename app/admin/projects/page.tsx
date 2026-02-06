@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { ImageUpload } from "../components/ImageUpload";
 import { MultiImageUpload } from "../components/MultiImageUpload";
 
@@ -346,9 +347,11 @@ export default function ProjectsPage() {
                   <div className="flex-1">
                     <div className="flex items-center space-x-4">
                       {project.image && (
-                        <img
+                        <Image
                           src={project.image}
                           alt={project.title}
+                          width={64}
+                          height={64}
                           className="w-16 h-16 object-cover rounded"
                         />
                       )}

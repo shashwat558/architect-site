@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { ImageUpload } from "../components/ImageUpload";
 import { MultiImageUpload } from "../components/MultiImageUpload";
 
@@ -214,9 +215,11 @@ export default function TeamPage() {
                 <div className="px-6 py-4 flex items-center justify-between">
                   <div className="flex items-center space-x-4 flex-1">
                     {member.image && (
-                      <img
+                      <Image
                         src={member.image}
                         alt={member.name}
+                        width={64}
+                        height={64}
                         className="w-16 h-16 object-cover rounded-full"
                       />
                     )}

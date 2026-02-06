@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 
 interface ImageUploadProps {
   value: string;
@@ -110,9 +111,11 @@ export function ImageUpload({
       {value ? (
         // Preview uploaded image
         <div className="relative inline-block">
-          <img
+          <Image
             src={value}
             alt="Uploaded"
+            width={128}
+            height={128}
             className="w-32 h-32 object-cover rounded-lg border border-gray-300"
           />
           <button

@@ -1,9 +1,8 @@
 "use client";
 
-import { motion, useScroll, useTransform, useInView, MotionValue, useSpring, AnimatePresence } from "motion/react";
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -236,7 +235,6 @@ const ToggleSwitch = ({ isOn, onToggle }: { isOn: boolean, onToggle: () => void 
 }
 
 export default function ProjectDetail() {
-  const { slug } = useParams();
   const project = projectData; // Mock data
   const [showProcess, setShowProcess] = useState(false);
   

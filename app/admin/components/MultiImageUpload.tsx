@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 
 interface MultiImageUploadProps {
   value: string[];
@@ -124,11 +125,12 @@ export function MultiImageUpload({
       {value.length > 0 && (
         <div className="grid grid-cols-4 gap-2 mb-4">
           {value.map((url, index) => (
-            <div key={index} className="relative">
-              <img
+            <div key={index} className="relative w-full h-20">
+              <Image
                 src={url}
                 alt={`Gallery ${index + 1}`}
-                className="w-full h-20 object-cover rounded border border-gray-300"
+                fill
+                className="object-cover rounded border border-gray-300"
               />
               <button
                 type="button"

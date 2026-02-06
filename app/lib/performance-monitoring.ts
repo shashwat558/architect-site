@@ -83,7 +83,7 @@ export function initWebVitals() {
       });
 
       observer.observe({ entryTypes: ['navigation'] });
-    } catch (e) {
+    } catch {
       // Browser doesn't support PerformanceObserver
     }
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useInView, useSpring } from "motion/react";
+import { motion, useScroll, useInView, useSpring } from "motion/react";
 import Link from "next/link";
 import Header from "../components/Header";
 import Footer from "../components/Footer";

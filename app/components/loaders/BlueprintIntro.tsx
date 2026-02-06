@@ -4,7 +4,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remo
 
 export const BlueprintIntro: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  useVideoConfig();
 
   // Timing configuration
   const gridStart = 10; // Frame 10

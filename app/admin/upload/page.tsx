@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export default function UploadPage() {
   const [uploading, setUploading] = useState(false);
@@ -33,8 +34,9 @@ export default function UploadPage() {
 
       const { url } = await res.json();
       setImageUrl(url);
-    } catch (err: any) {
-      setError(err.message || "Failed to upload image");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to upload image";
+      setError(message);
     } finally {
       setUploading(false);
     }
@@ -139,11 +141,14 @@ export default function UploadPage() {
                   <p className="text-xs font-medium text-gray-700 mb-2">
                     Preview:
                   </p>
-                  <img
-                    src={imageUrl}
-                    alt="Uploaded"
-                    className="max-w-full h-auto rounded-md border border-gray-300"
-                  />
+                  <div className="relative w-full max-w-xl aspect-video">
+                    <Image
+                      src={imageUrl}
+                      alt="Uploaded"
+                      fill
+                      className="object-contain rounded-md border border-gray-300"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

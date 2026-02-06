@@ -3,7 +3,6 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { useMotionValue } from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface BeforeAfterSliderProps {

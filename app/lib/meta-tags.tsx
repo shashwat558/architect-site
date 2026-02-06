@@ -34,7 +34,7 @@ export function generatePageMetadata(props: MetaTagsProps): Metadata {
     authors: [{ name: author }],
     creator: author,
     openGraph: {
-      type: type as any,
+      type,
       url,
       title,
       description,
@@ -72,7 +72,7 @@ export function generatePageMetadata(props: MetaTagsProps): Metadata {
 export function SchemaScript({
   schema,
 }: {
-  schema: Record<string, any>;
+  schema: Record<string, unknown>;
 }) {
   return (
     <script
@@ -90,7 +90,7 @@ export function SchemaScript({
 export function SchemaScripts({
   schemas,
 }: {
-  schemas: Record<string, any>[];
+  schemas: Record<string, unknown>[];
 }) {
   return (
     <>

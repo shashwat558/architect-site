@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MenuOverlay from "./MenuOverlay";
 import Magnetic from "./ui/Magnetic";
 
