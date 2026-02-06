@@ -1,5 +1,6 @@
 "use client"
 import { motion } from "motion/react";
+import { useState, type FormEvent } from "react";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -8,6 +9,56 @@ import Footer from "../components/Footer";
 
 
 export default function Contact() {
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        projectType: "New Build",
+        message: "",
+    });
+    const [honeypot, setHoneypot] = useState("");
+    const [formStartedAt, setFormStartedAt] = useState(() => Date.now());
+    const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
+        "idle"
+    );
+
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (status === "sending") return;
+
+        setStatus("sending");
+        try {
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    ...formData,
+                    honeypot,
+                    formStartedAt,
+                }),
+            });
+
+            if (!res.ok) {
+                setStatus("error");
+                return;
+            }
+
+            setFormData({
+                firstName: "",
+                lastName: "",
+                email: "",
+                projectType: "New Build",
+                message: "",
+            });
+            setHoneypot("");
+            setFormStartedAt(Date.now());
+            setStatus("success");
+        } catch (error) {
+            console.error("Contact form submission failed:", error);
+            setStatus("error");
+        }
+    };
+
   return (
     <div className="min-h-screen relative">
       <Header />
@@ -79,7 +130,18 @@ export default function Contact() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
             >
-                <form className="space-y-8">
+                <form className="space-y-8" onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        name="website"
+                        value={honeypot}
+                        onChange={(event) => setHoneypot(event.target.value)}
+                        className="hidden"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                    />
+                    <input type="hidden" name="formStartedAt" value={formStartedAt} />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2">
                             <label htmlFor="firstName" className="text-sm uppercase tracking-wide text-[var(--muted)]">First Name</label>
@@ -88,6 +150,10 @@ export default function Contact() {
                                 id="firstName" 
                                 className="w-full bg-transparent border-b border-[var(--muted)]/30 py-4 text-lg focus:outline-none focus:border-[var(--accent)] transition-colors"
                                 placeholder="Jane"
+                                value={formData.firstName}
+                                onChange={(event) =>
+                                    setFormData({ ...formData, firstName: event.target.value })
+                                }
                             />
                         </div>
                         <div className="space-y-2">
@@ -97,6 +163,10 @@ export default function Contact() {
                                 id="lastName" 
                                 className="w-full bg-transparent border-b border-[var(--muted)]/30 py-4 text-lg focus:outline-none focus:border-[var(--accent)] transition-colors"
                                 placeholder="Doe"
+                                value={formData.lastName}
+                                onChange={(event) =>
+                                    setFormData({ ...formData, lastName: event.target.value })
+                                }
                             />
                         </div>
                     </div>
@@ -108,6 +178,10 @@ export default function Contact() {
                             id="email" 
                             className="w-full bg-transparent border-b border-[var(--muted)]/30 py-4 text-lg focus:outline-none focus:border-[var(--accent)] transition-colors"
                             placeholder="jane@example.com"
+                            value={formData.email}
+                            onChange={(event) =>
+                                setFormData({ ...formData, email: event.target.value })
+                            }
                         />
                     </div>
 
@@ -116,6 +190,10 @@ export default function Contact() {
                          <select 
                             id="scope" 
                             className="w-full bg-transparent border-b border-[var(--muted)]/30 py-4 text-lg focus:outline-none focus:border-[var(--accent)] transition-colors appearance-none"
+                            value={formData.projectType}
+                            onChange={(event) =>
+                                setFormData({ ...formData, projectType: event.target.value })
+                            }
                         >
                             <option>New Build</option>
                             <option>Renovation</option>
@@ -132,16 +210,31 @@ export default function Contact() {
                             rows={4} 
                             className="w-full bg-transparent border-b border-[var(--muted)]/30 py-4 text-lg focus:outline-none focus:border-[var(--accent)] transition-colors resize-none"
                             placeholder="Tell us about your project..."
+                            value={formData.message}
+                            onChange={(event) =>
+                                setFormData({ ...formData, message: event.target.value })
+                            }
                         />
                     </div>
 
                     <div className="pt-8">
                         <button 
                             type="submit"
+                            disabled={status === "sending"}
                             className="px-8 py-4 bg-[var(--foreground)] text-[#FAF6F1] rounded-full text-lg hover:bg-[var(--accent)] transition-colors duration-300"
                         >
-                            Send Message
+                            {status === "sending" ? "Sending..." : "Send Message"}
                         </button>
+                        {status === "success" ? (
+                            <p className="mt-4 text-sm text-[var(--accent)]">
+                                Thanks! We’ll get back to you soon.
+                            </p>
+                        ) : null}
+                        {status === "error" ? (
+                            <p className="mt-4 text-sm text-red-600">
+                                Something went wrong. Please try again.
+                            </p>
+                        ) : null}
                     </div>
                 </form>
             </motion.div>
