@@ -19,6 +19,7 @@ export function AdminNav({ user }: AdminNavProps) {
     { href: "/admin/projects", label: "Projects" },
     { href: "/admin/team", label: "Team" },
     { href: "/admin/offers", label: "Offers" },
+    { href: "/admin/home-images", label: "Home Images" },
     { href: "/admin/contact", label: "Contact" },
     { href: "/admin/subscribers", label: "Subscribers" },
   ];

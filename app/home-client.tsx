@@ -42,6 +42,11 @@ const Testimonials = dynamic(() => import("./components/Testimonials"), {
 
 export default function HomeClient() {
   const [loading, setLoading] = useState(true);
+  const [heroContent, setHeroContent] = useState(heroData);
+  const [projectsContent, setProjectsContent] = useState(projectsSectionData);
+  const [testimonialsContent, setTestimonialsContent] = useState(
+    testimonialsSectionData
+  );
 
   // Prevent scrolling while loading
   useEffect(() => {
@@ -52,6 +57,57 @@ export default function HomeClient() {
     }
   }, [loading]);
 
+  useEffect(() => {
+    const loadHomeImages = async () => {
+      try {
+        const res = await fetch("/api/home-images");
+        if (!res.ok) {
+          return;
+        }
+        const data = await res.json();
+
+        if (Array.isArray(data.heroImages) && data.heroImages.length > 0) {
+          setHeroContent({
+            ...heroData,
+            images: data.heroImages.map((src: string, index: number) => ({
+              src,
+              alt: `AD.RS Design image ${index + 1}`,
+            })),
+          });
+        }
+
+        if (Array.isArray(data.projectImages) && data.projectImages.length > 0) {
+          setProjectsContent({
+            ...projectsSectionData,
+            projects: projectsSectionData.projects.map((project, index) => ({
+              ...project,
+              image: data.projectImages[index] || project.image,
+            })),
+          });
+        }
+
+        if (
+          Array.isArray(data.testimonialImages) &&
+          data.testimonialImages.length > 0
+        ) {
+          setTestimonialsContent({
+            ...testimonialsSectionData,
+            testimonials: testimonialsSectionData.testimonials.map(
+              (testimonial, index) => ({
+                ...testimonial,
+                image: data.testimonialImages[index] || testimonial.image,
+              })
+            ),
+          });
+        }
+      } catch (error) {
+        console.error("Failed to load home images", error);
+      }
+    };
+
+    loadHomeImages();
+  }, []);
+
   return (
     <div className="min-h-screen bg-transparent relative">
       <AnimatePresence mode="wait">
@@ -61,12 +117,12 @@ export default function HomeClient() {
       <Header />
       <main>
         <AuroraBackground className="justify-start h-auto min-h-screen">
-          <Hero data={heroData} />
+          <Hero data={heroContent} />
         </AuroraBackground>
-        <Projects data={projectsSectionData} />
+        <Projects data={projectsContent} />
         <Pillars data={pillarsSectionData} />
         <Offers data={offersSectionData} />
-        <Testimonials data={testimonialsSectionData} />
+        <Testimonials data={testimonialsContent} />
         <ProjectCTA data={projectCTAData} />
       </main>
       <Footer />
