@@ -1,75 +1,54 @@
-"use client";
+import type { Metadata } from "next";
+import HomeClient from "./home-client";
 
-import { useState, useEffect } from "react";
-import { AnimatePresence } from "motion/react";
-import dynamic from "next/dynamic";
-import { getActiveLoader } from "./components/loaders/loaderConfig";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Footer from "./components/Footer";
-import { AuroraBackground } from "./components/ui/AuroraBackground";
-import {
-  heroData,
-  offersSectionData,
-  pillarsSectionData,
-  projectCTAData,
-  projectsSectionData,
-  testimonialsSectionData,
-} from "./data/dummyData";
+const baseUrl = "https://adrs-design.com";
 
-const ActiveLoader = getActiveLoader();
-
-const Projects = dynamic(() => import("./components/Projects"), {
-  ssr: false,
-  loading: () => <div className="h-24" />,
-});
-const Pillars = dynamic(() => import("./components/Pillars"), {
-  ssr: false,
-  loading: () => <div className="h-24" />,
-});
-const Offers = dynamic(() => import("./components/Offers"), {
-  ssr: false,
-  loading: () => <div className="h-24" />,
-});
-const ProjectCTA = dynamic(() => import("./components/ProjectCTA"), {
-  ssr: false,
-  loading: () => <div className="h-24" />,
-});
-const Testimonials = dynamic(() => import("./components/Testimonials"), {
-  ssr: false,
-  loading: () => <div className="h-24" />,
-});
+export const metadata: Metadata = {
+  title: "Architects & Interior Designers in Bhopal | Ad.Rs Studio",
+  description:
+    "Ad.Rs Design Studio is a Bhopal-based architecture and interior design firm since 2017. We deliver residential, commercial, modular kitchens, and landscape design near Berkheda.",
+  keywords: [
+    "architects in Bhopal",
+    "interior designers in Bhopal",
+    "best architecture firm near Berkheda",
+    "residential interior design Bhopal",
+    "commercial interior designers Bhopal",
+    "architecture",
+    "interior design",
+    "modular kitchens",
+    "landscape design",
+    "Ad.Rs Design Studio",
+    "Bhopal",
+  ],
+  alternates: {
+    canonical: `${baseUrl}/`,
+  },
+  openGraph: {
+    title: "Architects & Interior Designers in Bhopal | Ad.Rs Studio",
+    description:
+      "Local architects and interior designers in Bhopal since 2017. Residential, commercial, modular kitchens, and landscape design near Berkheda, New Minal Residency.",
+    url: `${baseUrl}/`,
+    siteName: "Ad.Rs Design Studio",
+    type: "website",
+    locale: "en_IN",
+    images: [
+      {
+        url: "https://adrs-design.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Ad.Rs Design Studio - Architects & Interior Designers in Bhopal",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Architects & Interior Designers in Bhopal | Ad.Rs Studio",
+    description:
+      "Bhopal-based architecture and interior design studio since 2017. Residential, commercial, modular kitchens, and landscape projects near Berkheda.",
+    images: ["https://adrs-design.com/twitter-image.png"],
+  },
+};
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
-
-  // Prevent scrolling while loading
-  useEffect(() => {
-    if (loading) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [loading]);
-
-  return (
-    <div className="min-h-screen bg-transparent relative">
-      <AnimatePresence mode="wait">
-        {loading && <ActiveLoader onComplete={() => setLoading(false)} />}
-      </AnimatePresence>
-      
-      <Header />
-      <main>
-        <AuroraBackground className="justify-start h-auto min-h-screen">
-          <Hero data={heroData} />
-        </AuroraBackground>
-        <Projects data={projectsSectionData} />
-        <Pillars data={pillarsSectionData} />
-        <Offers data={offersSectionData} />
-        <Testimonials data={testimonialsSectionData} />
-        <ProjectCTA data={projectCTAData} />
-      </main>
-      <Footer />
-    </div>
-  );
+  return <HomeClient />;
 }

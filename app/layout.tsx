@@ -18,32 +18,29 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "AD.RS Design Studio | Architecture & Interior Design in Bhopal",
-  description: "AD.RS Design Studio - Premier architectural design and interior design services in Bhopal. Sustainable, innovative spaces for residences, offices, commercial venues, and hospitality. Expert design consultants.",
+  metadataBase: new URL("https://adrs-design.com"),
+  title: "Ad.Rs Design Studio | Architecture & Interior Design in Bhopal",
+  description: "Ad.Rs Design Studio in Bhopal offers architecture, interior design, residential and commercial projects, modular kitchens, and landscape design since 2017.",
   keywords: [
-    "interior design",
+    "architects in Bhopal",
+    "interior designers in Bhopal",
+    "best architecture firm near Berkheda",
+    "residential interior design Bhopal",
+    "commercial interior designers Bhopal",
     "architecture",
-    "design studio",
-    "interior designer",
-    "architectural design",
-    "home design",
-    "office design",
-    "commercial design",
-    "sustainable design",
-    "design consulting",
+    "interior design",
+    "modular kitchens",
+    "landscape design",
     "Bhopal",
-    "India",
-    "eco-friendly design",
-    "space planning",
-    "interior architect"
+    "Ad.Rs Design Studio",
   ],
   viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
   authors: [{ name: "AD.RS Design Studio" }],
-  creator: "AD.RS Design Studio",
-  publisher: "AD.RS Design Studio",
+  creator: "Ad.Rs Design Studio",
+  publisher: "Ad.Rs Design Studio",
   category: "Design & Architecture",
-  applicationName: "AD.RS Design Studio",
+  applicationName: "Ad.Rs Design Studio",
   referrer: "origin-when-cross-origin",
   formatDetection: {
     email: false,
@@ -53,9 +50,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://adrs-design.com",
-    title: "AD.RS Design Studio | Architecture & Interior Design in Bhopal",
-    description: "Premier architectural design and interior design services in Bhopal. Sustainable, innovative spaces for residences, offices, and commercial venues.",
-    siteName: "AD.RS Design Studio",
+    title: "Ad.Rs Design Studio | Architecture & Interior Design in Bhopal",
+    description: "Architecture and interior design services in Bhopal since 2017. Residential, commercial, modular kitchens, and landscape design near Berkheda.",
+    siteName: "Ad.Rs Design Studio",
     images: [
       {
         url: "https://adrs-design.com/og-image.png",
@@ -76,8 +73,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AD.RS Design Studio | Architecture & Interior Design",
-    description: "Premier architectural and interior design services in Bhopal. Sustainable, innovative spaces for residences, offices, and commercial venues.",
+    title: "Ad.Rs Design Studio | Architecture & Interior Design",
+    description: "Architecture and interior design services in Bhopal since 2017. Residential, commercial, modular kitchens, and landscape design.",
     images: ["https://adrs-design.com/twitter-image.png"],
     creator: "@adrsdesign",
   },
@@ -100,9 +97,6 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        <link rel="canonical" href="https://adrs-design.com" />
-        <link rel="alternate" href="https://adrs-design.com" hrefLang="en-IN" />
-        <link rel="alternate" href="https://adrs-design.com" hrefLang="en" />
         
         {/* JSON-LD Schema Markup - Organization */}
         <script
@@ -110,21 +104,60 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              "@id": "https://adrs-design.com",
-              "name": "AD.RS Design Studio",
-              "url": "https://adrs-design.com",
-              "image": "https://adrs-design.com/logo.png",
-              "description": "Premier architectural design and interior design services in Bhopal",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Bhopal",
-                "addressRegion": "MP",
-                "addressCountry": "IN"
-              },
-              "areaServed": ["Bhopal", "Central India"],
-              "serviceType": ["Interior Design", "Architectural Design", "Space Planning"],
-              "priceRange": "$$"
+              "@graph": [
+                {
+                  "@type": "LocalBusiness",
+                  "@id": "https://adrs-design.com/#localbusiness",
+                  name: "Ad.Rs Design Studio",
+                  url: "https://adrs-design.com",
+                  image: "https://adrs-design.com/logo.png",
+                  description: "Architecture and interior design services in Bhopal since 2017.",
+                  foundingDate: "2017",
+                  address: {
+                    "@type": "PostalAddress",
+                    streetAddress: "Berkheda, New Minal Residency, Ayodhya Bypass Road",
+                    addressLocality: "Bhopal",
+                    addressRegion: "MP",
+                    addressCountry: "IN",
+                  },
+                  areaServed: ["Bhopal"],
+                  serviceType: [
+                    "Architecture",
+                    "Interior Design",
+                    "Residential & Commercial Projects",
+                    "Modular Kitchens",
+                    "Landscape Design",
+                  ],
+                  aggregateRating: {
+                    "@type": "AggregateRating",
+                    ratingValue: "5.0",
+                    reviewCount: "32",
+                  },
+                },
+                {
+                  "@type": "ProfessionalService",
+                  "@id": "https://adrs-design.com/#professionalservice",
+                  name: "Ad.Rs Design Studio",
+                  url: "https://adrs-design.com",
+                  areaServed: "Bhopal",
+                  serviceType: [
+                    "Architecture",
+                    "Interior Design",
+                    "Residential & Commercial Projects",
+                    "Modular Kitchens",
+                    "Landscape Design",
+                  ],
+                },
+                {
+                  "@type": "AggregateRating",
+                  "@id": "https://adrs-design.com/#aggregateRating",
+                  ratingValue: "5.0",
+                  reviewCount: "32",
+                  itemReviewed: {
+                    "@id": "https://adrs-design.com/#localbusiness",
+                  },
+                },
+              ],
             }),
           }}
         />

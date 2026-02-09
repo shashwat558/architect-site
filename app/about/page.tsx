@@ -1,91 +1,74 @@
-"use client"; 
-import { motion } from "motion/react";
-import dynamic from "next/dynamic";
+import type { Metadata } from "next";
+import AboutClient from "./AboutClient";
 
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { pillarsSectionData, projectCTAData, teamSectionData } from "../data/dummyData";
+const baseUrl = "https://adrs-design.com";
 
-const Pillars = dynamic(() => import("../components/Pillars"), {
-  ssr: false,
-  loading: () => <div className="h-24" />,
-});
-const TeamSection = dynamic(() => import("../components/TeamSection"), {
-  ssr: false,
-  loading: () => <div className="h-24" />,
-});
-const ProjectCTA = dynamic(() => import("../components/ProjectCTA"), {
-  ssr: false,
-  loading: () => <div className="h-24" />,
-});
+export const metadata: Metadata = {
+  title: "About Ad.Rs Design Studio | Architects in Bhopal Since 2017",
+  description:
+    "Ad.Rs Design Studio is a trusted architecture firm in Bhopal since 2017. We design residential and commercial interiors near Berkheda, New Minal Residency.",
+  keywords: [
+    "architecture firm in Bhopal",
+    "experienced interior designers",
+    "architects in Bhopal",
+    "interior designers in Bhopal",
+    "best architecture firm near Berkheda",
+    "residential interior design Bhopal",
+    "commercial interior designers Bhopal",
+    "Ad.Rs Design Studio",
+  ],
+  alternates: {
+    canonical: `${baseUrl}/about`,
+  },
+  openGraph: {
+    title: "About Ad.Rs Design Studio | Architects in Bhopal Since 2017",
+    description:
+      "Meet Ad.Rs Design Studio, a Bhopal-based architecture and interior design firm established in 2017 with a focus on residential and commercial projects.",
+    url: `${baseUrl}/about`,
+    siteName: "Ad.Rs Design Studio",
+    type: "website",
+    locale: "en_IN",
+    images: [
+      {
+        url: "https://adrs-design.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "About Ad.Rs Design Studio in Bhopal",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Ad.Rs Design Studio | Architects in Bhopal Since 2017",
+    description:
+      "Trusted architects and interior designers in Bhopal since 2017. Residential, commercial, and modular kitchen design near Berkheda.",
+    images: ["https://adrs-design.com/twitter-image.png"],
+  },
+};
 
-export default function About() {
+export default function AboutPage() {
+  const aboutSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "About Ad.Rs Design Studio",
+    url: `${baseUrl}/about`,
+    about: {
+      "@type": "Organization",
+      name: "Ad.Rs Design Studio",
+      foundingDate: "2017",
+      areaServed: "Bhopal",
+    },
+  };
+
   return (
-    <div className="min-h-screen relative">
-      <Header />
-      
-      <main className="pt-32 pb-20 px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto">
-        {/* Hero Section */}
-        <section className="mb-24">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-12 relative leading-tight vibrate-text">
-              Crafting Spaces <br/>
-              <span className="italic text-[var(--muted)]">with Soul & Purpose.</span>
-            </h1>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
-                 {/* Placeholder for About Hero Image */}
-                 <div className="bg-[#E5DDD0] w-full h-full absolute inset-0 flex items-center justify-center text-[var(--muted)]">
-                    <span className="font-serif italic text-xl">Studio Atmosphere</span>
-                 </div>
-               </div>
-               
-               <div className="space-y-8">
-                 <p className="text-xl md:text-2xl font-light leading-relaxed text-[var(--foreground)]">
-                   AD.RS Design Studio was born from a desire to reconnect architecture with human emotion. We believe that spaces should not just be inhabited, but felt.
-                 </p>
-                 <p className="text-[var(--muted)] leading-relaxed">
-                    Founded in Bhopal, our studio operates at the intersection of art, architecture, and interior design. 
-                    We approach every project as a unique narrative, weaving together context, culture, and client aspirations 
-                    to create environments that stand the test of time while remaining deeply personal.
-                 </p>
-                 <div className="pt-4">
-                    <div className="flex gap-12">
-                        <div>
-                            <h3 className="font-serif text-4xl text-[var(--accent)] mb-2 vibrate-text">15+</h3>
-                            <p className="text-sm uppercase tracking-widest text-[var(--muted)]">Years Experience</p>
-                        </div>
-                        <div>
-                            <h3 className="font-serif text-4xl text-[var(--accent)] mb-2 vibrate-text">100+</h3>
-                            <p className="text-sm uppercase tracking-widest text-[var(--muted)]">Projects Completed</p>
-                        </div>
-                    </div>
-                 </div>
-               </div>
-            </div>
-          </motion.div>
-        </section>
-
-        {/* Philosophy / Values Reused */}
-        <div className="mb-24">
-            <h2 className="font-serif text-4xl md:text-5xl mb-12 text-center vibrate-text">Our Philosophy</h2>
-            <Pillars data={pillarsSectionData} />
-        </div>
-      </main>
-
-      {/* Team Section - Full Width */}
-      <TeamSection data={teamSectionData} />
-
-      <main className="px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto">
-        <ProjectCTA data={projectCTAData} />
-      </main>
-
-      <Footer />
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(aboutSchema),
+        }}
+      />
+      <AboutClient />
+    </>
   );
 }
