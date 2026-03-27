@@ -8,7 +8,7 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
-} from "framer-motion";
+} from "motion/react";
 import Image from "next/image";
 import { MouseEvent, useRef, useState } from "react";
 import type { TeamMember, TeamSectionData } from "../data/dummyData";

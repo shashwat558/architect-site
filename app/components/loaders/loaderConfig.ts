@@ -1,29 +1,11 @@
 /**
  * Loader Configuration
- * Choose your preferred intro loader here
+ * Only imports the active loader to keep bundle size minimal.
  */
 
-// Import all loaders
-import MinimalLoader from "./MinimalLoader";
-import AnimatedLogoLoader from "./AnimatedLogoLoader";
-import GradientWaveLoader from "./GradientWaveLoader";
-import GeometricLoader from "./GeometricLoader";
-import GlitchLoader from "./GlitchLoader";
-import BlueprintLoader from "./BlueprintLoader";
-import CinematicLoader from "./CinematicLoader";
+import dynamic from "next/dynamic";
 
 export type LoaderType = "minimal" | "animated-logo" | "gradient-wave" | "geometric" | "glitch" | "blueprint" | "cinematic";
-
-// Map loader names to components
-export const loaderComponents = {
-  minimal: MinimalLoader,
-  "animated-logo": AnimatedLogoLoader,
-  "gradient-wave": GradientWaveLoader,
-  geometric: GeometricLoader,
-  glitch: GlitchLoader,
-  blueprint: BlueprintLoader,
-  cinematic: CinematicLoader,
-};
 
 /**
  * CHANGE THIS TO SWITCH LOADERS
@@ -31,9 +13,22 @@ export const loaderComponents = {
  */
 export const ACTIVE_LOADER: LoaderType = "cinematic";
 
-// Get the active loader component
+// Only dynamically import the active loader — others are never bundled
+const loaderImportMap: Record<LoaderType, () => Promise<{ default: React.ComponentType<{ onComplete: () => void }> }>> = {
+  minimal: () => import("./MinimalLoader"),
+  "animated-logo": () => import("./AnimatedLogoLoader"),
+  "gradient-wave": () => import("./GradientWaveLoader"),
+  geometric: () => import("./GeometricLoader"),
+  glitch: () => import("./GlitchLoader"),
+  blueprint: () => import("./BlueprintLoader"),
+  cinematic: () => import("./CinematicLoader"),
+};
+
+// Get the active loader component via next/dynamic (code-split)
 export const getActiveLoader = () => {
-  return loaderComponents[ACTIVE_LOADER];
+  return dynamic(loaderImportMap[ACTIVE_LOADER], {
+    ssr: false,
+  });
 };
 
 // Loader descriptions
@@ -50,4 +45,6 @@ export const loaderDescriptions = {
     "Retro glitch effect with scanlines. Edgy and contemporary.",
   blueprint:
     "Blueprint drafting animation with construction lines. Architectural and precise.",
+  cinematic:
+    "Cinematic reveal with masked letter animation. Bold and dramatic.",
 };

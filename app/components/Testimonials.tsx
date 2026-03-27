@@ -87,6 +87,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
                           alt={activeTestimonial.author}
                           fill
                           className="object-cover rounded-full border-4 border-white shadow-lg"
+                          sizes="128px"
                         />
                       </div>
                     )}
@@ -257,6 +258,8 @@ export default function Testimonials({ data }: TestimonialsProps) {
                     alt={testimonial.author}
                     fill
                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                    loading="lazy"
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-[#D97706]/20 to-[#3D2B1F]/20 flex items-center justify-center">

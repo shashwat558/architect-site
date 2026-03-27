@@ -44,33 +44,45 @@ const latestReleases = [
   { type: "ARTICLE", title: "Where up fured management crack optimal sorry can't reinvent." },
 ];
 
+// Simple link list — uses CSS transitions instead of individual motion.li elements
+const LinkList = ({ items }: { items: { name: string; href: string }[] }) => (
+  <ul className="space-y-2">
+    {items.map((item) => (
+      <li key={item.name}>
+        <Link
+          href={item.href}
+          className="text-[#3D2B1F] text-sm hover:text-[#D97706] transition-all duration-200 inline-block hover:translate-x-1"
+        >
+          {item.name}
+        </Link>
+      </li>
+    ))}
+  </ul>
+);
+
 export default function Footer() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
     <footer ref={ref} className="bg-transparent border-t border-[#E5DDD0] py-12 px-6 md:px-12 lg:px-20">
-      <div className="w-full">
+      <motion.div 
+        className="w-full"
+        initial={{ opacity: 0, y: 30 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        transition={{ duration: 0.6 }}
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-4">
           {/* Logo & Company Info */}
-          <motion.div 
-            className="lg:col-span-1 space-y-4"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.div 
-              className="flex items-center justify-center w-20 h-20"
-              whileHover={{ rotate: 360, scale: 1.1 }}
-              transition={{ duration: 0.8 }}
-            >
+          <div className="lg:col-span-1 space-y-4">
+            <div className="flex items-center justify-center w-20 h-20">
               <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
                 <circle cx="40" cy="25" r="14" fill="#9CAF7E" />
                 <circle cx="22" cy="50" r="14" fill="#9CAF7E" />
                 <circle cx="58" cy="50" r="14" fill="#9CAF7E" />
                 <circle cx="40" cy="40" r="10" fill="#FAF6F1" />
               </svg>
-            </motion.div>
+            </div>
             <div>
               <p className="text-[#3D2B1F] font-medium text-sm">AD.RS DESIGN</p>
               <p className="text-[#9B8B7A] text-xs">ESTD. 2025</p>
@@ -83,127 +95,48 @@ export default function Footer() {
               <p>contact@adrs.design</p>
               <p>+91 98765 43210</p>
             </div>
-          </motion.div>
+          </div>
 
           {/* Pages */}
-          <motion.div 
-            className="space-y-4"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">
-              Pages
-            </h4>
-            <ul className="space-y-2">
-              {pages.map((page, index) => (
-                <motion.li 
-                  key={page.name}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-                  transition={{ duration: 0.4, delay: 0.2 + index * 0.05 }}
-                >
-                  <Link
-                    href={page.href}
-                    className="text-[#3D2B1F] text-sm hover:text-[#D97706] transition-colors inline-block hover:translate-x-1"
-                  >
-                    {page.name}
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
+          <div className="space-y-4">
+            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">Pages</h4>
+            <LinkList items={pages} />
+          </div>
 
           {/* Achievements */}
-          <motion.div 
-            className="space-y-4"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">
-              Achievements
-            </h4>
-            <ul className="space-y-2">
-              {achievements.map((item, index) => (
-                <motion.li 
-                  key={item.name}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-                  transition={{ duration: 0.4, delay: 0.3 + index * 0.05 }}
-                >
-                  <Link
-                    href={item.href}
-                    className="text-[#3D2B1F] text-sm hover:text-[#D97706] transition-colors inline-block hover:translate-x-1"
-                  >
-                    {item.name}
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
+          <div className="space-y-4">
+            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">Achievements</h4>
+            <LinkList items={achievements} />
+          </div>
 
           {/* Resources */}
-          <motion.div 
-            className="space-y-4"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">
-              Resources
-            </h4>
-            <ul className="space-y-2">
-              {resources.map((item, index) => (
-                <motion.li 
-                  key={item.name}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-                  transition={{ duration: 0.4, delay: 0.4 + index * 0.05 }}
-                >
-                  <Link
-                    href={item.href}
-                    className="text-[#3D2B1F] text-sm hover:text-[#D97706] transition-colors inline-block hover:translate-x-1"
-                  >
-                    {item.name}
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
+          <div className="space-y-4">
+            <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">Resources</h4>
+            <LinkList items={resources} />
+          </div>
 
           {/* Contact Large */}
-          <motion.div 
-            className="lg:col-span-2 space-y-6"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
+          <div className="lg:col-span-2 space-y-6">
             <Magnetic>
             <div className="inline-block">
             <Link
               href="/contact"
               className="flex items-center gap-3 text-[#D97706] text-4xl md:text-5xl font-light group"
             >
-              <motion.svg
+              <svg
                 width="28"
                 height="28"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
-                whileHover={{ x: 5, y: -5, rotate: 45 }}
-                transition={{ duration: 0.3 }}
+                className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:rotate-45"
               >
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
-              </motion.svg>
-              <motion.span
-                className="hover:underline"
-                whileHover={{ x: 10 }}
-                transition={{ duration: 0.3 }}
-              >
+              </svg>
+              <span className="hover:underline transition-transform duration-300 group-hover:translate-x-2">
                 CONTACT
-              </motion.span>
+              </span>
             </Link>
             </div>
             </Magnetic>
@@ -215,32 +148,23 @@ export default function Footer() {
               </h4>
               <div className="space-y-2 max-h-40 overflow-y-auto">
                 {latestReleases.map((item, index) => (
-                  <motion.div
+                  <div
                     key={index}
-                    className="bg-[#EDE5D8] rounded p-3 cursor-pointer hover:bg-[#E5DDD0] transition-colors"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-                    transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                    whileHover={{ scale: 1.02, x: 5 }}
+                    className="bg-[#EDE5D8] rounded p-3 cursor-pointer hover:bg-[#E5DDD0] hover:scale-[1.02] hover:translate-x-1 transition-all duration-200"
                   >
                     <span className="text-[#D97706] text-xs font-medium">
                       {item.type}
                     </span>
                     <p className="text-[#3D2B1F] text-sm mt-1">{item.title}</p>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Bottom Row */}
-        <motion.div 
-          className="mt-12 pt-8 border-t border-[#E5DDD0] flex flex-col md:flex-row justify-between gap-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-        >
+        <div className="mt-12 pt-8 border-t border-[#E5DDD0] flex flex-col md:flex-row justify-between gap-4">
           {/* Networks */}
           <div className="flex items-center gap-6">
             <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">
@@ -248,15 +172,14 @@ export default function Footer() {
             </h4>
             <div className="flex gap-4">
               {networks.map((network) => (
-                <motion.div key={network.name} whileHover={{ y: -2 }}>
-                  <Link
-                    href={network.href}
-                    target="_blank"
-                    className="text-[#3D2B1F] text-sm hover:text-[#D97706] transition-colors"
-                  >
-                    {network.name}
-                  </Link>
-                </motion.div>
+                <Link
+                  key={network.name}
+                  href={network.href}
+                  target="_blank"
+                  className="text-[#3D2B1F] text-sm hover:text-[#D97706] hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  {network.name}
+                </Link>
               ))}
             </div>
           </div>
@@ -268,19 +191,18 @@ export default function Footer() {
             </h4>
             <div className="flex gap-4">
               {legal.map((item) => (
-                <motion.div key={item.name} whileHover={{ y: -2 }}>
-                  <Link
-                    href={item.href}
-                    className="text-[#9B8B7A] text-sm hover:text-[#D97706] transition-colors"
-                  >
-                    {item.name}
-                  </Link>
-                </motion.div>
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-[#9B8B7A] text-sm hover:text-[#D97706] hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  {item.name}
+                </Link>
               ))}
             </div>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </footer>
   );
 }

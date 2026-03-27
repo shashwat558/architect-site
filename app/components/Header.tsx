@@ -87,16 +87,8 @@ export default function Header() {
             className="border border-[#3D2B1F] text-[#3D2B1F] px-5 py-2.5 rounded-md text-sm font-medium flex items-center gap-2 hover:bg-[#3D2B1F] hover:text-white transition-colors"
           >
             <span className="flex gap-0.5">
-              <motion.span 
-                className="w-1.5 h-1.5 bg-current rounded-full"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 0.5 }}
-              />
-              <motion.span 
-                className="w-1.5 h-1.5 bg-current rounded-full"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 0.5, delay: 0.2 }}
-              />
+              <span className="w-1.5 h-1.5 bg-current rounded-full" />
+              <span className="w-1.5 h-1.5 bg-current rounded-full" />
             </span>
             MENU
           </motion.button>

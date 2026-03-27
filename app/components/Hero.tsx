@@ -15,7 +15,7 @@ export default function Hero({ data }: HeroProps) {
 
   useEffect(() => {
     if (carouselRef.current) {
-      const singleSetWidth = carouselRef.current.scrollWidth / 3;
+      const singleSetWidth = carouselRef.current.scrollWidth / 2;
       setCarouselWidth(singleSetWidth);
     }
   }, []);
@@ -24,7 +24,7 @@ export default function Hero({ data }: HeroProps) {
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const y2 = useTransform(scrollY, [0, 500], [0, 100]);
 
-  const duplicatedImages = [...data.images, ...data.images, ...data.images];
+  const duplicatedImages = [...data.images, ...data.images];
 
   return (
     <section className="pt-32 pb-8 bg-transparent overflow-hidden" aria-label="Hero section featuring AD.RS design services">
