@@ -40,7 +40,7 @@ export default function Header() {
       animate={hidden ? "hidden" : "visible"}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="w-full flex items-center justify-between">
+      <div className="w-full flex items-center justify-between relative">
         <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
           <Magnetic>
              <div className="relative w-32 h-10">
@@ -55,6 +55,28 @@ export default function Header() {
              </div>
           </Magnetic>
         </Link>
+
+        {/* Desktop Navigation (Centered) */}
+        <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          {[
+            { name: "Work", href: "/projects" },
+            { name: "Process", href: "/process" },
+            { name: "Offers", href: "/offers" },
+            { name: "About", href: "/about" },
+            { name: "Resources", href: "/resources" },
+          ].map((link) => (
+            <Magnetic key={link.name}>
+              <Link
+                href={link.href}
+                className="text-[13px] font-semibold tracking-widest uppercase text-[#3D2B1F] hover:text-[#D97706] transition-colors relative pb-1 group/link"
+              >
+                {link.name}
+                {/* Underline Hover Effect */}
+                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#D97706] origin-right scale-x-0 transition-transform duration-300 ease-out group-hover/link:scale-x-100 group-hover/link:origin-left" />
+              </Link>
+            </Magnetic>
+          ))}
+        </nav>
 
         <nav className="flex items-center gap-4 flex-shrink-0">
           <div className="hidden md:block">
@@ -90,7 +112,7 @@ export default function Header() {
               <span className="w-1.5 h-1.5 bg-current rounded-full" />
               <span className="w-1.5 h-1.5 bg-current rounded-full" />
             </span>
-            MENU
+            <span className="hidden sm:inline">MENU</span>
           </motion.button>
           </Magnetic>
         </nav>

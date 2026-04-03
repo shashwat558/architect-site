@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
+import { useEffect } from "react";
 
 interface MenuOverlayProps {
   isOpen: boolean;
@@ -32,6 +33,17 @@ const resourceLinks = [
 ];
 
 export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -75,7 +87,7 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
               </div>
 
               {/* Main Content */}
-              <div className="flex-1 bg-[#FAF6F1] p-6 md:p-10 lg:p-14 overflow-y-auto">
+              <div className="flex-1 bg-[#FAF6F1] p-6 md:p-10 lg:p-14 overflow-y-auto" data-lenis-prevent="true">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 h-full">
                     
                     {/* Left Column - Main Nav */}
