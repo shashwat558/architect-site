@@ -121,10 +121,10 @@ export type TestimonialsSectionData = {
 };
 
 export const heroData: HeroData = {
-  headline: "Crafting timeless spaces,",
-  highlighted: "where architecture meets emotion.",
+  headline: "Quiet spaces,",
+  highlighted: "profound feeling.",
   description:
-    "AD.RS Design Studio orchestrates unique spatial experiences. From sustainable foundations to ephemeral scenography, we design with precision for the essential.",
+    "Architecture as an emotional canvas. We design environments that breathe, listen, and hold the essence of life.",
   images: [
     {
       src: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80",

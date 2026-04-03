@@ -3,6 +3,13 @@
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Lato } from "next/font/google";
+
+const lato = Lato({
+  weight: ["300", "400", "700", "900"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const introImages = [
   "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80",
@@ -80,7 +87,7 @@ export default function IntroLoader({ onComplete }: { onComplete: () => void }) 
         {/* Center Text/Logo Overlay */}
         <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
             <motion.h1 
-                className="text-white text-6xl md:text-8xl font-serif italic"
+                className={`text-white text-6xl md:text-8xl italic ${lato.className}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}

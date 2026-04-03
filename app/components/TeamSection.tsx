@@ -10,8 +10,9 @@ import {
   useTransform,
 } from "motion/react";
 import Image from "next/image";
-import { MouseEvent, useRef, useState } from "react";
+import { MouseEvent, useRef, useState, useEffect } from "react";
 import type { TeamMember, TeamSectionData } from "../data/dummyData";
+import ConstructImage from "./ui/ConstructImage";
 
 export type TeamSectionProps = {
   data: TeamSectionData;
@@ -96,6 +97,13 @@ const TeamMemberModal = ({ member, onClose }: { member: TeamMember; onClose: () 
   // Triple the gallery to ensure smooth infinite loop even with few images
   const marqueeImages = [...member.gallery, ...member.gallery, ...member.gallery];
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -168,7 +176,7 @@ const TeamMemberModal = ({ member, onClose }: { member: TeamMember; onClose: () 
                     <div className="w-20 h-px bg-[#3D2B1F]/20 mt-6" />
                 </div>
 
-                <div className="flex-grow overflow-y-auto custom-scrollbar pr-4 relative z-10">
+                <div className="flex-grow overflow-y-auto custom-scrollbar pr-4 relative z-10" data-lenis-prevent="true">
                      <p className="text-[#6B5B4F] leading-relaxed font-light text-lg md:text-xl">
                         {member.bio}
                     </p>
@@ -439,6 +447,16 @@ export default function TeamSection({ data }: TeamSectionProps) {
               >
                   {data.description}
               </motion.p>
+          </div>
+
+          {/* Constructing Team Image Overlay */}
+          <div className="w-full mb-32 h-[50vh] md:h-[70vh] rounded-2xl">
+             <ConstructImage 
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&fit=crop&q=80" 
+                cols={12} 
+                rows={8} 
+                className="w-full h-full"
+             />
           </div>
 
           {/* Grid Layout */}

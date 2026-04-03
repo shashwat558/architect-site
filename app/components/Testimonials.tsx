@@ -18,7 +18,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
   // Auto-play carousel
   useEffect(() => {
     if (!isAutoPlaying) return;
-    
+
     const interval = setInterval(() => {
       setActiveIndex((current) => (current + 1) % data.testimonials.length);
     }, 6000);
@@ -29,8 +29,8 @@ export default function Testimonials({ data }: TestimonialsProps) {
   const activeTestimonial = data.testimonials[activeIndex];
 
   return (
-    <section 
-      ref={ref} 
+    <section
+      ref={ref}
       className="py-24 md:py-32 bg-gradient-to-br from-[#FAF6F1] via-[#EDE5D8] to-[#FAF6F1] overflow-hidden relative"
     >
       {/* Decorative Background Elements */}
@@ -39,7 +39,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
 
       <div className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-20 relative z-10">
         {/* Section Header */}
-        <motion.div 
+        <motion.div
           className="mb-16 md:mb-24 text-center max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
@@ -49,7 +49,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
             {data.eyebrow}
           </span>
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-[#3D2B1F] leading-tight">
-            {data.title} <br/>
+            {data.title} <br />
             <span className="italic opacity-60">{data.subtitle}</span>
           </h2>
         </motion.div>
@@ -57,7 +57,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
         {/* Main Testimonial Display */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left: Image & Stats */}
-          <motion.div 
+          <motion.div
             className="lg:col-span-5"
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
@@ -67,7 +67,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
               {/* Decorative Frame */}
               <div className="absolute -inset-4 border-2 border-[#D97706]/20 rounded-2xl -rotate-2" />
               <div className="absolute -inset-4 border-2 border-[#3D2B1F]/10 rounded-2xl rotate-2" />
-              
+
               {/* Main Content Card */}
               <div className="relative bg-white rounded-xl shadow-2xl p-8 md:p-10">
                 <AnimatePresence mode="wait">
@@ -138,7 +138,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
           </motion.div>
 
           {/* Right: Testimonial Text & Controls */}
-          <motion.div 
+          <motion.div
             className="lg:col-span-7"
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
@@ -147,7 +147,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
             <div className="relative">
               {/* Quote Mark */}
               <span className="absolute -top-8 -left-4 text-[12vw] md:text-[8vw] lg:text-[6vw] leading-none text-[#D97706] opacity-10 font-serif pointer-events-none">
-                
+
               </span>
 
               {/* Testimonial Text */}
@@ -199,7 +199,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
                 <div className="flex gap-2">
                   <button
                     onClick={() => {
-                      setActiveIndex((current) => 
+                      setActiveIndex((current) =>
                         current === 0 ? data.testimonials.length - 1 : current - 1
                       );
                       setIsAutoPlaying(false);
@@ -231,7 +231,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
         </div>
 
         {/* Bottom: Testimonial Grid Preview */}
-        <motion.div 
+        <motion.div
           className="mt-20 md:mt-24"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
@@ -245,12 +245,10 @@ export default function Testimonials({ data }: TestimonialsProps) {
                   setActiveIndex(index);
                   setIsAutoPlaying(false);
                 }}
-                className={`group relative aspect-square rounded-lg overflow-hidden transition-all duration-300 ${
-                  
-                  index === activeIndex 
-                    ? 'ring-4 ring-[#D97706] scale-105 shadow-xl' 
+                className={`group relative aspect-square rounded-lg overflow-hidden transition-all duration-300 ${index === activeIndex
+                    ? 'ring-4 ring-[#D97706] scale-105 shadow-xl'
                     : 'ring-2 ring-[#3D2B1F]/10 hover:ring-[#D97706]/50 hover:scale-105'
-                }`}
+                  }`}
               >
                 {testimonial.image ? (
                   <Image
