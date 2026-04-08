@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Playfair_Display } from "next/font/google";
+import { Geist, Playfair_Display, Roboto } from "next/font/google";
 import "./globals.css";
 import { CursorProvider } from "./context/CursorContext";
 import CustomCursor from "./components/ui/CustomCursor";
@@ -14,7 +14,14 @@ const geistSans = Geist({
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
-  display: "swap", // Avoid font swap flash
+  display: "swap",
+});
+
+const roboto = Roboto({
+  variable: "--font-roboto",
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "900"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -182,7 +189,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${playfair.variable} antialiased relative min-h-screen`}
+        className={`${geistSans.variable} ${playfair.variable} ${roboto.variable} antialiased relative min-h-screen`}
       >
         <CursorProvider>
           <SmoothScroll>

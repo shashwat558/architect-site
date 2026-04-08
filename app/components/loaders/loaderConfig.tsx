@@ -3,6 +3,7 @@
  * Only imports the active loader to keep bundle size minimal.
  */
 
+import React from "react";
 import dynamic from "next/dynamic";
 
 export type LoaderType = "minimal" | "animated-logo" | "gradient-wave" | "geometric" | "glitch" | "blueprint" | "cinematic";
@@ -28,6 +29,11 @@ const loaderImportMap: Record<LoaderType, () => Promise<{ default: React.Compone
 export const getActiveLoader = () => {
   return dynamic(loaderImportMap[ACTIVE_LOADER], {
     ssr: false,
+    loading: () => (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#0d0d0d]">
+        {/* Simple static placeholder that matches the loader's background */}
+      </div>
+    ),
   });
 };
 

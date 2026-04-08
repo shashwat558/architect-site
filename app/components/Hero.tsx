@@ -102,7 +102,7 @@ export default function Hero({ data }: HeroProps) {
         </motion.div>
 
         {/* Minimal Description + Scroller Indicator */}
-    
+
       </div>
 
     </section>

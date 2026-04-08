@@ -246,8 +246,8 @@ export default function Testimonials({ data }: TestimonialsProps) {
                   setIsAutoPlaying(false);
                 }}
                 className={`group relative aspect-square rounded-lg overflow-hidden transition-all duration-300 ${index === activeIndex
-                    ? 'ring-4 ring-[#D97706] scale-105 shadow-xl'
-                    : 'ring-2 ring-[#3D2B1F]/10 hover:ring-[#D97706]/50 hover:scale-105'
+                  ? 'ring-4 ring-[#D97706] scale-105 shadow-xl'
+                  : 'ring-2 ring-[#3D2B1F]/10 hover:ring-[#D97706]/50 hover:scale-105'
                   }`}
               >
                 {testimonial.image ? (

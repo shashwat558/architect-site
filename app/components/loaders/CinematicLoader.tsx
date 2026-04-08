@@ -64,7 +64,7 @@ export default function CinematicLoader({ onComplete }: { onComplete: () => void
                      <div className="overflow-hidden">
                         <motion.h1 
                            className="text-6xl md:text-9xl font-bold text-[#F5F3EE]"
-                           style={{ fontFamily: 'var(--font-playfair), serif' }}
+                           style={{ fontFamily: 'var(--font-roboto), sans-serif' }}
                            custom={0} variants={letterVariants} initial="hidden" animate="visible"
                         >A</motion.h1>
                      </div>
@@ -72,7 +72,7 @@ export default function CinematicLoader({ onComplete }: { onComplete: () => void
                      <div className="overflow-hidden">
                         <motion.h1 
                            className="text-6xl md:text-9xl font-bold text-[#F5F3EE]"
-                           style={{ fontFamily: 'var(--font-playfair), serif' }}
+                           style={{ fontFamily: 'var(--font-roboto), sans-serif' }}
                            custom={1} variants={letterVariants} initial="hidden" animate="visible"
                         >D</motion.h1>
                      </div>
@@ -80,7 +80,7 @@ export default function CinematicLoader({ onComplete }: { onComplete: () => void
                      <div className="overflow-hidden">
                         <motion.h1 
                            className="text-6xl md:text-9xl font-bold text-[#F5F3EE]"
-                           style={{ fontFamily: 'var(--font-playfair), serif' }}
+                           style={{ fontFamily: 'var(--font-roboto), sans-serif' }}
                            custom={2} variants={letterVariants} initial="hidden" animate="visible"
                         >R</motion.h1>
                      </div>
@@ -88,7 +88,7 @@ export default function CinematicLoader({ onComplete }: { onComplete: () => void
                      <div className="overflow-hidden">
                         <motion.h1 
                            className="text-6xl md:text-9xl font-bold text-[#F5F3EE]"
-                           style={{ fontFamily: 'var(--font-playfair), serif' }}
+                           style={{ fontFamily: 'var(--font-roboto), sans-serif' }}
                            custom={3} variants={letterVariants} initial="hidden" animate="visible"
                         >S</motion.h1>
                      </div>

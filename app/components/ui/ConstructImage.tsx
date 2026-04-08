@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +20,7 @@ interface PieceProps {
   src: string;
 }
 
-const Piece = ({ progress, col, row, cols, rows, src }: PieceProps) => {
+const Piece = React.memo(({ progress, col, row, cols, rows, src }: PieceProps) => {
   // Randomize the start and end scroll progress points for this piece
   // This creates the staggered falling/constructing effect
   const start = useMemo(() => Math.random() * 0.5, []);
@@ -87,7 +87,8 @@ const Piece = ({ progress, col, row, cols, rows, src }: PieceProps) => {
       }}
     />
   );
-};
+});
+Piece.displayName = "Piece";
 
 export default function ConstructImage({
   src,
@@ -103,18 +104,29 @@ export default function ConstructImage({
     offset: ["start 90%", "center center"], // Starts when top of image hits 90% of screen, finishes when centered
   });
 
-  const pieces = [];
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      pieces.push({ r, c });
+  // Reduce complexity for smaller screens to improve performance
+  const finalCols = typeof window !== 'undefined' && window.innerWidth < 768 ? Math.min(cols, 4) : cols;
+  const finalRows = typeof window !== 'undefined' && window.innerWidth < 768 ? Math.min(rows, 4) : rows;
+
+  const pieces = useMemo(() => {
+    const p = [];
+    for (let r = 0; r < finalRows; r++) {
+      for (let c = 0; c < finalCols; c++) {
+        p.push({ r, c });
+      }
     }
-  }
+    return p;
+  }, [finalCols, finalRows]);
 
   return (
     <div
       ref={containerRef}
       className={cn("relative overflow-visible drop-shadow-2xl", className)}
-      style={{ perspective: 1200, transformStyle: "preserve-3d" }}
+      style={{ 
+        perspective: 1200, 
+        transformStyle: "preserve-3d",
+        willChange: "transform"
+      }}
     >
       {/* Render all the tiny moving pieces */}
       {pieces.map((p, i) => (
@@ -123,8 +135,8 @@ export default function ConstructImage({
           progress={scrollYProgress}
           col={p.c}
           row={p.r}
-          cols={cols}
-          rows={rows}
+          cols={finalCols}
+          rows={finalRows}
           src={src}
         />
       ))}
