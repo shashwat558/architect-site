@@ -60,9 +60,9 @@ export default function HomeClient() {
       <div className={loading ? "opacity-0 invisible" : "opacity-100 visible transition-opacity duration-700"}>
         <Header />
         <main>
-          <AuroraBackground className="justify-start h-auto min-h-screen">
-            <Hero data={heroData} />
-          </AuroraBackground>
+
+          <Hero data={heroData} />
+
 
 
 
