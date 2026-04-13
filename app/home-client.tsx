@@ -41,11 +41,6 @@ const ProjectCTA = dynamic(() => import("./components/ProjectCTA"), {
 
 export default function HomeClient() {
   const [loading, setLoading] = useState(true);
-  const [heroContent, setHeroContent] = useState(heroData);
-  const [projectsContent, setProjectsContent] = useState(projectsSectionData);
-  const [testimonialsContent, setTestimonialsContent] = useState(
-    testimonialsSectionData
-  );
 
   // Prevent scrolling while loading
   useEffect(() => {
@@ -55,57 +50,6 @@ export default function HomeClient() {
       document.body.style.overflow = "auto";
     }
   }, [loading]);
-
-  useEffect(() => {
-    const loadHomeImages = async () => {
-      try {
-        const res = await fetch("/api/home-images");
-        if (!res.ok) {
-          return;
-        }
-        const data = await res.json();
-
-        if (Array.isArray(data.heroImages) && data.heroImages.length > 0) {
-          setHeroContent({
-            ...heroData,
-            images: data.heroImages.map((src: string, index: number) => ({
-              src,
-              alt: `AD.RS Design image ${index + 1}`,
-            })),
-          });
-        }
-
-        if (Array.isArray(data.projectImages) && data.projectImages.length > 0) {
-          setProjectsContent({
-            ...projectsSectionData,
-            projects: projectsSectionData.projects.map((project, index) => ({
-              ...project,
-              image: data.projectImages[index] || project.image,
-            })),
-          });
-        }
-
-        if (
-          Array.isArray(data.testimonialImages) &&
-          data.testimonialImages.length > 0
-        ) {
-          setTestimonialsContent({
-            ...testimonialsSectionData,
-            testimonials: testimonialsSectionData.testimonials.map(
-              (testimonial, index) => ({
-                ...testimonial,
-                image: data.testimonialImages[index] || testimonial.image,
-              })
-            ),
-          });
-        }
-      } catch (error) {
-        console.error("Failed to load home images", error);
-      }
-    };
-
-    loadHomeImages();
-  }, []);
 
   return (
     <div className="min-h-screen bg-transparent relative">
@@ -117,12 +61,12 @@ export default function HomeClient() {
         <Header />
         <main>
           <AuroraBackground className="justify-start h-auto min-h-screen">
-            <Hero data={heroContent} />
+            <Hero data={heroData} />
           </AuroraBackground>
 
 
 
-          <Projects data={projectsContent} />
+          <Projects data={projectsSectionData} />
           <Pillars data={pillarsSectionData} />
           <Offers data={offersSectionData} />
 
@@ -143,7 +87,7 @@ export default function HomeClient() {
             </div>
           </section>
 
-          <Testimonials data={testimonialsContent} />
+          <Testimonials data={testimonialsSectionData} />
           <ProjectCTA data={projectCTAData} />
         </main>
         <Footer />
