@@ -79,8 +79,7 @@ export default function HomeClient() {
               <div className="w-full h-[50vh] md:h-[70vh] rounded-2xl">
                 <ConstructImage
                   src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&fit=crop&q=80"
-                  cols={12}
-                  rows={8}
+                  stripes={12}
                   className="w-full h-full"
                 />
               </div>

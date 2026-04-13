@@ -7,141 +7,129 @@ import { cn } from "@/lib/utils";
 interface ConstructImageProps {
   src: string;
   className?: string;
-  cols?: number;
-  rows?: number;
+  stripes?: number;
+  direction?: "horizontal" | "vertical";
 }
 
-interface PieceProps {
+interface StripeProps {
   progress: MotionValue<number>;
-  col: number;
-  row: number;
-  cols: number;
-  rows: number;
+  index: number;
+  total: number;
   src: string;
+  direction: "horizontal" | "vertical";
 }
 
-const Piece = React.memo(({ progress, col, row, cols, rows, src }: PieceProps) => {
-  // Randomize the start and end scroll progress points for this piece
-  // This creates the staggered falling/constructing effect
-  const start = useMemo(() => Math.random() * 0.5, []);
-  const end = useMemo(() => start + 0.3 + Math.random() * 0.2, [start]);
+const Stripe = React.memo(({ progress, index, total, src, direction }: StripeProps) => {
+  // Sequential timing: Each stripe starts after the previous one
+  // We want the whole sequence to finish slightly before the scroll hits the center
+  const segmentDuration = 0.4;
+  const stagger = 0.6 / total;
+  const start = index * stagger;
+  const end = start + segmentDuration;
 
+  const isHorizontal = direction === "horizontal";
+
+  // Animation values for the "unfolding" feel
   const opacity = useTransform(progress, [start, end], [0, 1]);
-  const scale = useTransform(progress, [start, end], [0.1, 1]);
+  
+  // 3D fold-in effect
+  const rotateX = isHorizontal ? useTransform(progress, [start, end], [-90, 0]) : 0;
+  const rotateY = !isHorizontal ? useTransform(progress, [start, end], [-90, 0]) : 0;
+  
+  // Depth and scale
+  const translateZ = useTransform(progress, [start, end], [-200, 0]);
+  const scale = useTransform(progress, [start, end], [0.95, 1]);
+  
+  // Lighting simulation: darken the stripe as it's folded away
+  const brightness = useTransform(progress, [start, end], [0.4, 1]);
+  const filter = useTransform(brightness, (v) => `brightness(${v})`);
 
-  // Random fly-in starting positions (spread widely)
-  const flyX = useMemo(() => (Math.random() - 0.5) * 400, []);
-  const flyY = useMemo(() => (Math.random() - 0.5) * 400 - 200, []);
-  const flyZ = useMemo(() => Math.random() * 400 + 200, []);
-  const startRotateX = useMemo(() => (Math.random() - 0.5) * 180, []);
-  const startRotateY = useMemo(() => (Math.random() - 0.5) * 180, []);
-  const startRotateZ = useMemo(() => (Math.random() - 0.5) * 90, []);
+  // Positioning and Background calculation
+  const style: React.CSSProperties = {
+    position: "absolute",
+    backgroundImage: `url(${src})`,
+    backgroundSize: isHorizontal ? `100% ${total * 100}%` : `${total * 100}% 100%`,
+    backgroundRepeat: "no-repeat",
+    willChange: "transform, opacity, filter",
+    backfaceVisibility: "hidden",
+  };
 
-  const x = useTransform(progress, [start, end], [flyX, 0]);
-  const y = useTransform(progress, [start, end], [flyY, 0]);
-  const z = useTransform(progress, [start, end], [flyZ, 0]);
+  if (isHorizontal) {
+    style.left = 0;
+    style.right = 0;
+    style.top = `${(index / total) * 100}%`;
+    style.height = `${100 / total + 0.1}%`; // +0.1% to prevent sub-pixel gaps
+    style.backgroundPosition = `0% ${(index / (total - 1)) * 100}%`;
+    style.transformOrigin = "top center";
+    
+    // Rounded corners for the very top and bottom stripes
+    if (index === 0) style.borderTopLeftRadius = "1.5rem", style.borderTopRightRadius = "1.5rem";
+    if (index === total - 1) style.borderBottomLeftRadius = "1.5rem", style.borderBottomRightRadius = "1.5rem";
+  } else {
+    style.top = 0;
+    style.bottom = 0;
+    style.left = `${(index / total) * 100}%`;
+    style.width = `${100 / total + 0.1}%`; // +0.1% to prevent sub-pixel gaps
+    style.backgroundPosition = `${(index / (total - 1)) * 100}% 0%`;
+    style.transformOrigin = "center left";
 
-  const rotateX = useTransform(progress, [start, end], [startRotateX, 0]);
-  const rotateY = useTransform(progress, [start, end], [startRotateY, 0]);
-  const rotateZ = useTransform(progress, [start, end], [startRotateZ, 0]);
-
-  // CSS positioning for the grid
-  const left = `${(col / cols) * 100}%`;
-  const top = `${(row / rows) * 100}%`;
-  const width = `${100 / cols}%`;
-  const height = `${100 / rows}%`;
-
-  // Calculate the correct background position for this specific slice of the image
-  const bgX = cols > 1 ? (col / (cols - 1)) * 100 : 0;
-  const bgY = rows > 1 ? (row / (rows - 1)) * 100 : 0;
-
-  // Determine border radii for the corner pieces so the full image has rounded corners
-  const borderTopLeftRadius = row === 0 && col === 0 ? "1.5rem" : 0;
-  const borderTopRightRadius = row === 0 && col === cols - 1 ? "1.5rem" : 0;
-  const borderBottomLeftRadius = row === rows - 1 && col === 0 ? "1.5rem" : 0;
-  const borderBottomRightRadius = row === rows - 1 && col === cols - 1 ? "1.5rem" : 0;
+    if (index === 0) style.borderTopLeftRadius = "1.5rem", style.borderBottomLeftRadius = "1.5rem";
+    if (index === total - 1) style.borderTopRightRadius = "1.5rem", style.borderBottomRightRadius = "1.5rem";
+  }
 
   return (
     <motion.div
-      className="absolute bg-no-repeat will-change-transform shadow-sm"
       style={{
-        left,
-        top,
-        width,
-        height,
+        ...style,
         opacity,
-        scale,
-        x,
-        y,
-        z,
         rotateX,
         rotateY,
-        rotateZ,
-        borderTopLeftRadius,
-        borderTopRightRadius,
-        borderBottomLeftRadius,
-        borderBottomRightRadius,
-        backgroundImage: `url(${src})`,
-        backgroundSize: `${cols * 100}% ${rows * 100}%`,
-        backgroundPosition: `${bgX}% ${bgY}%`,
+        z: translateZ,
+        scale,
+        filter,
       }}
+      className="shadow-2xl"
     />
   );
 });
-Piece.displayName = "Piece";
+
+Stripe.displayName = "Stripe";
 
 export default function ConstructImage({
   src,
   className,
-  cols = 8,
-  rows = 8
+  stripes = 12,
+  direction = "horizontal"
 }: ConstructImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Track scroll position of this component
+  // Offset tracking so the animation feels responsive to the scroll position
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 90%", "center center"], // Starts when top of image hits 90% of screen, finishes when centered
+    offset: ["start 95%", "center 40%"],
   });
 
-  // Reduce complexity for smaller screens to improve performance
-  const finalCols = typeof window !== 'undefined' && window.innerWidth < 768 ? Math.min(cols, 4) : cols;
-  const finalRows = typeof window !== 'undefined' && window.innerWidth < 768 ? Math.min(rows, 4) : rows;
-
-  const pieces = useMemo(() => {
-    const p = [];
-    for (let r = 0; r < finalRows; r++) {
-      for (let c = 0; c < finalCols; c++) {
-        p.push({ r, c });
-      }
-    }
-    return p;
-  }, [finalCols, finalRows]);
+  const stripeArray = useMemo(() => Array.from({ length: stripes }), [stripes]);
 
   return (
     <div
       ref={containerRef}
-      className={cn("relative overflow-visible drop-shadow-2xl", className)}
+      className={cn("relative w-full h-full overflow-visible", className)}
       style={{ 
-        perspective: 1200, 
+        perspective: 2000, 
         transformStyle: "preserve-3d",
-        willChange: "transform"
       }}
     >
-      {/* Render all the tiny moving pieces */}
-      {pieces.map((p, i) => (
-        <Piece
-          key={`${p.r}-${p.c}-${i}`}
+      {stripeArray.map((_, i) => (
+        <Stripe
+          key={i}
+          index={i}
+          total={stripes}
           progress={scrollYProgress}
-          col={p.c}
-          row={p.r}
-          cols={finalCols}
-          rows={finalRows}
           src={src}
+          direction={direction}
         />
       ))}
-
-      {/* Optional: Add a very faint backing or glow if desired, though leaving it null keeps it perfectly clean */}
     </div>
   );
 }
