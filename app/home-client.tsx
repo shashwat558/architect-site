@@ -5,7 +5,7 @@ import { AnimatePresence } from "motion/react";
 import dynamic from "next/dynamic";
 import { getActiveLoader } from "./components/loaders/loaderConfig";
 import Header from "./components/Header";
-import Hero from "./components/Hero";
+import Hero from "./components/hero/Hero";
 import Footer from "./components/Footer";
 import Testimonials from "./components/AnimatedTestimonialsSection";
 import { AuroraBackground } from "./components/ui/AuroraBackground";
