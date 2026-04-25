@@ -1,64 +1,58 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from "next";
+import { prisma } from "@/lib/prisma";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://adrs-design.com'
+const baseUrl = "https://adrs-design.com";
 
-  const pages = [
+export const revalidate = 3600; // Re-generate hourly
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
+      changeFrequency: "weekly",
       priority: 1,
     },
     {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
+      changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/projects`,
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
+      changeFrequency: "weekly",
       priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/projects/modern-residence`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/projects/green-living-space`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/projects/rustic-chalet`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/projects/urban-loft`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
     },
     {
       url: `${baseUrl}/process`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
+      changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
+      changeFrequency: "monthly",
       priority: 0.8,
     },
-  ]
+  ];
 
-  return pages
+  let projectPages: MetadataRoute.Sitemap = [];
+  try {
+    const projects = await prisma.project.findMany({
+      select: { slug: true, updatedAt: true },
+    });
+    projectPages = projects.map((p) => ({
+      url: `${baseUrl}/projects/${p.slug}`,
+      lastModified: p.updatedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
+  } catch {
+    // Database may be unavailable at build-time; fall back to static set.
+  }
+
+  return [...staticPages, ...projectPages];
 }

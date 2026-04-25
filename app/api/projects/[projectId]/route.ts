@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { deleteMultipleImages, safeDeleteImage } from "@/lib/cloudinary";
+import { requireAuth } from "@/lib/api-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -48,6 +49,9 @@ export async function PUT(
   { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
+    const unauthorized = await requireAuth();
+    if (unauthorized) return unauthorized;
+
     const { projectId } = await params;
     const body = await request.json();
 
@@ -145,6 +149,9 @@ export async function DELETE(
   { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
+    const unauthorized = await requireAuth();
+    if (unauthorized) return unauthorized;
+
     const { projectId } = await params;
 
     const project = await prisma.project.findUnique({

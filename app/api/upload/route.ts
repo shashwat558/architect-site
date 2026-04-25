@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { uploadImage } from "@/lib/cloudinary";
+import { requireAuth } from "@/lib/api-auth";
 
 /**
  * Upload Image Endpoint
@@ -12,6 +13,9 @@ import { uploadImage } from "@/lib/cloudinary";
  */
 export async function POST(request: Request) {
   try {
+    const unauthorized = await requireAuth();
+    if (unauthorized) return unauthorized;
+
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
     const folder = (formData.get("folder") as string) || "adrs";

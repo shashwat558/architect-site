@@ -2,6 +2,7 @@
 import { prisma } from "@/lib/prisma";
 import { rateLimit, rateLimitHeaders, getClientIp } from "@/lib/rate-limit";
 import { checkForSpam } from "@/lib/spam-protection";
+import { requireAuth } from "@/lib/api-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -81,6 +82,9 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const unauthorized = await requireAuth();
+    if (unauthorized) return unauthorized;
+
     const searchParams = request.nextUrl.searchParams;
     const skip = parseInt(searchParams.get("skip") || "0");
     const take = parseInt(searchParams.get("take") || "10");
