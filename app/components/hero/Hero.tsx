@@ -21,7 +21,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import type { HeroData } from "../../data/dummyData";
+import type { HeroData } from "../../data/types";
 import HeroTypography from "./HeroTypography";
 
 // Lazy-load the heavy WebGL canvas (Three.js ~600kb gzipped)

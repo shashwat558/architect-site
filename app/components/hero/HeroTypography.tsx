@@ -13,7 +13,7 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import type { Variants } from "motion/react";
 import { useRef } from "react";
-import type { HeroData } from "../../data/dummyData";
+import type { HeroData } from "../../data/types";
 
 interface HeroTypographyProps {
   data: HeroData;

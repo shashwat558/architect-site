@@ -1,0 +1,9 @@
+export { default as Projects } from "./Projects";
+export { default as ProjectsContent } from "./ProjectsContent";
+export { default as Pillars } from "./Pillars";
+export { default as Offers } from "./Offers";
+export { default as ProjectCTA } from "./ProjectCTA";
+export { default as Testimonials } from "./Testimonials";
+export { default as AnimatedTestimonialsSection } from "./AnimatedTestimonialsSection";
+export { default as TeamSection } from "./TeamSection";
+export { default as ProjectReviewForm } from "./ProjectReviewForm";
