@@ -43,7 +43,7 @@ export default function HeroMesh({
 
     Promise.all([
       loader.loadAsync("/contructed.jpg"),
-      loader.loadAsync("/blueprint.png"),
+      loader.loadAsync("/blueprint.jpg"),
     ]).then(([photo, bp]) => {
       if (cancelled) return;
       [photo, bp].forEach(tex => {

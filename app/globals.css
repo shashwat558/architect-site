@@ -106,6 +106,24 @@ h1, h2, h3, h4, h5, h6 {
   scrollbar-width: none;
 }
 
+/* Custom cursor mode — toggled by the CustomCursor component on desktop only.
+   Inputs and textareas keep their text caret; everything else uses the dot. */
+html.custom-cursor-active,
+html.custom-cursor-active body {
+  cursor: none;
+}
+html.custom-cursor-active a,
+html.custom-cursor-active button,
+html.custom-cursor-active [role="button"] {
+  cursor: none;
+}
+html.custom-cursor-active input,
+html.custom-cursor-active textarea,
+html.custom-cursor-active select,
+html.custom-cursor-active [contenteditable="true"] {
+  cursor: auto;
+}
+
 /* Vibrating text animation — only runs on hover now instead of continuously.
    This saves significant CPU since ~15+ elements had this running infinitely. */
 @keyframes vibrate {

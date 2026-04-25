@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import ProjectCTA from "../components/ProjectCTA";
-import ProjectsContent from "../components/ProjectsContent";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
+import ProjectCTA from "../components/sections/ProjectCTA";
+import ProjectsContent from "../components/sections/ProjectsContent";
 import { projectCTAData, projectsContentData } from "../data/dummyData";
 
 const baseUrl = "https://adrs-design.com";

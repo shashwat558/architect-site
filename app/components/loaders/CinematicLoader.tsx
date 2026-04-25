@@ -1,17 +1,19 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 
 export default function CinematicLoader({ onComplete }: { onComplete: () => void }) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [complete, setComplete] = useState(false);
-  
   useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      // Skip the cinematic intro entirely for users who request reduced motion.
+      const timer = setTimeout(onComplete, 200);
+      return () => clearTimeout(timer);
+    }
     // Total duration approx 3.5s
     const timer = setTimeout(() => {
-        setComplete(true);
         setTimeout(onComplete, 800);
     }, 3800);
     return () => clearTimeout(timer);

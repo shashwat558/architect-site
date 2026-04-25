@@ -3,6 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
 /**
+ * Bootstrap-only: this route lets a pre-shared secret create the first admin
+ * user. Once an Admin row exists, further creation requires an authenticated
+ * admin session. Set ADMIN_BOOTSTRAP_SECRET in production to lock down even
+ * the first call.
+ */
+
+/**
  * Create Admin User
  * WARNING: This endpoint should be secured or removed in production
  * Use it once to create the initial admin user, then remove or protect it
@@ -10,7 +17,19 @@ import bcrypt from "bcrypt";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, password, name } = body;
+    const { email, password, name, bootstrapSecret } = body;
+
+    const adminCount = await prisma.admin.count();
+    if (adminCount > 0) {
+      const { auth } = await import("@/lib/auth");
+      const session = await auth();
+      if (!session?.user) {
+        const expected = process.env.ADMIN_BOOTSTRAP_SECRET;
+        if (!expected || bootstrapSecret !== expected) {
+          return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+      }
+    }
 
     if (!email || !password || !name) {
       return NextResponse.json(

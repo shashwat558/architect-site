@@ -2,8 +2,8 @@
 import { motion } from "motion/react";
 import { useState, type FormEvent } from "react";
 
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 
 
 
@@ -186,9 +186,9 @@ export default function Contact() {
                     </div>
 
                     <div className="space-y-2">
-                        <label htmlFor="scoupe" className="text-sm uppercase tracking-wide text-[var(--muted)]">Project Scope</label>
-                         <select 
-                            id="scope" 
+                        <label htmlFor="scope" className="text-sm uppercase tracking-wide text-[var(--muted)]">Project Scope</label>
+                         <select
+                            id="scope"
                             className="w-full bg-transparent border-b border-[var(--muted)]/30 py-4 text-lg focus:outline-none focus:border-[var(--accent)] transition-colors appearance-none"
                             value={formData.projectType}
                             onChange={(event) =>

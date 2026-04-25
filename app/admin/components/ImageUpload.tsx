@@ -116,12 +116,13 @@ export function ImageUpload({
             alt="Uploaded"
             width={128}
             height={128}
-            className="w-32 h-32 object-cover rounded-lg border border-gray-300"
+            className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg border border-gray-300"
           />
           <button
             type="button"
             onClick={handleRemove}
-            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600"
+            aria-label="Remove image"
+            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm hover:bg-red-600"
           >
             ×
           </button>
@@ -137,7 +138,7 @@ export function ImageUpload({
           onDragOver={handleDrag}
           onDrop={handleDrop}
           className={`
-            border-2 border-dashed rounded-lg p-6 text-center cursor-pointer
+            border-2 border-dashed rounded-lg p-4 sm:p-6 text-center cursor-pointer
             transition-colors duration-200
             ${dragActive ? "border-indigo-500 bg-indigo-50" : "border-gray-300 hover:border-gray-400"}
             ${uploading ? "opacity-50 pointer-events-none" : ""}
@@ -194,7 +195,7 @@ export function ImageUpload({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="Or paste image URL directly"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { requireAuth } from "@/lib/api-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -35,6 +36,9 @@ export async function PUT(
   context: { params: Promise<{ id: string }>}
 ) {
   try {
+    const unauthorized = await requireAuth();
+    if (unauthorized) return unauthorized;
+
     const { id } = await context.params;
     const body = await request.json();
 
@@ -74,6 +78,9 @@ export async function DELETE(
   context: { params: Promise<{ id: string }>}
 ) {
   try {
+    const unauthorized = await requireAuth();
+    if (unauthorized) return unauthorized;
+
     const { id } = await context.params;
 
     const offer = await prisma.offer.findUnique({

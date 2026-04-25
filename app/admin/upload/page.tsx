@@ -48,13 +48,13 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="px-4 sm:px-0">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Upload Images</h1>
-        <p className="text-gray-600 mt-2">Upload images to Cloudinary</p>
+    <div>
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Upload Images</h1>
+        <p className="text-gray-600 mt-2 text-sm sm:text-base">Upload images to Cloudinary</p>
       </div>
 
-      <div className="bg-white shadow rounded-lg p-6 max-w-2xl">
+      <div className="bg-white shadow rounded-lg p-4 sm:p-6 max-w-2xl">
         <div className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -63,7 +63,7 @@ export default function UploadPage() {
             <select
               value={folder}
               onChange={(e) => setFolder(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="adrs">General (adrs)</option>
               <option value="projects">Projects</option>
@@ -111,13 +111,13 @@ export default function UploadPage() {
 
           {imageUrl && (
             <div className="bg-green-50 border border-green-200 rounded-md p-4">
-              <div className="flex items-start justify-between mb-3">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 gap-2">
                 <p className="text-sm font-medium text-green-800">
                   ✓ Upload successful!
                 </p>
                 <button
                   onClick={copyToClipboard}
-                  className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                  className="text-sm bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700 self-start sm:self-auto min-h-11"
                 >
                   Copy URL
                 </button>
@@ -132,7 +132,7 @@ export default function UploadPage() {
                     type="text"
                     value={imageUrl}
                     readOnly
-                    className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
+                    className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-md break-all"
                     onClick={(e) => e.currentTarget.select()}
                   />
                 </div>
@@ -141,11 +141,12 @@ export default function UploadPage() {
                   <p className="text-xs font-medium text-gray-700 mb-2">
                     Preview:
                   </p>
-                  <div className="relative w-full max-w-xl aspect-video">
+                  <div className="relative w-full aspect-video">
                     <Image
                       src={imageUrl}
                       alt="Uploaded"
                       fill
+                      sizes="(max-width: 640px) 100vw, 600px"
                       className="object-contain rounded-md border border-gray-300"
                     />
                   </div>

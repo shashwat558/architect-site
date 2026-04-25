@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   footerPages as mainLinks,
   footerProjects as achievementLinks,
@@ -16,9 +16,13 @@ interface MenuOverlayProps {
 }
 
 export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      // Focus the close button when the dialog opens
+      requestAnimationFrame(() => closeBtnRef.current?.focus());
     } else {
       document.body.style.overflow = "";
     }
@@ -26,6 +30,16 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
+
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [isOpen, onClose]);
 
   return (
     <AnimatePresence>
@@ -41,19 +55,21 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
             />
             
             {/* Modal Container */}
-            <motion.div 
-              className="fixed z-70 flex flex-col overflow-hidden rounded-xl shadow-2xl bg-[#FAF6F1] origin-top-right
-                top-2 right-2 bottom-2 left-2 
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Site navigation"
+              className="fixed z-70 flex flex-col overflow-hidden rounded-none sm:rounded-xl shadow-2xl bg-[#FAF6F1] origin-top-right
+                inset-0
                 md:top-4 md:right-4 md:bottom-4 md:left-auto md:w-[85vw] lg:w-[75vw] xl:w-300"
               initial={{ scale: 0.8, opacity: 0, y: -20, x: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0, x: 0 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }} // Elegant easeOutQuint-ish curve
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
               {/* Top Bar */}
-              <div className="h-14 bg-[#3D2B1F] flex items-center justify-between px-6 text-[#FAF6F1]">
-                {/* Icon (Five Dots Cross) */}
-                <div className="relative w-5 h-5 flex items-center justify-center">
+              <div className="h-14 bg-[#3D2B1F] flex items-center justify-between px-4 sm:px-6 text-[#FAF6F1]">
+                <div className="relative w-5 h-5 flex items-center justify-center" aria-hidden="true">
                     <div className="absolute w-1 h-1 bg-[#FAF6F1] rounded-full"></div>
                     <div className="absolute w-1 h-1 bg-[#FAF6F1] rounded-full -translate-y-2"></div>
                     <div className="absolute w-1 h-1 bg-[#FAF6F1] rounded-full translate-y-2"></div>
@@ -61,28 +77,30 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                     <div className="absolute w-1 h-1 bg-[#FAF6F1] rounded-full translate-x-2"></div>
                 </div>
 
-                <button 
+                <button
+                    ref={closeBtnRef}
                     onClick={onClose}
-                    className="text-xs font-semibold tracking-widest hover:opacity-70 transition-opacity uppercase"
+                    aria-label="Close menu"
+                    className="text-xs font-semibold tracking-widest hover:opacity-70 transition-opacity uppercase min-h-11 px-2"
                 >
                     Close
                 </button>
               </div>
 
               {/* Main Content */}
-              <div className="flex-1 bg-[#FAF6F1] p-6 md:p-10 lg:p-14 overflow-y-auto" data-lenis-prevent="true">
+              <div className="flex-1 bg-[#FAF6F1] p-4 sm:p-6 md:p-10 lg:p-14 overflow-y-auto" data-lenis-prevent="true">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 h-full">
-                    
+
                     {/* Left Column - Main Nav */}
                     <div className="md:col-span-5 flex flex-col justify-center space-y-1">
                         {mainLinks.map((link) => (
-                            <Link 
-                                key={link.name} 
+                            <Link
+                                key={link.name}
                                 href={link.href}
                                 onClick={onClose}
                                 className="relative block group"
                             >
-                                <span className={`text-4xl md:text-5xl lg:text-[5.5rem] leading-[1.1] font-serif transition-colors duration-300 ${
+                                <span className={`text-3xl sm:text-4xl md:text-5xl lg:text-[5.5rem] leading-[1.1] font-serif transition-colors duration-300 ${
                                     link.name === "Welcome" ? "text-[#3D2B1F]" : "text-[#D6CCC2] group-hover:text-[#3D2B1F]"
                                 }`}>
                                     {link.name}
