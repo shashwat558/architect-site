@@ -7,16 +7,17 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Check if user prefers reduced motion
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    // Disable smooth scroll on heavy pages or mobile
-    const disableOnRoute = pathname === "/process";
-    const isMobile = window.innerWidth < 768;
+    // Disable on heavy routes, touch devices, narrow viewports, or admin
+    const disableOnRoute =
+      pathname === "/process" || pathname?.startsWith("/admin");
+    const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    const isNarrow = window.innerWidth < 1024;
 
-    if (prefersReducedMotion || disableOnRoute || isMobile) {
+    if (prefersReducedMotion || disableOnRoute || isCoarsePointer || isNarrow) {
       return;
     }
 

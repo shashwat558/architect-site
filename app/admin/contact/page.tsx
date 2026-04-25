@@ -38,38 +38,38 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="px-4 sm:px-0">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Contact Submissions</h1>
-        <p className="text-gray-600 mt-2">View all contact form submissions</p>
+    <div>
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Contact Submissions</h1>
+        <p className="text-gray-600 mt-2 text-sm sm:text-base">View all contact form submissions</p>
       </div>
 
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
+      <div className="bg-white shadow overflow-hidden rounded-md">
         <ul className="divide-y divide-gray-200">
           {contacts.length === 0 ? (
-            <li className="px-6 py-8 text-center text-gray-500">
+            <li className="px-4 sm:px-6 py-8 text-center text-gray-500">
               No contact submissions yet.
             </li>
           ) : (
             contacts.map((contact) => (
               <li key={contact.id}>
-                <div className="px-6 py-4">
+                <div className="px-4 sm:px-6 py-4">
                   <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-medium text-gray-900">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="text-base sm:text-lg font-medium text-gray-900 break-words">
                           {contact.firstName} {contact.lastName}
                         </h3>
-                        <span className="text-sm text-gray-500">
+                        <span className="text-xs sm:text-sm text-gray-500">
                           {new Date(contact.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                      <div className="mt-2 text-sm text-gray-600">
+                      <div className="mt-2 text-sm text-gray-600 break-words">
                         <p>
                           <span className="font-medium">Email:</span>{" "}
                           <a
                             href={`mailto:${contact.email}`}
-                            className="text-indigo-600 hover:underline"
+                            className="text-indigo-600 hover:underline break-all"
                           >
                             {contact.email}
                           </a>
@@ -93,7 +93,7 @@ export default function ContactPage() {
                         )}
                       </div>
                       <div className="mt-3 p-3 bg-gray-50 rounded-md">
-                        <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                        <p className="text-sm text-gray-700 whitespace-pre-wrap break-words">
                           {contact.message}
                         </p>
                       </div>

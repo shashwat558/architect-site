@@ -99,11 +99,14 @@ export default function Header() {
           </div>
           
           <Magnetic>
-          <motion.button 
+          <motion.button
             onClick={() => setIsMenuOpen(true)}
-            className="border border-[#3D2B1F] text-[#3D2B1F] px-5 py-2.5 rounded-md text-sm font-medium flex items-center gap-2 hover:bg-[#3D2B1F] hover:text-white transition-colors"
+            aria-haspopup="menu"
+            aria-expanded={isMenuOpen}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            className="border border-[#3D2B1F] text-[#3D2B1F] px-4 sm:px-5 py-3 rounded-md text-sm font-medium flex items-center gap-2 hover:bg-[#3D2B1F] hover:text-white transition-colors min-h-11"
           >
-            <span className="flex gap-0.5">
+            <span className="flex gap-0.5" aria-hidden="true">
               <span className="w-1.5 h-1.5 bg-current rounded-full" />
               <span className="w-1.5 h-1.5 bg-current rounded-full" />
             </span>

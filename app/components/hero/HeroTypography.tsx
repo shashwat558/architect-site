@@ -66,7 +66,7 @@ export default function HeroTypography({ data }: HeroTypographyProps) {
         <h1
           className="font-serif leading-[1.05] tracking-tight mb-4"
           style={{
-            fontSize: "clamp(2.8rem, 7vw, 6.5rem)",
+            fontSize: "clamp(1.9rem, 8vw, 6.5rem)",
           }}
         >
           {/* Primary line */}

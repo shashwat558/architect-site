@@ -153,19 +153,19 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="px-4 sm:px-0">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
+    <div>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Projects</h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+          className="bg-indigo-600 text-white px-4 py-3 rounded-md hover:bg-indigo-700 self-start sm:self-auto min-h-11"
         >
           {showForm ? "Cancel" : "Add Project"}
         </button>
       </div>
 
       {showForm && (
-        <div className="bg-white shadow rounded-lg p-6 mb-8">
+        <div className="bg-white shadow rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
           <h2 className="text-xl font-semibold mb-4">
             {editingProject ? "Edit Project" : "Create Project"}
           </h2>
@@ -187,7 +187,7 @@ export default function ProjectsPage() {
                       slug: generateSlug(newTitle)
                     });
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 {formData.slug && (
                   <p className="mt-1 text-sm text-gray-500">
@@ -205,7 +205,7 @@ export default function ProjectsPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, subtitle: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="A tagline for the project"
                 />
               </div>
@@ -220,7 +220,7 @@ export default function ProjectsPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, category: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
               <div>
@@ -234,7 +234,7 @@ export default function ProjectsPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, year: parseInt(e.target.value) })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
               <div>
@@ -247,7 +247,7 @@ export default function ProjectsPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, location: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
@@ -261,7 +261,7 @@ export default function ProjectsPage() {
                     setFormData({ ...formData, brief: e.target.value })
                   }
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="Client's requirements and context..."
                 />
               </div>
@@ -275,7 +275,7 @@ export default function ProjectsPage() {
                     setFormData({ ...formData, approach: e.target.value })
                   }
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="Design strategy and approach..."
                 />
               </div>
@@ -315,17 +315,17 @@ export default function ProjectsPage() {
                 />
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <button
                 type="submit"
-                className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                className="bg-indigo-600 text-white px-4 py-3 rounded-md hover:bg-indigo-700 min-h-11"
               >
                 {editingProject ? "Update" : "Create"}
               </button>
               <button
                 type="button"
                 onClick={resetForm}
-                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300"
+                className="bg-gray-200 text-gray-700 px-4 py-3 rounded-md hover:bg-gray-300 min-h-11"
               >
                 Cancel
               </button>
@@ -334,51 +334,51 @@ export default function ProjectsPage() {
         </div>
       )}
 
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
+      <div className="bg-white shadow overflow-hidden rounded-md">
         <ul className="divide-y divide-gray-200">
           {projects.length === 0 ? (
-            <li className="px-6 py-8 text-center text-gray-500">
+            <li className="px-4 sm:px-6 py-8 text-center text-gray-500">
               No projects yet. Create your first project!
             </li>
           ) : (
             projects.map((project) => (
               <li key={project.id}>
-                <div className="px-6 py-4 flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-4">
+                <div className="px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start sm:items-center gap-4">
                       {project.image && (
                         <Image
                           src={project.image}
                           alt={project.title}
                           width={64}
                           height={64}
-                          className="w-16 h-16 object-cover rounded"
+                          className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded shrink-0"
                         />
                       )}
-                      <div>
-                        <h3 className="text-lg font-medium text-gray-900">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-base sm:text-lg font-medium text-gray-900 break-words">
                           {project.title}
                         </h3>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 break-words">
                           {project.category} • {project.year}
                           {project.location && ` • ${project.location}`}
                         </p>
-                        <p className="text-xs text-gray-400 mt-1">
+                        <p className="text-xs text-gray-400 mt-1 break-all">
                           Slug: {project.slug}
                         </p>
                       </div>
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 shrink-0">
                     <button
                       onClick={() => handleEdit(project)}
-                      className="text-indigo-600 hover:text-indigo-900 px-3 py-1 text-sm"
+                      className="text-indigo-600 hover:text-indigo-900 px-3 py-2 text-sm min-h-11"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDelete(project.id)}
-                      className="text-red-600 hover:text-red-900 px-3 py-1 text-sm"
+                      className="text-red-600 hover:text-red-900 px-3 py-2 text-sm min-h-11"
                     >
                       Delete
                     </button>

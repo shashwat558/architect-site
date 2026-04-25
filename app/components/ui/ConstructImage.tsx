@@ -31,11 +31,13 @@ const Stripe = React.memo(({ progress, index, total, src, direction }: StripePro
 
   // Animation values for the "unfolding" feel
   const opacity = useTransform(progress, [start, end], [0, 1]);
-  
-  // 3D fold-in effect
-  const rotateX = isHorizontal ? useTransform(progress, [start, end], [-90, 0]) : 0;
-  const rotateY = !isHorizontal ? useTransform(progress, [start, end], [-90, 0]) : 0;
-  
+
+  // 3D fold-in effect — call hooks unconditionally; the unused axis stays at 0.
+  const rotateXValue = useTransform(progress, [start, end], [-90, 0]);
+  const rotateYValue = useTransform(progress, [start, end], [-90, 0]);
+  const rotateX = isHorizontal ? rotateXValue : 0;
+  const rotateY = isHorizontal ? 0 : rotateYValue;
+
   // Depth and scale
   const translateZ = useTransform(progress, [start, end], [-200, 0]);
   const scale = useTransform(progress, [start, end], [0.95, 1]);
@@ -62,9 +64,14 @@ const Stripe = React.memo(({ progress, index, total, src, direction }: StripePro
     style.backgroundPosition = `0% ${(index / (total - 1)) * 100}%`;
     style.transformOrigin = "top center";
     
-    // Rounded corners for the very top and bottom stripes
-    if (index === 0) style.borderTopLeftRadius = "1.5rem", style.borderTopRightRadius = "1.5rem";
-    if (index === total - 1) style.borderBottomLeftRadius = "1.5rem", style.borderBottomRightRadius = "1.5rem";
+    if (index === 0) {
+      style.borderTopLeftRadius = "1.5rem";
+      style.borderTopRightRadius = "1.5rem";
+    }
+    if (index === total - 1) {
+      style.borderBottomLeftRadius = "1.5rem";
+      style.borderBottomRightRadius = "1.5rem";
+    }
   } else {
     style.top = 0;
     style.bottom = 0;
@@ -73,8 +80,14 @@ const Stripe = React.memo(({ progress, index, total, src, direction }: StripePro
     style.backgroundPosition = `${(index / (total - 1)) * 100}% 0%`;
     style.transformOrigin = "center left";
 
-    if (index === 0) style.borderTopLeftRadius = "1.5rem", style.borderBottomLeftRadius = "1.5rem";
-    if (index === total - 1) style.borderTopRightRadius = "1.5rem", style.borderBottomRightRadius = "1.5rem";
+    if (index === 0) {
+      style.borderTopLeftRadius = "1.5rem";
+      style.borderBottomLeftRadius = "1.5rem";
+    }
+    if (index === total - 1) {
+      style.borderTopRightRadius = "1.5rem";
+      style.borderBottomRightRadius = "1.5rem";
+    }
   }
 
   return (

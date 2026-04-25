@@ -3,23 +3,23 @@
 import { motion } from "motion/react";
 import dynamic from "next/dynamic";
 
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 import {
   pillarsSectionData,
   projectCTAData,
   teamSectionData,
 } from "../data/dummyData";
 
-const Pillars = dynamic(() => import("../components/Pillars"), {
+const Pillars = dynamic(() => import("../components/sections/Pillars"), {
   ssr: false,
   loading: () => <div className="h-24" />,
 });
-const TeamSection = dynamic(() => import("../components/TeamSection"), {
+const TeamSection = dynamic(() => import("../components/sections/TeamSection"), {
   ssr: false,
   loading: () => <div className="h-24" />,
 });
-const ProjectCTA = dynamic(() => import("../components/ProjectCTA"), {
+const ProjectCTA = dynamic(() => import("../components/sections/ProjectCTA"), {
   ssr: false,
   loading: () => <div className="h-24" />,
 });
@@ -29,20 +29,20 @@ export default function AboutClient() {
     <div className="min-h-screen relative">
       <Header />
 
-      <main className="pt-32 pb-20 px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto">
+      <main className="pt-28 md:pt-32 pb-16 md:pb-20 px-4 sm:px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto">
         {/* Hero Section */}
-        <section className="mb-24">
+        <section className="mb-16 md:mb-24">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-12 relative leading-tight vibrate-text">
+            <h1 className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-8 md:mb-12 relative leading-tight vibrate-text">
               Crafting Spaces <br />
               <span className="italic text-[var(--muted)]">with Soul & Purpose.</span>
             </h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
                 {/* Placeholder for About Hero Image */}
                 <div className="bg-[#E5DDD0] w-full h-full absolute inset-0 flex items-center justify-center text-[var(--muted)]">
@@ -60,14 +60,14 @@ export default function AboutClient() {
                   to create environments that stand the test of time while remaining deeply personal.
                 </p>
                 <div className="pt-4">
-                  <div className="flex gap-12">
+                  <div className="flex gap-8 sm:gap-12 flex-wrap">
                     <div>
-                      <h3 className="font-serif text-4xl text-[var(--accent)] mb-2 vibrate-text">15+</h3>
-                      <p className="text-sm uppercase tracking-widest text-[var(--muted)]">Years Experience</p>
+                      <h3 className="font-serif text-3xl sm:text-4xl text-[var(--accent)] mb-2 vibrate-text">15+</h3>
+                      <p className="text-xs sm:text-sm uppercase tracking-widest text-[var(--muted)]">Years Experience</p>
                     </div>
                     <div>
-                      <h3 className="font-serif text-4xl text-[var(--accent)] mb-2 vibrate-text">100+</h3>
-                      <p className="text-sm uppercase tracking-widest text-[var(--muted)]">Projects Completed</p>
+                      <h3 className="font-serif text-3xl sm:text-4xl text-[var(--accent)] mb-2 vibrate-text">100+</h3>
+                      <p className="text-xs sm:text-sm uppercase tracking-widest text-[var(--muted)]">Projects Completed</p>
                     </div>
                   </div>
                 </div>
@@ -77,8 +77,8 @@ export default function AboutClient() {
         </section>
 
         {/* Philosophy / Values Reused */}
-        <div className="mb-24">
-          <h2 className="font-serif text-4xl md:text-5xl mb-12 text-center vibrate-text">Our Philosophy</h2>
+        <div className="mb-16 md:mb-24">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl mb-8 md:mb-12 text-center vibrate-text">Our Philosophy</h2>
           <Pillars data={pillarsSectionData} />
         </div>
       </main>
@@ -86,7 +86,7 @@ export default function AboutClient() {
       {/* Team Section - Full Width */}
       <TeamSection data={teamSectionData} />
 
-      <main className="px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto">
+      <main className="px-4 sm:px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto">
         <ProjectCTA data={projectCTAData} />
       </main>
 

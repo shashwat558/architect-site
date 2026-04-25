@@ -28,11 +28,11 @@ export default function Projects({ data }: ProjectsProps) {
   }, []);
 
   return (
-    <section ref={ref} className="py-24 bg-transparent overflow-hidden">
-      <div className="w-full px-6 md:px-12 lg:px-20 mb-16">
+    <section ref={ref} className="py-16 sm:py-24 bg-transparent overflow-hidden">
+      <div className="w-full px-4 sm:px-6 md:px-12 lg:px-20 mb-10 sm:mb-16">
         {/* Section Header */}
-        <motion.div 
-          className="flex flex-col md:flex-row justify-between items-end gap-6"
+        <motion.div
+          className="flex flex-col md:flex-row justify-between md:items-end gap-6"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
@@ -60,20 +60,21 @@ export default function Projects({ data }: ProjectsProps) {
       </div>
 
       {/* Draggable Projects Slider */}
-      <motion.div 
-        ref={carouselRef} 
-        className="cursor-grab active:cursor-grabbing pl-6 md:pl-12 lg:pl-20"
+      <motion.div
+        ref={carouselRef}
+        className="cursor-grab active:cursor-grabbing pl-4 sm:pl-6 md:pl-12 lg:pl-20"
         whileTap={{ cursor: "grabbing" }}
       >
-        <motion.div 
-            drag="x" 
-            dragConstraints={{ right: 0, left: -width }} 
-            className="flex gap-8 md:gap-12 w-fit pr-20"
+        <motion.div
+            drag="x"
+            dragElastic={0.15}
+            dragConstraints={{ right: 0, left: -width }}
+            className="flex gap-6 md:gap-12 w-fit pr-12 sm:pr-20"
         >
             {data.projects.map((project, index) => (
             <motion.div
                 key={project.id}
-                className="relative group min-w-[85vw] md:min-w-125 lg:min-w-150"
+                className="relative group min-w-[80vw] sm:min-w-[70vw] md:min-w-125 lg:min-w-150"
                 initial={{ opacity: 0, x: 100 }}
                 animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
                 transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
@@ -83,8 +84,8 @@ export default function Projects({ data }: ProjectsProps) {
                 className="block"
                 >
                     {/* Image Container */}
-                    <div 
-                        className="relative h-112.5 md:h-150 lg:h-175 overflow-hidden rounded-sm"
+                    <div
+                        className="relative h-80 sm:h-96 md:h-150 lg:h-175 overflow-hidden rounded-sm"
                         onMouseEnter={() => setCursorVariant("project")}
                         onMouseLeave={() => setCursorVariant("default")}
                     >

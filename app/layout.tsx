@@ -1,9 +1,17 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Playfair_Display, Roboto } from "next/font/google";
 import "./globals.css";
 import { CursorProvider } from "./context/CursorContext";
 import CustomCursor from "./components/ui/CustomCursor";
 import SmoothScroll from "./components/ui/SmoothScroll";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#3D2B1F",
+  colorScheme: "light",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,7 +49,6 @@ export const metadata: Metadata = {
     "Bhopal",
     "Ad.Rs Design Studio",
   ],
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
   authors: [{ name: "AD.RS Design Studio" }],
   creator: "Ad.Rs Design Studio",
@@ -86,11 +93,8 @@ export const metadata: Metadata = {
     creator: "@adrsdesign",
   },
   other: {
-    "preconnect": "https://fonts.googleapis.com",
-    "preload": "https://fonts.gstatic.com",
     "apple-mobile-web-app-capable": "yes",
     "apple-mobile-web-app-status-bar-style": "black-translucent",
-    "theme-color": "#3D2B1F",
   },
 };
 

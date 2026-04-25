@@ -1,30 +1,33 @@
 "use client";
 
 import { motion, useMotionValue, useSpring } from "motion/react";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function Magnetic({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
-  
+  const [enabled, setEnabled] = useState(false);
+
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Spring physics for smooth return
   const springConfig = { damping: 15, stiffness: 150, mass: 0.1 };
   const xSpring = useSpring(x, springConfig);
   const ySpring = useSpring(y, springConfig);
 
+  useEffect(() => {
+    const fine = window.matchMedia("(pointer: fine)").matches;
+    const hoverable = window.matchMedia("(hover: hover)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setEnabled(fine && hoverable && !reducedMotion);
+  }, []);
+
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (!enabled || !ref.current) return;
     const { clientX, clientY } = e;
-    if (!ref.current) return;
-    
     const { height, width, left, top } = ref.current.getBoundingClientRect();
-    
-    // Calculate distance from center
     const middleX = clientX - (left + width / 2);
     const middleY = clientY - (top + height / 2);
-
-    x.set(middleX * 0.35); // 35% movement strength
+    x.set(middleX * 0.35);
     y.set(middleY * 0.35);
   };
 
@@ -32,6 +35,10 @@ export default function Magnetic({ children }: { children: React.ReactNode }) {
     x.set(0);
     y.set(0);
   };
+
+  if (!enabled) {
+    return <>{children}</>;
+  }
 
   return (
     <motion.div

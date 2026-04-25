@@ -3,8 +3,8 @@
 import { useRef } from "react";
 import { motion, useScroll, useInView, useSpring } from "motion/react";
 import Link from "next/link";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 import { cn } from "@/lib/utils";
 
 const processSteps = [
@@ -59,7 +59,7 @@ const StepCard = ({ step, index }: { step: typeof processSteps[0]; index: number
     <div 
       ref={ref}
       className={cn(
-        "relative flex flex-col md:flex-row items-center gap-12 md:gap-24 py-24",
+        "relative flex flex-col md:flex-row items-center gap-8 md:gap-24 py-16 md:py-24",
         isEven ? "md:flex-row" : "md:flex-row-reverse"
       )}
     >
@@ -91,8 +91,8 @@ const StepCard = ({ step, index }: { step: typeof processSteps[0]; index: number
             >
               Phase 0{step.id}
            </motion.span>
-           <h3 className="text-4xl md:text-6xl font-serif text-[#3D2B1F]">{step.title}</h3>
-           <p className="text-xl md:text-2xl text-[#D97706]/80 font-serif italic">{step.subtitle}</p>
+           <h3 className="text-3xl sm:text-4xl md:text-6xl font-serif text-[#3D2B1F] break-words">{step.title}</h3>
+           <p className="text-lg sm:text-xl md:text-2xl text-[#D97706]/80 font-serif italic">{step.subtitle}</p>
         </div>
         <p className="text-lg text-[#6B5B4F] leading-relaxed max-w-lg mx-auto md:mx-0">
             {step.description}
@@ -106,7 +106,7 @@ const StepCard = ({ step, index }: { step: typeof processSteps[0]; index: number
          transition={{ duration: 0.8, delay: 0.2 }}
          className="md:w-1/2 w-full"
       >
-        <div className="relative group bg-white/40 backdrop-blur-md border border-[#D97706]/10 p-8 md:p-12 rounded-3xl shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(217,119,6,0.15)] transition-all duration-500 overflow-hidden">
+        <div className="relative group bg-white/40 backdrop-blur-md border border-[#D97706]/10 p-6 sm:p-8 md:p-12 rounded-3xl shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(217,119,6,0.15)] transition-all duration-500 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-[#ffffff] via-[#FAF6F1] to-[#D97706]/5 opacity-80" />
             
             {/* Hover Indicator */}
@@ -170,7 +170,7 @@ export default function ProcessPage() {
           <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-[#FAF6F1] to-transparent" />
       </div>
 
-      <main className="relative z-10 pt-32 pb-20 px-4 md:px-12 max-w-7xl mx-auto overflow-hidden">
+      <main className="relative z-10 pt-28 sm:pt-32 pb-16 sm:pb-20 px-4 md:px-12 max-w-7xl mx-auto overflow-hidden">
         
         {/* Connection Line (Desktop) */}
         <div className="hidden md:block absolute left-1/2 top-[400px] bottom-[200px] w-0.5 bg-[#D97706]/10 -translate-x-1/2 z-0">
@@ -181,7 +181,7 @@ export default function ProcessPage() {
         </div>
      
         {/* Hero */}
-        <div className="relative py-24 md:py-40 text-center max-w-4xl mx-auto z-10">
+        <div className="relative py-16 sm:py-24 md:py-40 text-center max-w-4xl mx-auto z-10">
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -193,7 +193,7 @@ export default function ProcessPage() {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-7xl md:text-9xl font-serif text-[#3D2B1F] leading-[0.9] tracking-tight"
+                className="text-5xl sm:text-6xl md:text-9xl font-serif text-[#3D2B1F] leading-[0.95] md:leading-[0.9] tracking-tight"
             >
                 How We <br/>
                 <span className="italic text-[#D97706] bg-clip-text">Build Dreams</span>
@@ -203,7 +203,7 @@ export default function ProcessPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="mt-8 text-xl md:text-2xl text-[#6B5B4F] font-light max-w-2xl mx-auto leading-relaxed"
+                className="mt-6 sm:mt-8 text-lg sm:text-xl md:text-2xl text-[#6B5B4F] font-light max-w-2xl mx-auto leading-relaxed"
             >
                 Architecture is messy. We make it <span className="text-[#3D2B1F] font-medium border-b border-[#D97706]">seamless</span>.
                 <br/>Here is our blueprint for clarity, from first coffee to final key turn.
@@ -224,17 +224,17 @@ export default function ProcessPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 initial={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.8 }}
-                className="max-w-3xl mx-auto bg-[#3D2B1F] text-[#FAF6F1] rounded-3xl p-12 md:p-20 shadow-2xl relative overflow-hidden"
+                className="max-w-3xl mx-auto bg-[#3D2B1F] text-[#FAF6F1] rounded-3xl p-8 sm:p-12 md:p-20 shadow-2xl relative overflow-hidden"
             >
                 {/* Decorative circles */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#D97706] rounded-full blur-[100px] opacity-20 translate-x-1/2 -translate-y-1/2"/>
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#D97706] rounded-full blur-[100px] opacity-20 -translate-x-1/2 translate-y-1/2"/>
 
-                <h2 className="text-4xl md:text-6xl font-serif mb-6 relative z-10">Ready to begin?</h2>
-                <p className="text-[#FAF6F1]/70 text-lg md:text-xl font-light mb-10 max-w-lg mx-auto relative z-10">
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-serif mb-4 sm:mb-6 relative z-10">Ready to begin?</h2>
+                <p className="text-[#FAF6F1]/70 text-base sm:text-lg md:text-xl font-light mb-8 sm:mb-10 max-w-lg mx-auto relative z-10">
                     Your space is waiting to be found. Step 1 is just a conversation.
                 </p>
-                <Link href="/contact" className="relative z-10 inline-flex items-center gap-3 px-10 py-5 bg-[#D97706] text-white rounded-full text-lg font-medium transition-all hover:bg-white hover:text-[#D97706] hover:scale-105 shadow-xl group">
+                <Link href="/contact" className="relative z-10 inline-flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-[#D97706] text-white rounded-full text-base sm:text-lg font-medium transition-all hover:bg-white hover:text-[#D97706] hover:scale-105 shadow-xl group min-h-12">
                     <span>Book Consultation</span>
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="transition-transform duration-300 group-hover:translate-x-1">
                         <path d="M4.16669 10H15.8334" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

@@ -4,10 +4,10 @@ import { motion, useScroll, useTransform, useInView, AnimatePresence } from "mot
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import TestimonialSection from "../../components/TestimonialSection";
-import ProjectReviewForm from "../../components/ProjectReviewForm";
+import Header from "../../components/layout/Header";
+import Footer from "../../components/layout/Footer";
+import TestimonialSection from "../../components/sections/SimpleTestimonial";
+import ProjectReviewForm from "../../components/sections/ProjectReviewForm";
 import { BeforeAfterSlider } from "../../components/ui/BeforeAfterSlider";
 
 // --- Mock Data ---
@@ -250,26 +250,26 @@ export default function ProjectDetail() {
 
       <section className="relative min-h-[110vh] flex flex-col justify-between pt-32 pb-12 overflow-hidden">
           <div className="absolute top-0 right-0 p-4 md:p-12 opacity-30">
-              <span className="text-[10vw] md:text-[8vw] leading-none font-serif text-[#ECE5D9] select-none">
+              <span className="text-6xl sm:text-7xl md:text-[8vw] leading-none font-serif text-[#ECE5D9] select-none">
                   2024
               </span>
           </div>
 
-          <div className="px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto w-full z-10 relative mt-20">
-              <motion.div 
+          <div className="px-4 sm:px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto w-full z-10 relative mt-16 md:mt-20">
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1 }}
               >
-                <div className="flex flex-col md:flex-row items-baseline gap-4 md:gap-8 mb-4">
+                <div className="flex flex-col md:flex-row items-baseline gap-2 md:gap-8 mb-4">
                     <span className="text-xs md:text-sm tracking-[0.2em] uppercase text-[#D97706] font-medium">Residential</span>
                     <span className="text-xs md:text-sm tracking-[0.2em] uppercase text-[#9B8B7A]">{project.subtitle}</span>
                 </div>
-                
-                <h1 className="font-serif text-[12vw] leading-[0.85] text-[#3D2B1F] tracking-tighter mix-blend-multiply">
+
+                <h1 className="font-serif text-6xl sm:text-7xl md:text-[12vw] leading-[0.95] md:leading-[0.85] text-[#3D2B1F] tracking-tighter mix-blend-multiply break-words">
                     Modern
                 </h1>
-                <h1 className="font-serif text-[12vw] leading-[0.85] text-[#3D2B1F] tracking-tighter mix-blend-multiply ml-[10vw]">
+                <h1 className="font-serif text-6xl sm:text-7xl md:text-[12vw] leading-[0.95] md:leading-[0.85] text-[#3D2B1F] tracking-tighter mix-blend-multiply ml-[6vw] md:ml-[10vw] break-words">
                     Residence
                 </h1>
               </motion.div>
@@ -291,8 +291,8 @@ export default function ProjectDetail() {
           </motion.div>
       </section>
 
-      <section className="px-6 md:px-12 lg:px-20 py-20 bg-[#FAF6F1] relative z-20">
-         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 border-t border-[#3D2B1F]/20 pt-8">
+      <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-20 bg-[#FAF6F1] relative z-20">
+         <div className="grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8 border-t border-[#3D2B1F]/20 pt-8">
              {project.meta.map((item, i) => (
                  <div key={i} className="flex flex-col gap-2">
                      <span className="text-[10px] uppercase tracking-widest text-[#9B8B7A]">{item.label}</span>
@@ -302,8 +302,8 @@ export default function ProjectDetail() {
          </div>
       </section>
 
-      <main className="px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto pb-32">
-        <section className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 py-20 md:py-32">
+      <main className="px-4 sm:px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto pb-20 sm:pb-32">
+        <section className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-24 py-12 sm:py-20 md:py-32">
              <div className="md:col-span-4 lg:col-span-3">
                  <div className="sticky top-32">
                      <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[#D97706] mb-4">The Narrative</h2>
@@ -340,7 +340,7 @@ export default function ProjectDetail() {
 
         <MaterialBoard materials={project.materials} />
 
-        <ParallaxImage src={project.heroImage} alt="Detail" aspectRatio="aspect-[21/9]" className="mb-32 grayscale-[10%]" />
+        <ParallaxImage src={project.heroImage} alt="Detail" aspectRatio="aspect-video sm:aspect-[21/9]" className="mb-20 sm:mb-32 grayscale-[10%]" />
 
         <section className="space-y-12">
             <div className="flex justify-end px-4">
@@ -356,11 +356,11 @@ export default function ProjectDetail() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.5 }}
-                        className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end"
+                        className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 md:items-end"
                     >
                         {project.processGallery.map((img, i) => (
                             <div key={`process-${i}`} className={`${img.width} relative group`}>
-                                <div className="border border-[#3D2B1F]/10 p-4 bg-white shadow-sm rotate-1 md:rotate-0 transition-transform md:group-hover:rotate-1">
+                                <div className="border border-[#3D2B1F]/10 p-4 bg-white shadow-sm md:rotate-0 transition-transform md:group-hover:rotate-1">
                                     <ParallaxImage src={img.src} alt={img.label} aspectRatio={img.aspectRatio} className="filter sepia-[0.3] contrast-[0.9]" />
                                     <div className="flex justify-between items-end mt-4">
                                         <span className="block text-[10px] uppercase tracking-widest text-[#D97706] font-bold">Concept 0{i + 1}</span>
@@ -377,7 +377,7 @@ export default function ProjectDetail() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.5 }}
-                        className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end"
+                        className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 md:items-end"
                     >
                         {project.gallery.map((img, i) => (
                             <div key={`final-${i}`} className={`${img.width} relative`}>
@@ -416,7 +416,7 @@ export default function ProjectDetail() {
 
                  <div className="relative z-10 flex flex-col items-center justify-center">
                      <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#D97706] mb-6 block">Next Project</span>
-                     <h2 className="font-serif text-6xl md:text-9xl text-[#3D2B1F] group-hover:translate-x-4 transition-transform duration-500">
+                     <h2 className="font-serif text-5xl sm:text-6xl md:text-9xl text-[#3D2B1F] group-hover:translate-x-4 transition-transform duration-500 text-center break-words px-4">
                          {project.nextProject.name}
                      </h2>
                      <div className="mt-8 flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">

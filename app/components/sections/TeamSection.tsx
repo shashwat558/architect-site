@@ -52,6 +52,7 @@ const itemVariants = {
 // 3D Tilt Component for Modal Blocks
 const TiltBlock = ({ children, className, variants }: { children: React.ReactNode; className?: string; variants?: Variants }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [enabled, setEnabled] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -61,8 +62,15 @@ const TiltBlock = ({ children, className, variants }: { children: React.ReactNod
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
 
+  useEffect(() => {
+    setEnabled(
+      window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }, []);
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
+    if (!enabled || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -83,9 +91,9 @@ const TiltBlock = ({ children, className, variants }: { children: React.ReactNod
     <motion.div
       ref={ref}
       variants={variants}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      onMouseMove={enabled ? handleMouseMove : undefined}
+      onMouseLeave={enabled ? handleMouseLeave : undefined}
+      style={enabled ? { rotateX, rotateY, transformStyle: "preserve-3d" } : undefined}
       className={`relative perspective-1000 ${className}`}
     >
       {children}
@@ -126,7 +134,7 @@ const TeamMemberModal = ({ member, onClose }: { member: TeamMember; onClose: () 
         initial="hidden"
         animate="visible"
         exit="exit"
-        className="relative w-full max-w-7xl h-[85vh] grid grid-cols-1 md:grid-cols-12 gap-6 p-4 md:p-8 pointer-events-none perspective-2000"
+        className="relative w-full max-w-7xl max-h-[95vh] md:h-[85vh] overflow-y-auto md:overflow-visible grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 p-3 md:p-8 pointer-events-none perspective-2000"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button - Staggered */}
@@ -147,7 +155,7 @@ const TeamMemberModal = ({ member, onClose }: { member: TeamMember; onClose: () 
         {/* Left Column: Main Person Image (Spans 5 cols) */}
         <TiltBlock
           variants={itemVariants}
-          className="md:col-span-5 rounded-3xl overflow-hidden h-[40vh] md:h-full shadow-2xl bg-[#2a1d15] pointer-events-auto group"
+          className="md:col-span-5 rounded-3xl overflow-hidden h-[35vh] md:h-full shadow-2xl bg-[#2a1d15] pointer-events-auto group"
         >
           <Image
             src={member.image}
@@ -261,6 +269,7 @@ const TeamMemberCard = ({
   onClick: () => void;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [enabled, setEnabled] = useState(false);
 
   // Mouse position logic for 3D tilt
   const x = useMotionValue(0);
@@ -278,8 +287,15 @@ const TeamMemberCard = ({
   const spotlightX = useTransform(mouseXSpring, [-0.5, 0.5], ["0%", "100%"]);
   const spotlightY = useTransform(mouseYSpring, [-0.5, 0.5], ["0%", "100%"]);
 
+  useEffect(() => {
+    setEnabled(
+      window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }, []);
+
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
+    if (!enabled || !ref.current) return;
 
     const rect = ref.current.getBoundingClientRect();
 
@@ -418,11 +434,11 @@ export default function TeamSection({ data }: TeamSectionProps) {
         )}
       </AnimatePresence>
 
-      <section className="w-full bg-[#FAF6F1] py-24 px-6 md:px-12 lg:px-20 overflow-hidden">
+      <section className="w-full bg-[#FAF6F1] py-16 md:py-24 px-4 sm:px-6 md:px-12 lg:px-20 overflow-hidden">
         <div className="max-w-[1400px] mx-auto">
 
           {/* Header Content */}
-          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+          <div className="flex flex-col md:flex-row justify-between md:items-end mb-12 md:mb-20 gap-6 md:gap-8">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -433,7 +449,7 @@ export default function TeamSection({ data }: TeamSectionProps) {
                 <span className="h-[1px] w-12 bg-[#D97706]"></span>
                 <span className="text-[#D97706] uppercase tracking-widest text-sm font-semibold vibrate-text">{data.eyebrow}</span>
               </div>
-              <h2 className="font-serif text-6xl md:text-7xl lg:text-8xl text-[#3D2B1F] leading-[0.9] vibrate-text">
+              <h2 className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-[#3D2B1F] leading-[0.95] md:leading-[0.9] vibrate-text">
                 {data.title} <br /> <span className="italic opacity-80">{data.subtitle}</span>
               </h2>
             </motion.div>
@@ -443,14 +459,14 @@ export default function TeamSection({ data }: TeamSectionProps) {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-              className="text-[#3D2B1F]/70 text-lg md:text-xl max-w-md text-right leading-relaxed font-light"
+              className="text-[#3D2B1F]/70 text-base md:text-xl max-w-md md:text-right leading-relaxed font-light"
             >
               {data.description}
             </motion.p>
           </div>
 
           {/* Constructing Team Image Overlay */}
-          <div className="w-full mb-32 h-[50vh] md:h-[70vh] rounded-2xl">
+          <div className="w-full mb-16 md:mb-32 h-[40vh] md:h-[70vh] rounded-2xl">
             <ConstructImage
               src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&fit=crop&q=80"
               stripes={12}
@@ -459,7 +475,7 @@ export default function TeamSection({ data }: TeamSectionProps) {
           </div>
 
           {/* Grid Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-10 md:gap-y-16">
             {data.members.map((member, index) => (
               <div key={member.id} className={`${index % 2 === 1 ? "md:mt-20" : ""}`}>
                 <TeamMemberCard

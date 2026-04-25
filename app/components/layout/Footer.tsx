@@ -12,13 +12,6 @@ import {
   legalLinks,
 } from "../../config/navigation";
 
-// Placeholder latest releases — replace with a real CMS/API fetch when ready
-const latestReleases = [
-  { type: "WHITE PAPER", title: "Knowledge or window rehydrate race great journey needed to see crystallize." },
-  { type: "VIDEO", title: "Without product activities alarming functional." },
-  { type: "ARTICLE", title: "Where up fured management crack optimal sorry can't reinvent." },
-];
-
 // Simple link list — uses CSS transitions instead of individual motion.li elements
 const LinkList = ({ items }: { items: { name: string; href: string }[] }) => (
   <ul className="space-y-2">
@@ -116,25 +109,6 @@ export default function Footer() {
             </div>
             </Magnetic>
 
-            {/* Latest Releases */}
-            <div className="space-y-3">
-              <h4 className="text-[#9B8B7A] text-xs uppercase tracking-wide vibrate-text">
-                Latest Releases
-              </h4>
-              <div className="space-y-2 max-h-40 overflow-y-auto">
-                {latestReleases.map((item, index) => (
-                  <div
-                    key={index}
-                    className="bg-[#EDE5D8] rounded p-3 cursor-pointer hover:bg-[#E5DDD0] hover:scale-[1.02] hover:translate-x-1 transition-all duration-200"
-                  >
-                    <span className="text-[#D97706] text-xs font-medium">
-                      {item.type}
-                    </span>
-                    <p className="text-[#3D2B1F] text-sm mt-1">{item.title}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
 

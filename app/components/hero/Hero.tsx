@@ -54,10 +54,13 @@ export default function Hero({ data }: HeroProps) {
   const [carouselWidth, setCarouselWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile to skip heavy WebGL
+  // Detect mobile to skip heavy WebGL — react to changes (rotation/resize)
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 768px), (pointer: coarse)");
-    setIsMobile(mq.matches);
+    const mq = window.matchMedia("(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => mq.removeEventListener?.("change", update);
   }, []);
 
   // Carousel measurement
@@ -81,7 +84,7 @@ export default function Hero({ data }: HeroProps) {
       <section
         ref={sectionRef}
         className="relative w-full overflow-hidden"
-        style={{ height: "100svh", minHeight: "560px" }}
+        style={{ height: "100svh", minHeight: "480px" }}
         aria-label="Immersive architectural hero section"
       >
         {/* Layer 1: WebGL Canvas (or static fallback) */}
@@ -135,10 +138,11 @@ export default function Hero({ data }: HeroProps) {
 
         {/* Scroll indicator — animates the arrow down at the bottom center */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none motion-reduce:hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.5, duration: 1.0 }}
+          aria-hidden="true"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}
@@ -183,7 +187,7 @@ export default function Hero({ data }: HeroProps) {
             {duplicatedImages.map((image, index) => (
               <motion.div
                 key={index}
-                className="relative min-w-[300px] md:min-w-[380px] h-[350px] md:h-[480px] rounded-lg overflow-hidden shrink-0"
+                className="relative min-w-[240px] sm:min-w-[300px] md:min-w-[380px] h-[280px] sm:h-[350px] md:h-[480px] rounded-lg overflow-hidden shrink-0"
                 whileHover={{ scale: 1.02, y: -8 }}
                 transition={{ duration: 0.3 }}
               >
@@ -192,7 +196,7 @@ export default function Hero({ data }: HeroProps) {
                   alt={image.alt}
                   fill
                   className="object-cover transition-transform duration-500 hover:scale-110"
-                  sizes="(max-width: 768px) 300px, 380px"
+                  sizes="(max-width: 640px) 240px, (max-width: 768px) 300px, 380px"
                   loading={index < 3 ? "eager" : "lazy"}
                   quality={75}
                 />

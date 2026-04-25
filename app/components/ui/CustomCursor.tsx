@@ -12,12 +12,10 @@ export default function CustomCursor() {
   const rafRef = useRef<number>(0);
   const pendingX = useRef(0);
   const pendingY = useRef(0);
-  
-  // Mouse position state
+
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
-  // Smooth spring animation for cursor movement — slightly stiffer for less computation
   const springConfig = { damping: 25, stiffness: 400 };
   const cursorX = useSpring(mouseX, springConfig);
   const cursorY = useSpring(mouseY, springConfig);
@@ -26,20 +24,27 @@ export default function CustomCursor() {
     const checkSupport = () => {
       const finePointer = window.matchMedia("(pointer: fine)").matches;
       const hoverCapable = window.matchMedia("(hover: hover)").matches;
-      setIsEnabled(finePointer && hoverCapable);
+      // Disable on any device that ALSO has a coarse pointer (touch tablets like iPad, Surface).
+      const hasTouch = window.matchMedia("(any-pointer: coarse)").matches;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      setIsEnabled(finePointer && hoverCapable && !hasTouch && !reducedMotion);
     };
 
     checkSupport();
-    // No need to recalculate on every resize — device type doesn't change
-    return () => {};
+    const fineMQ = window.matchMedia("(pointer: fine)");
+    const hoverMQ = window.matchMedia("(hover: hover)");
+    fineMQ.addEventListener?.("change", checkSupport);
+    hoverMQ.addEventListener?.("change", checkSupport);
+    return () => {
+      fineMQ.removeEventListener?.("change", checkSupport);
+      hoverMQ.removeEventListener?.("change", checkSupport);
+    };
   }, []);
 
   useEffect(() => {
-    // Reset variant on route change to avoid sticky state
     setCursorVariant("default");
   }, [pathname, setCursorVariant]);
 
-  // Throttle mouse moves with rAF to avoid excessive spring updates
   const scheduleCursorUpdate = useCallback(() => {
     if (rafRef.current) return;
     rafRef.current = requestAnimationFrame(() => {
@@ -51,9 +56,7 @@ export default function CustomCursor() {
 
   useEffect(() => {
     if (!isEnabled) {
-      document.body.style.cursor = "auto";
-      const style = document.getElementById("cursor-style");
-      if (style) style.remove();
+      document.documentElement.classList.remove("custom-cursor-active");
       return;
     }
 
@@ -64,25 +67,18 @@ export default function CustomCursor() {
     };
 
     window.addEventListener("mousemove", moveCursor, { passive: true });
-
-    // Hide default cursor
-    document.body.style.cursor = "none";
-    
-    const style = document.createElement('style');
-    style.innerHTML = `* { cursor: none !important; }`;
-    style.id = 'cursor-style';
-    document.head.appendChild(style);
+    // Activates the CSS rules in globals.css that hide the native cursor on
+    // most chrome — interactive elements still keep their browser-native
+    // cursor for accessibility (text caret in inputs, pointer on links).
+    document.documentElement.classList.add("custom-cursor-active");
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
-      document.body.style.cursor = "auto";
-      const s = document.getElementById('cursor-style');
-      if(s) s.remove();
+      document.documentElement.classList.remove("custom-cursor-active");
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [isEnabled, scheduleCursorUpdate]);
 
-  // Variants for cursor animation
   const variants = {
     default: {
       height: 12,
@@ -101,13 +97,13 @@ export default function CustomCursor() {
       mixBlendMode: "difference" as const,
     },
     text: {
-        height: 60,
-        width: 60,
-        backgroundColor: "#D97706",
-        x: "-50%",
-        y: "-50%",
-        mixBlendMode: "difference" as const,
-    }
+      height: 60,
+      width: 60,
+      backgroundColor: "#D97706",
+      x: "-50%",
+      y: "-50%",
+      mixBlendMode: "difference" as const,
+    },
   };
 
   if (!isEnabled) return null;
@@ -124,9 +120,9 @@ export default function CustomCursor() {
       transition={{ type: "spring", stiffness: 500, damping: 28 }}
     >
       {cursorVariant === "project" && (
-          <span className="text-black text-xs font-bold uppercase tracking-widest opacity-0 animate-in fade-in duration-300">
-              View
-          </span>
+        <span className="text-black text-xs font-bold uppercase tracking-widest opacity-0 animate-in fade-in duration-300">
+          View
+        </span>
       )}
     </motion.div>
   );

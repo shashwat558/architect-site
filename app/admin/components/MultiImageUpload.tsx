@@ -123,19 +123,21 @@ export function MultiImageUpload({
 
       {/* Preview uploaded images */}
       {value.length > 0 && (
-        <div className="grid grid-cols-4 gap-2 mb-4">
+        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-4">
           {value.map((url, index) => (
-            <div key={index} className="relative w-full h-20">
+            <div key={index} className="relative w-full aspect-square">
               <Image
                 src={url}
                 alt={`Gallery ${index + 1}`}
                 fill
+                sizes="(max-width: 640px) 33vw, 25vw"
                 className="object-cover rounded border border-gray-300"
               />
               <button
                 type="button"
                 onClick={() => handleRemove(index)}
-                className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
+                aria-label={`Remove image ${index + 1}`}
+                className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600"
               >
                 ×
               </button>

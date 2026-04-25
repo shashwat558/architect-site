@@ -15,6 +15,12 @@ export default function Testimonials({ data }: TestimonialsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
+  // Disable autoplay if user prefers reduced motion
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) setIsAutoPlaying(false);
+  }, []);
+
   // Auto-play carousel
   useEffect(() => {
     if (!isAutoPlaying) return;

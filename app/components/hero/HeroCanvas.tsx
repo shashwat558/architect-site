@@ -72,12 +72,14 @@ export default function HeroCanvas() {
     <div ref={containerRef} className="absolute inset-0 w-full h-full" aria-hidden="true">
       <Canvas
         camera={{ fov: 60, near: 0.1, far: 100, position: [0, 0, 1] }}
-        dpr={[1, 1.5]}
+        dpr={[1, 1.75]}
+        frameloop="always"
         gl={{
           antialias: false,
           alpha: false,
           powerPreference: "high-performance",
           failIfMajorPerformanceCaveat: false,
+          preserveDrawingBuffer: false,
         }}
         onCreated={({ gl }) => {
           // Handle context loss gracefully

@@ -100,19 +100,19 @@ export default function OffersPage() {
   }
 
   return (
-    <div className="px-4 sm:px-0">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Offers</h1>
+    <div>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Offers</h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+          className="bg-indigo-600 text-white px-4 py-3 rounded-md hover:bg-indigo-700 self-start sm:self-auto min-h-11"
         >
           {showForm ? "Cancel" : "Add Offer"}
         </button>
       </div>
 
       {showForm && (
-        <div className="bg-white shadow rounded-lg p-6 mb-8">
+        <div className="bg-white shadow rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
           <h2 className="text-xl font-semibold mb-4">
             {editingOffer ? "Edit Offer" : "Create Offer"}
           </h2>
@@ -128,7 +128,7 @@ export default function OffersPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, title: e.target.value })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             <div>
@@ -142,7 +142,7 @@ export default function OffersPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             <div>
@@ -156,7 +156,7 @@ export default function OffersPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, link: e.target.value })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="/offers/special-offer"
               />
             </div>
@@ -170,21 +170,21 @@ export default function OffersPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, ctaLabel: e.target.value })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="View all offers"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <button
                 type="submit"
-                className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                className="bg-indigo-600 text-white px-4 py-3 rounded-md hover:bg-indigo-700 min-h-11"
               >
                 {editingOffer ? "Update" : "Create"}
               </button>
               <button
                 type="button"
                 onClick={resetForm}
-                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300"
+                className="bg-gray-200 text-gray-700 px-4 py-3 rounded-md hover:bg-gray-300 min-h-11"
               >
                 Cancel
               </button>
@@ -193,38 +193,38 @@ export default function OffersPage() {
         </div>
       )}
 
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
+      <div className="bg-white shadow overflow-hidden rounded-md">
         <ul className="divide-y divide-gray-200">
           {offers.length === 0 ? (
-            <li className="px-6 py-8 text-center text-gray-500">
+            <li className="px-4 sm:px-6 py-8 text-center text-gray-500">
               No offers yet. Create your first offer!
             </li>
           ) : (
             offers.map((offer) => (
               <li key={offer.id}>
-                <div className="px-6 py-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <h3 className="text-lg font-medium text-gray-900">
+                <div className="px-4 sm:px-6 py-4">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base sm:text-lg font-medium text-gray-900 break-words">
                         {offer.title}
                       </h3>
-                      <p className="text-sm text-gray-600 mt-2">
+                      <p className="text-sm text-gray-600 mt-2 break-words">
                         {offer.description}
                       </p>
-                      <p className="text-xs text-gray-400 mt-2">
+                      <p className="text-xs text-gray-400 mt-2 break-all">
                         Link: {offer.link} • CTA: {offer.ctaLabel}
                       </p>
                     </div>
-                    <div className="flex gap-2 ml-4">
+                    <div className="flex gap-2 sm:ml-4">
                       <button
                         onClick={() => handleEdit(offer)}
-                        className="text-indigo-600 hover:text-indigo-900 px-3 py-1 text-sm"
+                        className="text-indigo-600 hover:text-indigo-900 px-3 py-2 text-sm min-h-11"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(offer.id)}
-                        className="text-red-600 hover:text-red-900 px-3 py-1 text-sm"
+                        className="text-red-600 hover:text-red-900 px-3 py-2 text-sm min-h-11"
                       >
                         Delete
                       </button>

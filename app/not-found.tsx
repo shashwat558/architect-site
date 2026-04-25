@@ -28,7 +28,7 @@ export default function NotFound() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="font-serif text-[120px] md:text-[180px] leading-none text-[#D97706] opacity-20 select-none"
+          className="font-serif text-[5rem] sm:text-[7rem] md:text-[10rem] lg:text-[12rem] leading-none text-[#D97706] opacity-20 select-none"
         >
           404
         </motion.h1>
@@ -39,8 +39,8 @@ export default function NotFound() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="space-y-4 max-w-lg -mt-10 md:-mt-16"
         >
-            <h2 className="text-3xl md:text-4xl font-serif">Structure Not Found</h2>
-            <p className="text-[#6B5B4F] text-lg font-light leading-relaxed">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif">Structure Not Found</h2>
+            <p className="text-[#6B5B4F] text-base sm:text-lg font-light leading-relaxed">
             The space you are looking for has not been built yet, or perhaps it has been demolished.
             </p>
         </motion.div>
@@ -52,7 +52,7 @@ export default function NotFound() {
         >
             <Link 
             href="/"
-            className="group relative inline-flex items-center gap-2 px-8 py-3 bg-[#3D2B1F] text-[#FAF6F1] rounded-full overflow-hidden transition-all hover:bg-[#D97706]"
+            className="group relative inline-flex items-center gap-2 px-8 py-3 bg-[#3D2B1F] text-[#FAF6F1] rounded-full overflow-hidden transition-all hover:bg-[#D97706] min-h-12"
             >
             <span className="relative z-10 font-medium">Return Home</span>
             <svg 
