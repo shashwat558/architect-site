@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { motion, useInView } from "motion/react";
 import { useRef, useState, useEffect } from "react";
 import { useCursor } from "../../context/CursorContext";
@@ -71,47 +71,50 @@ export default function Projects({ data }: ProjectsProps) {
             dragConstraints={{ right: 0, left: -width }}
             className="flex gap-6 md:gap-12 w-fit pr-12 sm:pr-20"
         >
-            {data.projects.map((project, index) => (
-            <motion.div
-                key={project.id}
-                className="relative group min-w-[80vw] sm:min-w-[70vw] md:min-w-125 lg:min-w-150"
-                initial={{ opacity: 0, x: 100 }}
-                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
-                transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
-            >
-                <Link
-                href={project.link}
-                className="block"
+            {data.projects.map((project, index) => {
+              const projectSlug = project.link.split("/").pop();
+              return (
+                <motion.div
+                    key={project.id}
+                    className="relative group min-w-[80vw] sm:min-w-[70vw] md:min-w-125 lg:min-w-150"
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
+                    transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
                 >
-                    {/* Image Container */}
-                    <div
-                        className="relative h-80 sm:h-96 md:h-150 lg:h-175 overflow-hidden rounded-sm"
-                        onMouseEnter={() => setCursorVariant("project")}
-                        onMouseLeave={() => setCursorVariant("default")}
+                    <Link
+                    href={project.link}
+                    className="block"
                     >
-                         {/* Card Number */}
-                         <div className="absolute top-4 left-4 z-20 mix-blend-difference text-white/80 font-mono text-sm tracking-widest backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">
-                           {String(index + 1).padStart(2, "0")} / {totalLabel}
-                         </div>
-
-                        <motion.div
-                            className="absolute inset-0 w-full h-full"
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ duration: 0.6, ease: "easeOut" }}
+                        {/* Image Container */}
+                        <div
+                            className="relative h-80 sm:h-96 md:h-150 lg:h-175 overflow-hidden rounded-sm"
+                            onMouseEnter={() => setCursorVariant("project")}
+                            onMouseLeave={() => setCursorVariant("default")}
                         >
-                            <Image
-                            src={project.image}
-                            alt={project.title}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 85vw, (max-width: 1024px) 500px, 600px"
-                            loading={index < 2 ? "eager" : "lazy"}
-                            quality={75}
-                            />
-                            {/* Dark gradient overlay on hover */}
-                            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
-                        </motion.div>
-                    </div>
+                             {/* Card Number */}
+                             <div className="absolute top-4 left-4 z-20 mix-blend-difference text-white/80 font-mono text-sm tracking-widest backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">
+                               {String(index + 1).padStart(2, "0")} / {totalLabel}
+                             </div>
+    
+                            <motion.div
+                                className="absolute inset-0 w-full h-full"
+                                whileHover={{ scale: 1.05 }}
+                                transition={{ duration: 0.6, ease: "easeOut" }}
+                            >
+                                <Image
+                                src={project.image}
+                                alt={project.title}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 85vw, (max-width: 1024px) 500px, 600px"
+                                loading={index < 2 ? "eager" : "lazy"}
+                                quality={75}
+                                style={{ viewTransitionName: `project-image-${projectSlug}` } as React.CSSProperties}
+                                />
+                                {/* Dark gradient overlay on hover */}
+                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
+                            </motion.div>
+                        </div>
                 
                     {/* Info Below Image */}
                     <div className="mt-6 flex justify-between items-start border-t border-[#3D2B1F]/10 pt-4">
@@ -123,7 +126,8 @@ export default function Projects({ data }: ProjectsProps) {
                     </div>
                 </Link>
             </motion.div>
-            ))}
+              );
+            })}
         </motion.div>
       </motion.div>
     </section>

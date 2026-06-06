@@ -52,12 +52,12 @@ export default function Hero({ data }: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [carouselWidth, setCarouselWidth] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
 
-  // Detect mobile to skip heavy WebGL — react to changes (rotation/resize)
+  // Detect reduced motion preference (allow WebGL on mobile now)
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)");
-    const update = () => setIsMobile(mq.matches);
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduceMotion(mq.matches);
     update();
     mq.addEventListener?.("change", update);
     return () => mq.removeEventListener?.("change", update);
@@ -88,7 +88,7 @@ export default function Hero({ data }: HeroProps) {
         aria-label="Immersive architectural hero section"
       >
         {/* Layer 1: WebGL Canvas (or static fallback) */}
-        {isMobile ? (
+        {reduceMotion ? (
           <div className="absolute inset-0 w-full h-full">
             <Image
               src="/contructed.jpg"

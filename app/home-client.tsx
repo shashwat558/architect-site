@@ -6,17 +6,19 @@ import dynamic from "next/dynamic";
 import { getActiveLoader } from "./components/loaders/loaderConfig";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
-import Hero from "./components/hero/Hero";
+import PoeticHero from "./components/hero/PoeticHero";
 import AnimatedTestimonialsSection from "./components/sections/AnimatedTestimonialsSection";
 import ConstructImage from "./components/ui/ConstructImage";
-import {
-  heroData,
-  offersSectionData,
-  pillarsSectionData,
-  projectCTAData,
-  projectsSectionData,
-  testimonialsSectionData,
-} from "./data/content";
+import { Testimonials } from "./components/sections";
+import type {
+  HeroData,
+  OffersSectionData,
+  PillarsSectionData,
+  ProjectCTAData,
+  ProjectsSectionData,
+  TeamSectionData,
+  TestimonialsSectionData,
+} from "./data/types";
 
 // Lazy-load heavy below-fold sections to keep the initial bundle lean
 const Projects = dynamic(() => import("./components/sections/Projects"), {
@@ -38,7 +40,24 @@ const ProjectCTA = dynamic(() => import("./components/sections/ProjectCTA"), {
 
 const ActiveLoader = getActiveLoader();
 
-export default function HomeClient() {
+type HomeClientProps = {
+  heroData: HeroData;
+  projectsSectionData: ProjectsSectionData;
+  pillarsSectionData: PillarsSectionData;
+  offersSectionData: OffersSectionData;
+  testimonialsSectionData: TestimonialsSectionData;
+  projectCTAData: ProjectCTAData;
+  teamSectionData: TeamSectionData;
+};
+
+export default function HomeClient({
+  heroData,
+  projectsSectionData,
+  pillarsSectionData,
+  offersSectionData,
+  testimonialsSectionData,
+  projectCTAData,
+}: HomeClientProps) {
   const [loading, setLoading] = useState(true);
 
   // Prevent body scroll while the intro loader is visible
@@ -59,10 +78,10 @@ export default function HomeClient() {
             : "opacity-100 visible transition-opacity duration-700"
         }
       >
-        <Header />
-
         <main>
-          <Hero data={heroData} />
+          <div className="relative w-full overflow-hidden">
+            <PoeticHero data={heroData} />
+          </div>
 
           <Projects data={projectsSectionData} />
           <Pillars data={pillarsSectionData} />
@@ -70,7 +89,7 @@ export default function HomeClient() {
 
           {/* Studio Team preview — full team on /about */}
           <section
-            className="w-full bg-[#FAF6F1] py-24 px-6 md:px-12 lg:px-20 overflow-hidden"
+            className="w-full py-24 px-6 md:px-12 lg:px-20 overflow-hidden"
             aria-label="Meet the studio team"
           >
             <div className="max-w-[1400px] mx-auto">
@@ -92,12 +111,11 @@ export default function HomeClient() {
             </div>
           </section>
 
-          <AnimatedTestimonialsSection data={testimonialsSectionData} />
+          <Testimonials data={testimonialsSectionData} />
           <ProjectCTA data={projectCTAData} />
         </main>
-
-        <Footer />
       </div>
+
     </div>
   );
 }

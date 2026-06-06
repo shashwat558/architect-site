@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { useState } from "react";
 import { useCursor } from "../../context/CursorContext";
 import type { ProjectsContentData } from "../../data/types";
@@ -54,29 +54,39 @@ export default function ProjectsContent({ data }: ProjectsContentProps) {
 
       {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-12 gap-y-20">
-        {filteredProjects.map((project, index) => (
-          <motion.div
-            key={project.id}
-            layout
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-          >
-            <Link href={project.link} className="group block">
-              <div 
-                className="relative aspect-[16/10] overflow-hidden rounded-lg mb-6"
-                onMouseEnter={() => setCursorVariant("view")}
-                onMouseLeave={() => setCursorVariant("default")}
-              >
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
-              </div>
+        {filteredProjects.map((project, index) => {
+          const projectSlug = project.link.split("/").pop();
+          return (
+            <motion.div
+              key={project.id}
+              layout
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+                <Link href={project.link} className="group block">
+                <div 
+                  className="relative aspect-[16/10] overflow-hidden rounded-lg mb-6 bg-[#EDE5D8]"
+                  onMouseEnter={() => setCursorVariant("view")}
+                  onMouseLeave={() => setCursorVariant("default")}
+                >
+                  {project.image ? (
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      style={{ viewTransitionName: `project-image-${projectSlug}` } as React.CSSProperties}
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="font-serif text-4xl text-[#3D2B1F]/20">{project.title[0]}</span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+                </div>
+
               
               <div className="flex justify-between items-start">
                 <div>
@@ -94,7 +104,8 @@ export default function ProjectsContent({ data }: ProjectsContentProps) {
               </div>
             </Link>
           </motion.div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Empty State */}

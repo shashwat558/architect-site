@@ -33,6 +33,7 @@ export default function HeroMesh({
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const meshRef = useRef<THREE.Mesh>(null);
   const hoverStrRef = useRef(0);
+  const idleTimeRef = useRef(0);
   const { size, camera } = useThree();
   const [textures, setTextures] = useState<[THREE.Texture, THREE.Texture] | null>(null);
 
@@ -101,20 +102,41 @@ export default function HeroMesh({
     }
   }, [size, camera]);
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     const u = uniforms.current;
     u.uTime.value += delta;
 
+    // Track idle time
+    if (isHoveringRef.current) {
+        idleTimeRef.current = 0;
+    } else {
+        idleTimeRef.current += delta;
+    }
+
+    const isIdle = idleTimeRef.current > 2.0;
+
+    let targetHover = isHoveringRef.current ? 1.0 : 0.0;
+    let targetX = mouseRef.current.x;
+    let targetY = mouseRef.current.y;
+
+    if (isIdle) {
+      // Smoothly fade in an auto-floating blob
+      targetHover = 0.4 + 0.2 * Math.sin(state.clock.elapsedTime * 0.8);
+      // Figure 8 float path around the center
+      const floatX = 0.5 + 0.25 * Math.sin(state.clock.elapsedTime * 0.4);
+      const floatY = 0.5 + 0.15 * Math.cos(state.clock.elapsedTime * 0.7);
+      targetX = floatX;
+      targetY = floatY;
+    }
+
     // Ease hover strength
-    const targetHover = isHoveringRef.current ? 1.0 : 0.0;
     hoverStrRef.current += (targetHover - hoverStrRef.current) * 0.05;
     u.uHoverStrength.value = hoverStrRef.current;
 
     // Spring-smooth mouse
-    const raw = mouseRef.current;
     const sm  = smoothMouseRef.current;
-    sm.x += (raw.x - sm.x) * SPRING;
-    sm.y += (raw.y - sm.y) * SPRING;
+    sm.x += (targetX - sm.x) * SPRING;
+    sm.y += (targetY - sm.y) * SPRING;
     u.uMouseSmoothed.value.set(sm.x, sm.y);
   });
 

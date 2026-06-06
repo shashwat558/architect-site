@@ -3,13 +3,11 @@
 import { motion } from "motion/react";
 import dynamic from "next/dynamic";
 
-import Header from "../components/layout/Header";
-import Footer from "../components/layout/Footer";
-import {
-  pillarsSectionData,
-  projectCTAData,
-  teamSectionData,
-} from "../data/dummyData";
+import type {
+  PillarsSectionData,
+  ProjectCTAData,
+  TeamSectionData,
+} from "../data/types";
 
 const Pillars = dynamic(() => import("../components/sections/Pillars"), {
   ssr: false,
@@ -24,11 +22,19 @@ const ProjectCTA = dynamic(() => import("../components/sections/ProjectCTA"), {
   loading: () => <div className="h-24" />,
 });
 
-export default function AboutClient() {
-  return (
-    <div className="min-h-screen relative">
-      <Header />
+type AboutClientProps = {
+  teamSectionData: TeamSectionData;
+  pillarsSectionData: PillarsSectionData;
+  projectCTAData: ProjectCTAData;
+};
 
+export default function AboutClient({
+  teamSectionData,
+  pillarsSectionData,
+  projectCTAData,
+}: AboutClientProps) {
+  return (
+    <>
       <main className="pt-28 md:pt-32 pb-16 md:pb-20 px-4 sm:px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto">
         {/* Hero Section */}
         <section className="mb-16 md:mb-24">
@@ -39,7 +45,7 @@ export default function AboutClient() {
           >
             <h1 className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-8 md:mb-12 relative leading-tight vibrate-text">
               Crafting Spaces <br />
-              <span className="italic text-[var(--muted)]">with Soul & Purpose.</span>
+              <span className="italic text-[var(--muted)]">with Soul &amp; Purpose.</span>
             </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
@@ -55,8 +61,8 @@ export default function AboutClient() {
                   AD.RS Design Studio was born from a desire to reconnect architecture with human emotion. We believe that spaces should not just be inhabited, but felt.
                 </p>
                 <p className="text-[var(--muted)] leading-relaxed">
-                  Founded in Bhopal, our studio operates at the intersection of art, architecture, and interior design. 
-                  We approach every project as a unique narrative, weaving together context, culture, and client aspirations 
+                  Founded in Bhopal, our studio operates at the intersection of art, architecture, and interior design.
+                  We approach every project as a unique narrative, weaving together context, culture, and client aspirations
                   to create environments that stand the test of time while remaining deeply personal.
                 </p>
                 <div className="pt-4">
@@ -76,9 +82,11 @@ export default function AboutClient() {
           </motion.div>
         </section>
 
-        {/* Philosophy / Values Reused */}
+        {/* Philosophy / Values */}
         <div className="mb-16 md:mb-24">
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl mb-8 md:mb-12 text-center vibrate-text">Our Philosophy</h2>
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl mb-8 md:mb-12 text-center vibrate-text">
+            Our Philosophy
+          </h2>
           <Pillars data={pillarsSectionData} />
         </div>
       </main>
@@ -89,8 +97,7 @@ export default function AboutClient() {
       <main className="px-4 sm:px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto">
         <ProjectCTA data={projectCTAData} />
       </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }
+

@@ -4,6 +4,9 @@ import "./globals.css";
 import { CursorProvider } from "./context/CursorContext";
 import CustomCursor from "./components/ui/CustomCursor";
 import SmoothScroll from "./components/ui/SmoothScroll";
+import { ViewTransitions } from "next-view-transitions";
+import LayoutWrapper from "./components/layout/LayoutWrapper";
+
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -104,7 +107,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <ViewTransitions>
+      <html lang="en">
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
@@ -196,20 +200,24 @@ export default function RootLayout({
         className={`${geistSans.variable} ${playfair.variable} ${roboto.variable} antialiased relative min-h-screen`}
       >
         <CursorProvider>
-          <SmoothScroll>
-            <CustomCursor />
-            {/* Amber Glow Background */}
-            <div
+          {/* Amber Glow Background */}
+          <div
             className="fixed inset-0 -z-10"
             style={{
-                backgroundImage: `radial-gradient(125% 125% at 50% 10%, #fff 40%, #f59e0b 100%)`,
-                backgroundSize: "100% 100%",
+              backgroundImage: `radial-gradient(125% 125% at 50% 10%, #fff 40%, #f59e0b 100%)`,
+              backgroundSize: "100% 100%",
             }}
-            />
-            {children}
+          />
+          <SmoothScroll>
+            <CustomCursor />
+            <LayoutWrapper>
+              {children}
+            </LayoutWrapper>
           </SmoothScroll>
+
         </CursorProvider>
       </body>
     </html>
+    </ViewTransitions>
   );
 }
