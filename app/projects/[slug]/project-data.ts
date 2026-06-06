@@ -108,7 +108,7 @@ const projectDataList: ProjectData[] = [
       {
         name: "Travertine",
         origin: "Italy",
-        texture: "https://images.unsplash.com/photo-1596253406211-1c19b35b62b1?w=400&q=80",
+        texture: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=400&q=80",
       },
       {
         name: "Teak Wood",

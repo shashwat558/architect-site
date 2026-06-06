@@ -1,109 +1,75 @@
-"use client";
+import { prisma } from "@/lib/prisma";
+import { IconMail } from "@tabler/icons-react";
 
-import { useEffect, useState } from "react";
-
-interface Contact {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  projectType?: string;
-  message: string;
-  createdAt: string;
-}
-
-export default function ContactPage() {
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchContacts();
-  }, []);
-
-  const fetchContacts = async () => {
-    try {
-      const res = await fetch("/api/contact");
-      const data = await res.json();
-      setContacts(data.items || []);
-    } catch (error) {
-      console.error("Failed to fetch contacts:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return <div className="text-center py-12">Loading...</div>;
-  }
+export default async function ContactPage() {
+  const contacts = await prisma.contactSubmission.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <div>
-      <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Contact Submissions</h1>
-        <p className="text-gray-600 mt-2 text-sm sm:text-base">View all contact form submissions</p>
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-slate-900">Contact Submissions</h1>
+        <p className="text-slate-500 text-sm mt-0.5">
+          {contacts.length} submission{contacts.length !== 1 ? "s" : ""}
+        </p>
       </div>
 
-      <div className="bg-white shadow overflow-hidden rounded-md">
-        <ul className="divide-y divide-gray-200">
-          {contacts.length === 0 ? (
-            <li className="px-4 sm:px-6 py-8 text-center text-gray-500">
-              No contact submissions yet.
-            </li>
-          ) : (
-            contacts.map((contact) => (
-              <li key={contact.id}>
-                <div className="px-4 sm:px-6 py-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="text-base sm:text-lg font-medium text-gray-900 break-words">
-                          {contact.firstName} {contact.lastName}
-                        </h3>
-                        <span className="text-xs sm:text-sm text-gray-500">
-                          {new Date(contact.createdAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <div className="mt-2 text-sm text-gray-600 break-words">
-                        <p>
-                          <span className="font-medium">Email:</span>{" "}
-                          <a
-                            href={`mailto:${contact.email}`}
-                            className="text-indigo-600 hover:underline break-all"
-                          >
-                            {contact.email}
-                          </a>
-                        </p>
-                        {contact.phone && (
-                          <p>
-                            <span className="font-medium">Phone:</span>{" "}
-                            <a
-                              href={`tel:${contact.phone}`}
-                              className="text-indigo-600 hover:underline"
-                            >
-                              {contact.phone}
-                            </a>
-                          </p>
-                        )}
-                        {contact.projectType && (
-                          <p>
-                            <span className="font-medium">Project Type:</span>{" "}
-                            {contact.projectType}
-                          </p>
-                        )}
-                      </div>
-                      <div className="mt-3 p-3 bg-gray-50 rounded-md">
-                        <p className="text-sm text-gray-700 whitespace-pre-wrap break-words">
-                          {contact.message}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+      <div className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm overflow-hidden">
+        {contacts.length === 0 ? (
+          <div className="py-16 text-center text-slate-400">
+            <IconMail className="mx-auto mb-3 text-slate-200" size={40} />
+            <p className="font-medium">No submissions yet</p>
+          </div>
+        ) : (
+          <ul className="divide-y divide-slate-100">
+            {contacts.map((contact: (typeof contacts)[number]) => (
+              <li key={contact.id} className="px-6 py-5">
+                <div className="flex flex-wrap items-center gap-3 mb-3">
+                  <span className="font-semibold text-slate-900">
+                    {contact.firstName} {contact.lastName}
+                  </span>
+                  <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
+                    {new Date(contact.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </span>
+                  {contact.projectType && (
+                    <span className="text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">
+                      {contact.projectType}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap gap-4 text-sm mb-3">
+                  <a
+                    href={`mailto:${contact.email}`}
+                    className="flex items-center gap-1.5 text-slate-600 hover:text-slate-900 transition-colors"
+                  >
+                    <IconMail size={14} />
+                    {contact.email}
+                  </a>
+                  {contact.phone && (
+                    <a
+                      href={`tel:${contact.phone}`}
+                      className="text-slate-600 hover:text-slate-900 transition-colors"
+                    >
+                      {contact.phone}
+                    </a>
+                  )}
+                </div>
+
+                <div className="bg-slate-50 rounded-lg p-4">
+                  <p className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">
+                    {contact.message}
+                  </p>
                 </div>
               </li>
-            ))
-          )}
-        </ul>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

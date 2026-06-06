@@ -45,18 +45,47 @@ export default function HeroCanvas() {
   const handleMouseEnter = useCallback(() => { isHoveringRef.current = true; }, []);
   const handleMouseLeave = useCallback(() => { isHoveringRef.current = false; }, []);
 
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    const el = containerRef.current;
+    if (!el || e.touches.length === 0) return;
+    const rect = el.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = (touch.clientX - rect.left) / rect.width;
+    const y = 1.0 - (touch.clientY - rect.top) / rect.height;
+    mouseRef.current = { x, y };
+  }, []);
+
+  const handleTouchStart = useCallback((e: TouchEvent) => { 
+    isHoveringRef.current = true; 
+    handleTouchMove(e);
+  }, [handleTouchMove]);
+
+  const handleTouchEnd = useCallback(() => { 
+    isHoveringRef.current = false; 
+  }, []);
+
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     el.addEventListener("mousemove", handleMouseMove, { passive: true });
     el.addEventListener("mouseenter", handleMouseEnter);
     el.addEventListener("mouseleave", handleMouseLeave);
+    
+    el.addEventListener("touchmove", handleTouchMove, { passive: true });
+    el.addEventListener("touchstart", handleTouchStart, { passive: true });
+    el.addEventListener("touchend", handleTouchEnd);
+    el.addEventListener("touchcancel", handleTouchEnd);
     return () => {
       el.removeEventListener("mousemove", handleMouseMove);
       el.removeEventListener("mouseenter", handleMouseEnter);
       el.removeEventListener("mouseleave", handleMouseLeave);
+      
+      el.removeEventListener("touchmove", handleTouchMove);
+      el.removeEventListener("touchstart", handleTouchStart);
+      el.removeEventListener("touchend", handleTouchEnd);
+      el.removeEventListener("touchcancel", handleTouchEnd);
     };
-  }, [handleMouseMove, handleMouseEnter, handleMouseLeave]);
+  }, [handleMouseMove, handleMouseEnter, handleMouseLeave, handleTouchMove, handleTouchStart, handleTouchEnd]);
 
   // Static fallback if WebGL not supported
   if (webglFailed) {

@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import AboutClient from "./AboutClient";
+import { client } from "../../sanity/lib/client";
+import { teamMembersQuery } from "../../sanity/lib/queries";
+import { teamSectionData, pillarsSectionData, projectCTAData } from "../data/content";
+import type { TeamSectionData } from "../data/types";
 
 const baseUrl = "https://adrs-design.com";
 
@@ -46,7 +50,38 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AboutPage() {
+type SanityTeamMember = {
+  _id: string;
+  name: string;
+  role: string;
+  image: string;
+  displayOrder?: number;
+};
+
+export default async function AboutPage() {
+  const sanityTeam = await client.fetch<SanityTeamMember[]>(
+    teamMembersQuery,
+    {},
+    { next: { revalidate: 60 } }
+  );
+
+  // Map Sanity team members → TeamMember shape expected by TeamSection
+  const liveTeamSection: TeamSectionData =
+    sanityTeam.length > 0
+      ? {
+          ...teamSectionData,
+          members: sanityTeam.map((m, i) => ({
+            id: i + 1,
+            name: m.name,
+            title: m.role,
+            image: m.image ?? "",
+            bio: "",
+            gallery: [],
+            socials: [],
+          })),
+        }
+      : teamSectionData;
+
   const aboutSchema = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
@@ -68,7 +103,11 @@ export default function AboutPage() {
           __html: JSON.stringify(aboutSchema),
         }}
       />
-      <AboutClient />
+      <AboutClient
+        teamSectionData={liveTeamSection}
+        pillarsSectionData={pillarsSectionData}
+        projectCTAData={projectCTAData}
+      />
     </>
   );
 }

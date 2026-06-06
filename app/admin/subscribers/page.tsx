@@ -1,96 +1,59 @@
-"use client";
+import { prisma } from "@/lib/prisma";
+import { IconBell } from "@tabler/icons-react";
+import { SubscribersExportButton } from "./SubscribersExportButton";
 
-import { useEffect, useState } from "react";
-
-interface Subscriber {
-  id: string;
-  email: string;
-  createdAt: string;
-}
-
-export default function SubscribersPage() {
-  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchSubscribers();
-  }, []);
-
-  const fetchSubscribers = async () => {
-    try {
-      const res = await fetch("/api/subscribers");
-      const data = await res.json();
-      setSubscribers(data.subscribers || []);
-    } catch (error) {
-      console.error("Failed to fetch subscribers:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const exportEmails = () => {
-    const emails = subscribers.map((s) => s.email).join("\n");
-    const blob = new Blob([emails], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `subscribers-${new Date().toISOString().split("T")[0]}.txt`;
-    a.click();
-  };
-
-  if (loading) {
-    return <div className="text-center py-12">Loading...</div>;
-  }
+export default async function SubscribersPage() {
+  const subscribers = await prisma.subscriber.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4">
+      <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Subscribers</h1>
-          <p className="text-gray-600 mt-2 text-sm sm:text-base">
-            Total: {subscribers.length} subscriber{subscribers.length !== 1 ? "s" : ""}
+          <h1 className="text-2xl font-bold text-slate-900">Subscribers</h1>
+          <p className="text-slate-500 text-sm mt-0.5">
+            {subscribers.length} subscriber{subscribers.length !== 1 ? "s" : ""}
           </p>
         </div>
         {subscribers.length > 0 && (
-          <button
-            onClick={exportEmails}
-            className="bg-indigo-600 text-white px-4 py-3 rounded-md hover:bg-indigo-700 self-start sm:self-auto min-h-11"
-          >
-            Export Emails
-          </button>
+          <SubscribersExportButton
+            emails={subscribers.map((s: (typeof subscribers)[number]) => s.email)}
+          />
         )}
       </div>
 
-      <div className="bg-white shadow overflow-hidden rounded-md">
-        <ul className="divide-y divide-gray-200">
-          {subscribers.length === 0 ? (
-            <li className="px-4 sm:px-6 py-8 text-center text-gray-500">
-              No subscribers yet.
-            </li>
-          ) : (
-            subscribers.map((subscriber) => (
-              <li key={subscriber.id}>
-                <div className="px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900 break-all">
-                      {subscriber.email}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Subscribed:{" "}
-                      {new Date(subscriber.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <a
-                    href={`mailto:${subscriber.email}`}
-                    className="text-indigo-600 hover:text-indigo-900 text-sm self-start sm:self-auto"
-                  >
-                    Email
-                  </a>
+      <div className="bg-white rounded-xl ring-1 ring-slate-200 shadow-sm overflow-hidden">
+        {subscribers.length === 0 ? (
+          <div className="py-16 text-center text-slate-400">
+            <IconBell className="mx-auto mb-3 text-slate-200" size={40} />
+            <p className="font-medium">No subscribers yet</p>
+          </div>
+        ) : (
+          <ul className="divide-y divide-slate-100">
+            {subscribers.map((sub: (typeof subscribers)[number]) => (
+              <li key={sub.id} className="flex items-center justify-between gap-4 px-6 py-4 hover:bg-slate-50 transition-colors">
+                <div>
+                  <p className="text-sm font-medium text-slate-900">{sub.email}</p>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Joined{" "}
+                    {new Date(sub.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </p>
                 </div>
+                <a
+                  href={`mailto:${sub.email}`}
+                  className="text-xs text-slate-500 hover:text-slate-900 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+                >
+                  Email
+                </a>
               </li>
-            ))
-          )}
-        </ul>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

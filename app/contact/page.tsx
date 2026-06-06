@@ -2,8 +2,6 @@
 import { motion } from "motion/react";
 import { useState, type FormEvent } from "react";
 
-import Header from "../components/layout/Header";
-import Footer from "../components/layout/Footer";
 
 
 
@@ -60,9 +58,7 @@ export default function Contact() {
     };
 
   return (
-    <div className="min-h-screen relative">
-      <Header />
-      
+    <>
       <main className="pt-32 pb-20 px-6 md:px-12 lg:px-20 max-w-[1920px] mx-auto">
         <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -240,8 +236,7 @@ export default function Contact() {
             </motion.div>
         </div>
       </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }
+

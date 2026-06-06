@@ -44,7 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const projects = await prisma.project.findMany({
       select: { slug: true, updatedAt: true },
     });
-    projectPages = projects.map((p) => ({
+    projectPages = projects.map((p: (typeof projects)[number]) => ({
       url: `${baseUrl}/projects/${p.slug}`,
       lastModified: p.updatedAt,
       changeFrequency: "monthly" as const,

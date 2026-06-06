@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useInView, useSpring } from "motion/react";
+import { motion, useScroll, useInView, useSpring, useTransform } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
-import Header from "../components/layout/Header";
-import Footer from "../components/layout/Footer";
 import { cn } from "@/lib/utils";
+
 
 const processSteps = [
   {
@@ -56,7 +56,7 @@ const StepCard = ({ step, index }: { step: typeof processSteps[0]; index: number
   const isEven = index % 2 === 0;
 
   return (
-    <div 
+    <div
       ref={ref}
       className={cn(
         "relative flex flex-col md:flex-row items-center gap-8 md:gap-24 py-16 md:py-24",
@@ -65,82 +65,82 @@ const StepCard = ({ step, index }: { step: typeof processSteps[0]; index: number
     >
       {/* Center Checkpoint Marker for Desktop */}
       <div className="hidden md:flex absolute left-1/2 top-24 -translate-x-1/2 flex-col items-center justify-center z-10">
-        <motion.div 
-            initial={{ scale: 0, opacity: 0 }}
-            animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="w-12 h-12 rounded-full bg-[#FAF6F1] border-4 border-[#3D2B1F] flex items-center justify-center text-[#3D2B1F] font-bold font-serif text-lg shadow-[0_0_20px_rgba(217,119,6,0.3)] z-10"
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="w-12 h-12 rounded-full bg-[#FAF6F1] border-4 border-[#3D2B1F] flex items-center justify-center text-[#3D2B1F] font-bold font-serif text-lg shadow-[0_0_20px_rgba(217,119,6,0.3)] z-10"
         >
-            {step.id}
+          {step.id}
         </motion.div>
       </div>
 
       {/* Narrative Section */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, x: isEven ? -50 : 50 }}
         animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isEven ? -50 : 50 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className={cn("md:w-1/2 space-y-6 text-center", isEven ? "md:text-right" : "md:text-left")}
       >
         <div className="space-y-2">
-           <motion.span 
-              initial={{ opacity: 0 }} 
-              animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-[#D97706] text-xs font-bold tracking-[0.2em] uppercase"
-            >
-              Phase 0{step.id}
-           </motion.span>
-           <h3 className="text-3xl sm:text-4xl md:text-6xl font-serif text-[#3D2B1F] break-words">{step.title}</h3>
-           <p className="text-lg sm:text-xl md:text-2xl text-[#D97706]/80 font-serif italic">{step.subtitle}</p>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-[#D97706] text-xs font-bold tracking-[0.2em] uppercase"
+          >
+            Phase 0{step.id}
+          </motion.span>
+          <h3 className="text-3xl sm:text-4xl md:text-6xl font-serif text-[#3D2B1F] break-words">{step.title}</h3>
+          <p className="text-lg sm:text-xl md:text-2xl text-[#D97706]/80 font-serif italic">{step.subtitle}</p>
         </div>
         <p className="text-lg text-[#6B5B4F] leading-relaxed max-w-lg mx-auto md:mx-0">
-            {step.description}
+          {step.description}
         </p>
       </motion.div>
 
       {/* The Exchange Card */}
-      <motion.div 
-         initial={{ opacity: 0, scale: 0.9, y: 30 }}
-         animate={isInView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 30 }}
-         transition={{ duration: 0.8, delay: 0.2 }}
-         className="md:w-1/2 w-full"
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 30 }}
+        animate={isInView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 30 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="md:w-1/2 w-full"
       >
         <div className="relative group bg-white/40 backdrop-blur-md border border-[#D97706]/10 p-6 sm:p-8 md:p-12 rounded-3xl shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(217,119,6,0.15)] transition-all duration-500 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#ffffff] via-[#FAF6F1] to-[#D97706]/5 opacity-80" />
-            
-            {/* Hover Indicator */}
-            <div className="absolute top-0 left-0 w-2 h-0 bg-[#D97706] group-hover:h-full transition-all duration-500 delay-100 ease-in-out" />
-            
-            <div className="relative grid grid-cols-1 gap-8 text-left">
-                <div className="space-y-4">
-                    <h4 className="font-serif text-lg text-[#3D2B1F] flex items-center gap-3">
-                        <span className="w-8 h-8 rounded-full bg-[#3D2B1F] text-[#FAF6F1] flex items-center justify-center text-xs">You</span>
-                        Bring to the table
-                    </h4>
-                    <ul className="space-y-3 pl-2 border-l border-[#3D2B1F]/10 ml-4">
-                        {step.inputs.map((d, i) => (
-                            <li key={i} className="text-[#6B5B4F] text-sm flex items-center gap-3 pl-4">
-                                {d}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <div className="h-px w-full bg-[#D97706]/20" />
-                <div className="space-y-4">
-                    <h4 className="font-serif text-lg text-[#D97706] flex items-center gap-3">
-                        <span className="w-8 h-8 rounded-full bg-[#D97706] text-white flex items-center justify-center text-xs">We</span>
-                        Deliver to you
-                    </h4>
-                    <ul className="space-y-3 pl-2 border-l border-[#D97706]/30 ml-4">
-                        {step.deliverables.map((d, i) => (
-                            <li key={i} className="text-[#3D2B1F] text-sm font-medium flex items-center gap-3 pl-4">
-                                {d}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#ffffff] via-[#FAF6F1] to-[#D97706]/5 opacity-80" />
+
+          {/* Hover Indicator */}
+          <div className="absolute top-0 left-0 w-2 h-0 bg-[#D97706] group-hover:h-full transition-all duration-500 delay-100 ease-in-out" />
+
+          <div className="relative grid grid-cols-1 gap-8 text-left">
+            <div className="space-y-4">
+              <h4 className="font-serif text-lg text-[#3D2B1F] flex items-center gap-3">
+                <span className="w-8 h-8 rounded-full bg-[#3D2B1F] text-[#FAF6F1] flex items-center justify-center text-xs">You</span>
+                Bring to the table
+              </h4>
+              <ul className="space-y-3 pl-2 border-l border-[#3D2B1F]/10 ml-4">
+                {step.inputs.map((d, i) => (
+                  <li key={i} className="text-[#6B5B4F] text-sm flex items-center gap-3 pl-4">
+                    {d}
+                  </li>
+                ))}
+              </ul>
             </div>
+            <div className="h-px w-full bg-[#D97706]/20" />
+            <div className="space-y-4">
+              <h4 className="font-serif text-lg text-[#D97706] flex items-center gap-3">
+                <span className="w-8 h-8 rounded-full bg-[#D97706] text-white flex items-center justify-center text-xs">We</span>
+                Deliver to you
+              </h4>
+              <ul className="space-y-3 pl-2 border-l border-[#D97706]/30 ml-4">
+                {step.deliverables.map((d, i) => (
+                  <li key={i} className="text-[#3D2B1F] text-sm font-medium flex items-center gap-3 pl-4">
+                    {d}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </motion.div>
     </div>
@@ -154,6 +154,10 @@ export default function ProcessPage() {
     offset: ["start start", "end end"]
   });
 
+  const { scrollY } = useScroll();
+  const yBg = useTransform(scrollY, [0, 800], [0, 120]);
+  const scaleBg = useTransform(scrollY, [0, 800], [1, 1.05]);
+
   const scaleY = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
@@ -162,90 +166,106 @@ export default function ProcessPage() {
 
   return (
     <div className="bg-[#FAF6F1] min-h-screen text-[#3D2B1F]" ref={containerRef}>
-      <Header />
-      
-      {/* Background Ambience - Full Hero Span */}
-      <div className="absolute top-0 left-0 w-full h-[110vh] overflow-hidden pointer-events-none z-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,#D97706_0%,transparent_55%)] opacity-10" />
-          <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-[#FAF6F1] to-transparent" />
-      </div>
-
-      <main className="relative z-10 pt-28 sm:pt-32 pb-16 sm:pb-20 px-4 md:px-12 max-w-7xl mx-auto overflow-hidden">
-        
-        {/* Connection Line (Desktop) */}
-        <div className="hidden md:block absolute left-1/2 top-[400px] bottom-[200px] w-0.5 bg-[#D97706]/10 -translate-x-1/2 z-0">
-             <motion.div 
-                style={{ scaleY, transformOrigin: "top" }} 
-                className="w-full h-full bg-[#D97706]"
-             />
-        </div>
-     
-        {/* Hero */}
-        <div className="relative py-16 sm:py-24 md:py-40 text-center max-w-4xl mx-auto z-10">
-            <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.2, ease: "circOut" }}
-                className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_50%,#D97706_0%,transparent_50%)] opacity-5 blur-3xl pointer-events-none"
+      {/* Full-width Hero Section with Background image */}
+      <section className="relative min-h-[90vh] flex flex-col justify-center items-center px-4 overflow-hidden border-b border-[#3D2B1F]/10">
+        {/* Background Drafting Grid & Parallax Blueprint */}
+        <div className="absolute inset-0 z-0">
+          {/* Blueprint Grid Pattern */}
+          <div
+            className="absolute inset-0 opacity-[0.03] z-20 pointer-events-none"
+            style={{
+              backgroundImage: `
+                    linear-gradient(to right, #3D2B1F 1px, transparent 1px),
+                    linear-gradient(to bottom, #3D2B1F 1px, transparent 1px)
+                  `,
+              backgroundSize: '40px 40px'
+            }}
+          />
+          {/* Parallax Image */}
+          <motion.div
+            style={{ y: yBg, scale: scaleBg }}
+            className="absolute inset-0 w-full h-[120%] z-0 grayscale sepia mix-blend-multiply"
+          >
+            <Image
+              src="/process.jpeg"
+              alt="Process Background"
+              fill
+              priority
+              className="object-cover object-center"
             />
-            
-            <motion.h1 
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="text-5xl sm:text-6xl md:text-9xl font-serif text-[#3D2B1F] leading-[0.95] md:leading-[0.9] tracking-tight"
-            >
-                How We <br/>
-                <span className="italic text-[#D97706] bg-clip-text">Build Dreams</span>
-            </motion.h1>
-            
-            <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="mt-6 sm:mt-8 text-lg sm:text-xl md:text-2xl text-[#6B5B4F] font-light max-w-2xl mx-auto leading-relaxed"
-            >
-                Architecture is messy. We make it <span className="text-[#3D2B1F] font-medium border-b border-[#D97706]">seamless</span>.
-                <br/>Here is our blueprint for clarity, from first coffee to final key turn.
-            </motion.p>
-            
+          </motion.div>
+          {/* Tracing Paper Translucent Layer & Vignettes */}
+          <div className="absolute inset-0 bg-[#FAF6F1]/85 backdrop-blur-[2px] z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#FAF6F1]/10 to-[#FAF6F1] z-10" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_20%,#FAF6F1_80%)] z-10" />
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative max-w-4xl mx-auto text-center z-30 pt-20 pb-12">
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-5xl sm:text-6xl md:text-9xl font-serif text-[#3D2B1F] leading-[0.95] md:leading-[0.9] tracking-tight"
+          >
+            How We <br />
+            <span className="italic text-[#D97706] bg-clip-text">Build Dreams</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mt-6 sm:mt-8 text-lg sm:text-xl md:text-2xl text-[#6B5B4F] font-light max-w-2xl mx-auto leading-relaxed"
+          >
+            Architecture is messy. We make it <span className="text-[#3D2B1F] font-medium border-b border-[#D97706]">seamless</span>.
+            <br />Here is our blueprint for clarity, from first coffee to final key turn.
+          </motion.p>
+        </div>
+      </section>
+
+      <main className="relative z-10 py-20 md:py-32 px-4 md:px-12 max-w-7xl mx-auto overflow-hidden">
+        {/* Connection Line (Desktop) */}
+        <div className="hidden md:block absolute left-1/2 top-0 bottom-[200px] w-0.5 bg-[#D97706]/10 -translate-x-1/2 z-0">
+          <motion.div
+            style={{ scaleY, transformOrigin: "top" }}
+            className="w-full h-full bg-[#D97706]"
+          />
         </div>
 
         {/* Steps Container */}
         <div className="relative z-10 space-y-0 pb-32">
-             {processSteps.map((step, index) => (
-                    <StepCard key={step.id} step={step} index={index} />
-             ))}
+          {processSteps.map((step, index) => (
+            <StepCard key={step.id} step={step} index={index} />
+          ))}
         </div>
 
         {/* Bottom CTA */}
         <div className="text-center space-y-8 py-32 relative z-10">
-            <motion.div 
-                whileInView={{ opacity: 1, scale: 1 }}
-                initial={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.8 }}
-                className="max-w-3xl mx-auto bg-[#3D2B1F] text-[#FAF6F1] rounded-3xl p-8 sm:p-12 md:p-20 shadow-2xl relative overflow-hidden"
-            >
-                {/* Decorative circles */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#D97706] rounded-full blur-[100px] opacity-20 translate-x-1/2 -translate-y-1/2"/>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#D97706] rounded-full blur-[100px] opacity-20 -translate-x-1/2 translate-y-1/2"/>
+          <motion.div
+            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-3xl mx-auto bg-[#3D2B1F] text-[#FAF6F1] rounded-3xl p-8 sm:p-12 md:p-20 shadow-2xl relative overflow-hidden"
+          >
+            {/* Decorative circles */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#D97706] rounded-full blur-[100px] opacity-20 translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#D97706] rounded-full blur-[100px] opacity-20 -translate-x-1/2 translate-y-1/2" />
 
-                <h2 className="text-3xl sm:text-4xl md:text-6xl font-serif mb-4 sm:mb-6 relative z-10">Ready to begin?</h2>
-                <p className="text-[#FAF6F1]/70 text-base sm:text-lg md:text-xl font-light mb-8 sm:mb-10 max-w-lg mx-auto relative z-10">
-                    Your space is waiting to be found. Step 1 is just a conversation.
-                </p>
-                <Link href="/contact" className="relative z-10 inline-flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-[#D97706] text-white rounded-full text-base sm:text-lg font-medium transition-all hover:bg-white hover:text-[#D97706] hover:scale-105 shadow-xl group min-h-12">
-                    <span>Book Consultation</span>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="transition-transform duration-300 group-hover:translate-x-1">
-                        <path d="M4.16669 10H15.8334" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M10 4.16669L15.8333 10L10 15.8334" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                </Link>
-            </motion.div>
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-serif mb-4 sm:mb-6 relative z-10">Ready to begin?</h2>
+            <p className="text-[#FAF6F1]/70 text-base sm:text-lg md:text-xl font-light mb-8 sm:mb-10 max-w-lg mx-auto relative z-10">
+              Your space is waiting to be found. Step 1 is just a conversation.
+            </p>
+            <Link href="/contact" className="relative z-10 inline-flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-[#D97706] text-white rounded-full text-base sm:text-lg font-medium transition-all hover:bg-white hover:text-[#D97706] hover:scale-105 shadow-xl group min-h-12">
+              <span>Book Consultation</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="transition-transform duration-300 group-hover:translate-x-1">
+                <path d="M4.16669 10H15.8334" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M10 4.16669L15.8333 10L10 15.8334" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </motion.div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }
