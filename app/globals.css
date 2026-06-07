@@ -141,6 +141,44 @@ html.custom-cursor-active [contenteditable="true"] {
   animation: vibrate 0.3s ease-in-out;
 }
 
+/* ─── Page Transitions (View Transitions API) ───────────────────────────────
+   next-view-transitions wraps the root in a <ViewTransitions> element and
+   triggers the browser's native View Transition API on every client navigation.
+   The pseudo-elements below customise the default cross-fade into a slow,
+   cinematic fade + gentle vertical drift matching the studio's aesthetic.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Root fade — controls how long the snapshot compositing phase lasts */
+::view-transition-old(root) {
+  animation: page-fade-out 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: page-fade-in 0.65s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes page-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
 /* Respect prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -157,5 +195,11 @@ html.custom-cursor-active [contenteditable="true"] {
   
   .vibrate-text:hover {
     animation: none;
+  }
+
+  /* Disable view-transition animations for users who prefer reduced motion */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
   }
 }
