@@ -4,7 +4,7 @@ import "./globals.css";
 import { CursorProvider } from "./context/CursorContext";
 import CustomCursor from "./components/ui/CustomCursor";
 import SmoothScroll from "./components/ui/SmoothScroll";
-import { ViewTransitions } from "next-view-transitions";
+
 import LayoutWrapper from "./components/layout/LayoutWrapper";
 
 
@@ -107,7 +107,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ViewTransitions>
+    <>
       <html lang="en">
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
@@ -218,6 +218,6 @@ export default function RootLayout({
         </CursorProvider>
       </body>
     </html>
-    </ViewTransitions>
+    </>
   );
 }
