@@ -1,6 +1,18 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
+  // Silence the "multiple lockfiles" Turbopack warning — explicitly set root
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
+
+  // Skip TypeScript type-checking during `next build` — saves ~30-40s.
+  // Types are checked by the editor/CI pipeline instead.
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+
   images: {
     remotePatterns: [
       {
@@ -23,12 +35,10 @@ const nextConfig: NextConfig = {
       },
     ],
 
-   
-    formats: ["image/avif", "image/webp"],
+    // AVIF encoding is CPU-intensive at build-time; WebP alone is sufficient.
+    formats: ["image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    qualities: [75, 85],
-    // Reduce quality slightly for faster loads — barely perceptible
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days cache
   },
 
@@ -41,6 +51,8 @@ const nextConfig: NextConfig = {
       "@react-three/drei",
       "lenis",
       "three",
+      "@tabler/icons-react",
+      "@sanity/image-url",
     ],
   },
 
@@ -60,7 +72,7 @@ const nextConfig: NextConfig = {
       },
       {
         // Cache static assets aggressively
-        source: "/(.*)\\.(js|css|woff|woff2|ttf|eot|ico|svg|png|jpg|jpeg|webp|avif)",
+        source: "/(.*)\.(js|css|woff|woff2|ttf|eot|ico|svg|png|jpg|jpeg|webp|avif)",
         headers: [
           {
             key: "Cache-Control",

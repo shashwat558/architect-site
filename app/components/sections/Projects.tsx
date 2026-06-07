@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { motion, useInView } from "motion/react";
 import { useRef, useState, useEffect } from "react";
 import { useCursor } from "../../context/CursorContext";

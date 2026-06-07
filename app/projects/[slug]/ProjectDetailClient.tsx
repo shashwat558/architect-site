@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "motion/react";
 import Image from "next/image";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { useRef, useState } from "react";
 import TestimonialSection from "../../components/sections/SimpleTestimonial";
 import ProjectReviewForm from "../../components/sections/ProjectReviewForm";
