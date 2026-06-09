@@ -73,7 +73,7 @@ export default function Footer() {
               alt="AD.RS Design Studio Background"
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 95vw, 90vw"
-              priority
+              loading="lazy"
               className="object-cover opacity-90 transition-transform duration-700"
             />
           </motion.div>

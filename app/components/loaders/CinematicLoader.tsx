@@ -9,39 +9,39 @@ export default function CinematicLoader({ onComplete }: { onComplete: () => void
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       // Skip the cinematic intro entirely for users who request reduced motion.
-      const timer = setTimeout(onComplete, 200);
+      const timer = setTimeout(onComplete, 100);
       return () => clearTimeout(timer);
     }
-    // Total duration approx 3.5s
+    // Total duration ~2.2s (was 4.6s) — dramatically improves LCP
     const timer = setTimeout(() => {
-        setTimeout(onComplete, 800);
-    }, 3800);
+      setTimeout(onComplete, 600);
+    }, 1600);
     return () => clearTimeout(timer);
   }, [onComplete]);
 
-  // Animation Constants
-  const DURATION = 1.2;
-  const STAGGER = 0.1;
+  // Animation constants tuned to the 2.2s window
+  const DURATION = 0.8;
+  const STAGGER = 0.07;
 
   const letterVariants = {
     hidden: { y: "100%" },
     visible: (i: number) => ({
       y: "0%",
-      transition: { 
-        delay: 0.5 + (i * STAGGER), 
-        duration: DURATION, 
-        ease: [0.22, 1, 0.36, 1] as const // Custom Quint Ease
-      }
-    })
+      transition: {
+        delay: 0.2 + i * STAGGER,
+        duration: DURATION,
+        ease: [0.22, 1, 0.36, 1] as const,
+      },
+    }),
   };
 
   const lineVariants = {
     hidden: { scaleX: 0, opacity: 0 },
-    visible: { 
-      scaleX: 1, 
+    visible: {
+      scaleX: 1,
       opacity: 1,
-      transition: { delay: 0.2, duration: 1.5, ease: "circOut" as const }
-    }
+      transition: { delay: 0.5, duration: 0.8, ease: "circOut" as const },
+    },
   };
 
   return (
@@ -66,7 +66,7 @@ export default function CinematicLoader({ onComplete }: { onComplete: () => void
                      <div className="overflow-hidden">
                         <motion.h1 
                            className="text-6xl md:text-9xl font-bold text-[#F5F3EE]"
-                           style={{ fontFamily: 'var(--font-roboto), sans-serif' }}
+                           style={{ fontFamily: 'var(--font-geist-sans), sans-serif' }}
                            custom={0} variants={letterVariants} initial="hidden" animate="visible"
                         >A</motion.h1>
                      </div>
@@ -74,7 +74,7 @@ export default function CinematicLoader({ onComplete }: { onComplete: () => void
                      <div className="overflow-hidden">
                         <motion.h1 
                            className="text-6xl md:text-9xl font-bold text-[#F5F3EE]"
-                           style={{ fontFamily: 'var(--font-roboto), sans-serif' }}
+                           style={{ fontFamily: 'var(--font-geist-sans), sans-serif' }}
                            custom={1} variants={letterVariants} initial="hidden" animate="visible"
                         >D</motion.h1>
                      </div>
@@ -82,7 +82,7 @@ export default function CinematicLoader({ onComplete }: { onComplete: () => void
                      <div className="overflow-hidden">
                         <motion.h1 
                            className="text-6xl md:text-9xl font-bold text-[#F5F3EE]"
-                           style={{ fontFamily: 'var(--font-roboto), sans-serif' }}
+                           style={{ fontFamily: 'var(--font-geist-sans), sans-serif' }}
                            custom={2} variants={letterVariants} initial="hidden" animate="visible"
                         >R</motion.h1>
                      </div>
@@ -90,7 +90,7 @@ export default function CinematicLoader({ onComplete }: { onComplete: () => void
                      <div className="overflow-hidden">
                         <motion.h1 
                            className="text-6xl md:text-9xl font-bold text-[#F5F3EE]"
-                           style={{ fontFamily: 'var(--font-roboto), sans-serif' }}
+                           style={{ fontFamily: 'var(--font-geist-sans), sans-serif' }}
                            custom={3} variants={letterVariants} initial="hidden" animate="visible"
                         >S</motion.h1>
                      </div>
@@ -108,7 +108,7 @@ export default function CinematicLoader({ onComplete }: { onComplete: () => void
                 <motion.div
                    initial={{ y: 20, opacity: 0 }}
                    animate={{ y: 0, opacity: 1 }}
-                   transition={{ delay: 1.8, duration: 1, ease: "easeOut" }}
+                   transition={{ delay: 0.9, duration: 0.7, ease: "easeOut" }}
                    className="flex items-center space-x-3"
                 >
                     <span className="text-xs md:text-sm tracking-[0.4em] text-[#888888] font-light uppercase">
@@ -118,9 +118,9 @@ export default function CinematicLoader({ onComplete }: { onComplete: () => void
             </div>
 
             {/* COORDINATE DECORATION (Technical feel) */}
-            <motion.div 
+            <motion.div
                 className="absolute right-[-40px] top-[-20px] md:right-[-60px]"
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.5 }}
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
             >
                 <div className="flex flex-col items-end space-y-1">
                     <div className="w-1 h-1 bg-[#D4AF37] rounded-full" />

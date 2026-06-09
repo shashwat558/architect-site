@@ -10,7 +10,6 @@ import type {
 } from "../data/types";
 
 const Pillars = dynamic(() => import("../components/sections/Pillars"), {
-  ssr: false,
   loading: () => <div className="h-24" />,
 });
 const TeamSection = dynamic(() => import("../components/sections/TeamSection"), {
@@ -18,7 +17,6 @@ const TeamSection = dynamic(() => import("../components/sections/TeamSection"), 
   loading: () => <div className="h-24" />,
 });
 const ProjectCTA = dynamic(() => import("../components/sections/ProjectCTA"), {
-  ssr: false,
   loading: () => <div className="h-24" />,
 });
 

@@ -10,7 +10,7 @@ export const featuredProjectsQuery = groq`
     "slug": slug.current,
     category,
     "heroImage": heroImage.asset->url,
-    meta,
+    meta[label in ["Year", "Location"]],
   }
 `
 
@@ -24,8 +24,6 @@ export const teamMembersQuery = groq`
     role,
     "slug": slug.current,
     "image": image.asset->url,
-    bio,
-    socialLinks,
     displayOrder,
   }
 `
@@ -43,6 +41,7 @@ export const projectsListQuery = groq`
     status,
     isFeatured,
     "heroImage": heroImage.asset->url,
+    "heroImageDimensions": heroImage.asset->metadata.dimensions,
     meta,
   }
 `

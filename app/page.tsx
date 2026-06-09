@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
 import HomeClient from "./home-client";
 import { client } from "../sanity/lib/client";
-import { featuredProjectsQuery, teamMembersQuery } from "../sanity/lib/queries";
+import { featuredProjectsQuery } from "../sanity/lib/queries";
 import {
   heroData,
   offersSectionData,
   pillarsSectionData,
   projectCTAData,
   projectsSectionData,
-  teamSectionData,
   testimonialsSectionData,
 } from "./data/content";
-import type { ProjectsSectionData, TeamSectionData } from "./data/types";
+import type { ProjectsSectionData } from "./data/types";
 
 const baseUrl = "https://adrs-design.com";
 
@@ -72,15 +71,6 @@ type SanityProject = {
   meta?: { label: string; value: string }[];
 };
 
-type SanityTeamMember = {
-  _id: string;
-  name: string;
-  role: string;
-  slug: string;
-  image: string;
-  displayOrder?: number;
-};
-
 // ── Data mappers ───────────────────────────────────────────────────────────────
 
 function toProjectCard(p: SanityProject, i: number) {
@@ -94,26 +84,15 @@ function toProjectCard(p: SanityProject, i: number) {
   };
 }
 
-function toTeamMember(m: SanityTeamMember, i: number) {
-  return {
-    id: i + 1,
-    name: m.name,
-    title: m.role,
-    image: m.image ?? "",
-    bio: "",
-    gallery: [],
-    socials: [],
-  };
-}
-
 // ── Page ───────────────────────────────────────────────────────────────────────
 
 export default async function Home() {
   // Fetch featured projects and team members from Sanity in parallel
-  const [sanityProjects, sanityTeam] = await Promise.all([
-    client.fetch<SanityProject[]>(featuredProjectsQuery, {}, { next: { revalidate: 60 } }),
-    client.fetch<SanityTeamMember[]>(teamMembersQuery, {}, { next: { revalidate: 60 } }),
+  const [sanityProjects] = await Promise.all([
+    client.fetch<SanityProject[]>(featuredProjectsQuery, {}, { next: { revalidate: 300 } }),
   ]);
+
+  // (teamMembersQuery not needed on home — team shown as ConstructImage teaser only)
 
   // Build projectsSectionData — fall back to static if Sanity is empty
   const liveProjectsSection: ProjectsSectionData =
@@ -124,14 +103,6 @@ export default async function Home() {
         }
       : projectsSectionData;
 
-  // Build teamSectionData — fall back to static if Sanity is empty
-  const liveTeamSection: TeamSectionData =
-    sanityTeam.length > 0
-      ? {
-          ...teamSectionData,
-          members: sanityTeam.map(toTeamMember),
-        }
-      : teamSectionData;
 
   return (
     <HomeClient
@@ -141,7 +112,6 @@ export default async function Home() {
       offersSectionData={offersSectionData}
       testimonialsSectionData={testimonialsSectionData}
       projectCTAData={projectCTAData}
-      teamSectionData={liveTeamSection}
     />
   );
 }

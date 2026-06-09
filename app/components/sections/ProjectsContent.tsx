@@ -63,7 +63,7 @@ export default function ProjectsContent({ data }: ProjectsContentProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: Math.min(index * 0.06, 0.3) }}
             >
                 <Link href={project.link} className="group block">
                 <div 
@@ -76,6 +76,9 @@ export default function ProjectsContent({ data }: ProjectsContentProps) {
                       src={project.image}
                       alt={project.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      quality={80}
+                      loading={index < 2 ? "eager" : "lazy"}
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                       style={{ viewTransitionName: `project-image-${projectSlug}` } as React.CSSProperties}
                     />

@@ -3,38 +3,32 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence } from "motion/react";
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 import { getActiveLoader } from "./components/loaders/loaderConfig";
-import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
 import PoeticHero from "./components/hero/PoeticHero";
-import AnimatedTestimonialsSection from "./components/sections/AnimatedTestimonialsSection";
-import ConstructImage from "./components/ui/ConstructImage";
 import { Testimonials } from "./components/sections";
+import ConstructImage from "./components/ui/ConstructImage";
 import type {
   HeroData,
   OffersSectionData,
   PillarsSectionData,
   ProjectCTAData,
   ProjectsSectionData,
-  TeamSectionData,
   TestimonialsSectionData,
 } from "./data/types";
 
-// Lazy-load heavy below-fold sections to keep the initial bundle lean
+// Lazy-load heavy below-fold sections — ssr:true so they produce server HTML
+// (avoids CLS from blank placeholders popping in)
 const Projects = dynamic(() => import("./components/sections/Projects"), {
-  ssr: false,
   loading: () => <div className="h-24" />,
 });
 const Pillars = dynamic(() => import("./components/sections/Pillars"), {
-  ssr: false,
   loading: () => <div className="h-24" />,
 });
 const Offers = dynamic(() => import("./components/sections/Offers"), {
-  ssr: false,
   loading: () => <div className="h-24" />,
 });
 const ProjectCTA = dynamic(() => import("./components/sections/ProjectCTA"), {
-  ssr: false,
   loading: () => <div className="h-24" />,
 });
 
@@ -47,7 +41,6 @@ type HomeClientProps = {
   offersSectionData: OffersSectionData;
   testimonialsSectionData: TestimonialsSectionData;
   projectCTAData: ProjectCTAData;
-  teamSectionData: TeamSectionData;
 };
 
 export default function HomeClient({
@@ -63,6 +56,9 @@ export default function HomeClient({
   // Prevent body scroll while the intro loader is visible
   useEffect(() => {
     document.body.style.overflow = loading ? "hidden" : "auto";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, [loading]);
 
   return (
@@ -83,13 +79,23 @@ export default function HomeClient({
             <PoeticHero data={heroData} />
           </div>
 
-          <Projects data={projectsSectionData} />
-          <Pillars data={pillarsSectionData} />
-          <Offers data={offersSectionData} />
+          <Suspense fallback={<div className="h-24" />}>
+            <Projects data={projectsSectionData} />
+          </Suspense>
+          <div className="cv-auto">
+            <Suspense fallback={<div className="h-24" />}>
+              <Pillars data={pillarsSectionData} />
+            </Suspense>
+          </div>
+          <div className="cv-auto">
+            <Suspense fallback={<div className="h-24" />}>
+              <Offers data={offersSectionData} />
+            </Suspense>
+          </div>
 
           {/* Studio Team preview — full team on /about */}
           <section
-            className="w-full py-24 px-6 md:px-12 lg:px-20 overflow-hidden"
+            className="w-full py-24 px-6 md:px-12 lg:px-20 overflow-hidden cv-auto"
             aria-label="Meet the studio team"
           >
             <div className="max-w-[1400px] mx-auto">
@@ -112,10 +118,11 @@ export default function HomeClient({
           </section>
 
           <Testimonials data={testimonialsSectionData} />
-          <ProjectCTA data={projectCTAData} />
+          <Suspense fallback={<div className="h-24" />}>
+            <ProjectCTA data={projectCTAData} />
+          </Suspense>
         </main>
       </div>
-
     </div>
   );
 }

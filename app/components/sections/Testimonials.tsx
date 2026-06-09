@@ -20,27 +20,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
   const row2Items = [...shifted, ...shifted];
 
   return (
-    <section className="py-24 md:py-32 border-t border-b border-[#E5DDD0]/50 overflow-hidden relative">
-      {/* CSS for Infinite Loop & Hover Pause */}
-      <style>{`
-        @keyframes marquee-left {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes marquee-right {
-          0% { transform: translateX(-50%); }
-          100% { transform: translateX(0%); }
-        }
-        .animate-marquee-left {
-          animation: marquee-left 45s linear infinite;
-        }
-        .animate-marquee-right {
-          animation: marquee-right 45s linear infinite;
-        }
-        .hover-pause:hover .marquee-track {
-          animation-play-state: paused;
-        }
-      `}</style>
+    <section className="py-24 md:py-32 border-t border-b border-[#E5DDD0]/50 overflow-hidden relative cv-auto">
 
       <div className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-20">
         {/* Section Header */}

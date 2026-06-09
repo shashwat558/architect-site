@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Playfair_Display, Roboto } from "next/font/google";
+import { Geist, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { CursorProvider } from "./context/CursorContext";
 import CustomCursor from "./components/ui/CustomCursor";
@@ -28,12 +28,6 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-const roboto = Roboto({
-  variable: "--font-roboto",
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "500", "700", "900"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://adrs-design.com"),
@@ -197,7 +191,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${playfair.variable} ${roboto.variable} antialiased relative min-h-screen`}
+        className={`${geistSans.variable} ${playfair.variable} antialiased relative min-h-screen`}
       >
         <CursorProvider>
           {/* Amber Glow Background */}

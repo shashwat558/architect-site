@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -21,7 +22,13 @@ const projectImages = [
   "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&q=80",
 ];
 
-export default function CursorImageTrail({ children, className }: { children?: React.ReactNode, className?: string }) {
+export default function CursorImageTrail({
+  children,
+  className,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) {
   const [items, setItems] = useState<ImageItem[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageIndex = useRef(0);
@@ -34,7 +41,7 @@ export default function CursorImageTrail({ children, className }: { children?: R
 
     const handleMouseMove = (e: MouseEvent) => {
       const now = Date.now();
-      if (now - lastTime.current < 80) return; // throttle
+      if (now - lastTime.current < 100) return; // slightly more aggressive throttle
       lastTime.current = now;
 
       const rect = container.getBoundingClientRect();
@@ -53,25 +60,27 @@ export default function CursorImageTrail({ children, className }: { children?: R
         scale: 0.8 + Math.random() * 0.4,
       };
 
-      setItems((prev) => [...prev.slice(-20), newItem]);
+      setItems((prev) => [...prev.slice(-12), newItem]); // cap at 12 (was 20)
 
       setTimeout(() => {
         setItems((prev) => prev.filter((i) => i.id !== newItem.id));
-      }, 1000);
+      }, 900);
     };
 
-    container.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => container.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
-    <div ref={containerRef} className={`relative overflow-hidden cursor-crosshair ${className}`}>
+    <div
+      ref={containerRef}
+      className={`relative overflow-hidden cursor-crosshair ${className}`}
+    >
       <div className="absolute inset-0 pointer-events-none z-50">
         <AnimatePresence>
           {items.map((item) => (
-            <motion.img
+            <motion.div
               key={item.id}
-              src={item.src}
               initial={{
                 opacity: 0,
                 scale: item.scale,
@@ -88,16 +97,24 @@ export default function CursorImageTrail({ children, className }: { children?: R
                 scale: item.scale * 0.8,
               }}
               transition={{
-                duration: 0.8,
+                duration: 0.7,
                 ease: "easeOut",
               }}
               style={{
                 left: item.x - 56,
                 position: "absolute",
-                top: 0
+                top: 0,
               }}
-              className="w-28 h-20 object-cover rounded-lg shadow-lg"
-            />
+              className="w-28 h-20 rounded-lg shadow-lg overflow-hidden"
+            >
+              <Image
+                src={item.src}
+                alt=""
+                fill
+                sizes="112px"
+                className="object-cover"
+              />
+            </motion.div>
           ))}
         </AnimatePresence>
       </div>

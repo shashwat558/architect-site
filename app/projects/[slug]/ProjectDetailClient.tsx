@@ -212,11 +212,13 @@ export default function ProjectDetailClient({ project }: { project: SanityProjec
           className="absolute bottom-0 right-0 w-[90%] md:w-[70%] h-[60vh] md:h-[80vh] z-0"
         >
           <div className="relative w-full h-full overflow-hidden grayscale-[20%]">
-            <Image
+          <Image
               src={project.heroImage}
               alt={project.title}
               fill
               priority
+              sizes="(max-width: 768px) 90vw, 70vw"
+              quality={85}
               className="object-cover"
               style={{ viewTransitionName: `project-image-${project.slug}` } as React.CSSProperties}
             />

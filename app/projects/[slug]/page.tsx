@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const project: SanityProjectDetail | null = await client.fetch(
     projectBySlugQuery,
     { slug },
-    { next: { revalidate: 60 } }
+    { next: { revalidate: 600 } }
   );
 
   if (!project) return { title: "Project Not Found" };
@@ -66,7 +66,7 @@ export default async function ProjectDetailPage({
   const project: SanityProjectDetail | null = await client.fetch(
     projectBySlugQuery,
     { slug },
-    { next: { revalidate: 60 } }
+    { next: { revalidate: 600 } }
   );
 
   if (!project) notFound();

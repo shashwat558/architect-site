@@ -62,13 +62,13 @@ export default function PoeticHero({ data }: PoeticHeroProps) {
   useEffect(() => {
     setMounted(true);
     setParticles(
-      Array.from({ length: 12 }, (_, i) => ({
+      Array.from({ length: 8 }, (_, i) => ({
         id: i,
         x: Math.random() * 100,
         y: Math.random() * 100,
-        size: Math.random() * 2.5 + 1,
-        duration: Math.random() * 20 + 20,
-        delay: Math.random() * -20,
+        size: Math.random() * 2 + 1,
+        duration: Math.random() * 15 + 18,
+        delay: Math.random() * -18,
       }))
     );
   }, []);
@@ -147,7 +147,7 @@ export default function PoeticHero({ data }: PoeticHeroProps) {
       <motion.div
         aria-hidden
         className="absolute inset-0 pointer-events-none z-10 origin-top-left"
-        style={{ y: yBranch }}
+        style={{ y: yBranch, willChange: "transform" }}
         animate={{ x: [-6, 6, -6], rotate: [-1.2, 1.2, -1.2], scale: [1.02, 1.04, 1.02] }}
         transition={{ duration: 18, ease: "easeInOut", repeat: Infinity, repeatType: "mirror" }}
       >
