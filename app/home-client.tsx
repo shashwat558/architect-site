@@ -93,30 +93,6 @@ export default function HomeClient({
             </Suspense>
           </div>
 
-          {/* Studio Team preview — full team on /about */}
-          <section
-            className="w-full py-24 px-6 md:px-12 lg:px-20 overflow-hidden cv-auto"
-            aria-label="Meet the studio team"
-          >
-            <div className="max-w-[1400px] mx-auto">
-              <div className="flex flex-col items-center mb-16 text-center">
-                <span className="text-[#D97706] uppercase tracking-widest text-sm font-semibold mb-4 vibrate-text">
-                  The Studio
-                </span>
-                <h2 className="font-serif text-5xl md:text-6xl text-[#3D2B1F]">
-                  Meet the Visionaries
-                </h2>
-              </div>
-              <div className="w-full h-[50vh] md:h-[70vh] rounded-2xl">
-                <ConstructImage
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&fit=crop&q=80"
-                  stripes={12}
-                  className="w-full h-full"
-                />
-              </div>
-            </div>
-          </section>
-
           <Testimonials data={testimonialsSectionData} />
           <Suspense fallback={<div className="h-24" />}>
             <ProjectCTA data={projectCTAData} />
