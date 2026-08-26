@@ -59,11 +59,19 @@ type SanityTeamMember = {
 };
 
 export default async function AboutPage() {
-  const sanityTeam = await client.fetch<SanityTeamMember[]>(
-    teamMembersQuery,
-    {},
-    { next: { revalidate: 60 } }
-  );
+  // Wrap Sanity fetch in try/catch — if the CDN is unreachable at build time
+  // (e.g. connect timeout during static prerender), fall back to static data
+  // so the build doesn't crash.
+  let sanityTeam: SanityTeamMember[] = [];
+  try {
+    sanityTeam = await client.fetch<SanityTeamMember[]>(
+      teamMembersQuery,
+      {},
+      { next: { revalidate: 60 } }
+    );
+  } catch (err) {
+    console.warn("[AboutPage] Sanity fetch failed, using static fallback:", err);
+  }
 
   // Map Sanity team members → TeamMember shape expected by TeamSection
   const liveTeamSection: TeamSectionData =

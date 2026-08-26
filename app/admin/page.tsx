@@ -1,55 +1,21 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import {
-  IconFolderOpen,
-  IconUsers,
-  IconTag,
   IconMail,
   IconBell,
-  IconUpload,
   IconArrowRight,
+  IconExternalLink,
 } from "@tabler/icons-react";
 
 async function getStats() {
-  const [projects, team, offers, contact, unreadContact, subscribers] =
-    await Promise.all([
-      prisma.project.count(),
-      prisma.teamMember.count(),
-      prisma.offer.count(),
-      prisma.contactSubmission.count(),
-      // If you add a `read` field later, swap this for: { where: { read: false } }
-      prisma.contactSubmission.count(),
-      prisma.subscriber.count(),
-    ]);
-
-  return { projects, team, offers, contact, unreadContact, subscribers };
+  const [contact, subscribers] = await Promise.all([
+    prisma.contactSubmission.count(),
+    prisma.subscriber.count(),
+  ]);
+  return { contact, subscribers };
 }
 
 const statCards = [
-  {
-    key: "projects" as const,
-    label: "Projects",
-    href: "/admin/projects",
-    icon: IconFolderOpen,
-    color: "bg-violet-50 text-violet-600",
-    ring: "ring-violet-100",
-  },
-  {
-    key: "team" as const,
-    label: "Team Members",
-    href: "/admin/team",
-    icon: IconUsers,
-    color: "bg-sky-50 text-sky-600",
-    ring: "ring-sky-100",
-  },
-  {
-    key: "offers" as const,
-    label: "Offers",
-    href: "/admin/offers",
-    icon: IconTag,
-    color: "bg-amber-50 text-amber-600",
-    ring: "ring-amber-100",
-  },
   {
     key: "contact" as const,
     label: "Contact Submissions",
@@ -68,6 +34,12 @@ const statCards = [
   },
 ];
 
+const sanityLinks = [
+  { label: "Manage Projects", path: "project" },
+  { label: "Manage Team", path: "teamMember" },
+  { label: "Manage Offers", path: "offer" },
+];
+
 export default async function AdminDashboard() {
   const stats = await getStats();
 
@@ -80,7 +52,7 @@ export default async function AdminDashboard() {
         </p>
       </div>
 
-      {/* Stat cards */}
+      {/* Operational stat cards */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
         {statCards.map(({ key, label, href, icon: Icon, color, ring }) => (
           <Link
@@ -107,33 +79,36 @@ export default async function AdminDashboard() {
         ))}
       </div>
 
-      {/* Quick actions */}
+      {/* Content managed in Sanity Studio */}
       <div className="mt-10">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
-          Quick Actions
+        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">
+          Content Management
         </h2>
+        <p className="text-xs text-slate-400 mb-4">
+          Projects, team members, and offers are managed in Sanity Studio.
+        </p>
         <div className="flex flex-wrap gap-3">
-          <Link
-            href="/admin/projects"
+          {sanityLinks.map(({ label, path }) => (
+            <a
+              key={path}
+              href={`/studio/structure/${path}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-slate-700 text-sm font-medium rounded-lg ring-1 ring-slate-200 hover:bg-slate-50 transition-colors"
+            >
+              <IconExternalLink size={15} />
+              {label}
+            </a>
+          ))}
+          <a
+            href="/studio"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-700 transition-colors"
           >
-            <IconFolderOpen size={16} />
-            Add Project
-          </Link>
-          <Link
-            href="/admin/team"
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-slate-700 text-sm font-medium rounded-lg ring-1 ring-slate-200 hover:bg-slate-50 transition-colors"
-          >
-            <IconUsers size={16} />
-            Add Team Member
-          </Link>
-          <Link
-            href="/admin/upload"
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-slate-700 text-sm font-medium rounded-lg ring-1 ring-slate-200 hover:bg-slate-50 transition-colors"
-          >
-            <IconUpload size={16} />
-            Upload Images
-          </Link>
+            <IconExternalLink size={15} />
+            Open Sanity Studio
+          </a>
         </div>
       </div>
     </div>

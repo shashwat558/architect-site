@@ -80,7 +80,7 @@ export default function PoeticHero({ data }: PoeticHeroProps) {
             <span className="block pb-1">
               <motion.span
                 variants={slideUp}
-                className="inline-block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold"
+                className="inline-block text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold"
               >
                 {data.headline}
               </motion.span>
@@ -88,7 +88,7 @@ export default function PoeticHero({ data }: PoeticHeroProps) {
             <span className="block italic font-semibold pt-1">
               <motion.span
                 variants={slideUp}
-                className="inline-block text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-[#D97706] "
+                className="inline-block text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-[#D97706] "
               >
                 {data.highlighted}
               </motion.span>

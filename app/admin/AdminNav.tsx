@@ -23,9 +23,6 @@ export function AdminNav({ user }: AdminNavProps) {
 
   const navLinks = [
     { href: "/admin", label: "Dashboard" },
-    { href: "/admin/projects", label: "Projects" },
-    { href: "/admin/team", label: "Team" },
-    { href: "/admin/offers", label: "Offers" },
     { href: "/admin/contact", label: "Contact" },
     { href: "/admin/subscribers", label: "Subscribers" },
   ];

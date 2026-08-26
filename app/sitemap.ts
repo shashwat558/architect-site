@@ -1,5 +1,4 @@
 import { MetadataRoute } from "next";
-import { prisma } from "@/lib/prisma";
 
 const baseUrl = "https://adrs-design.com";
 
@@ -41,6 +40,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let projectPages: MetadataRoute.Sitemap = [];
   try {
+    // Dynamic import so prisma/pg are NOT initialised at module load time
+    // (avoids pg SSL warnings during build prerender phase)
+    const { prisma } = await import("@/lib/prisma");
     const projects = await prisma.project.findMany({
       select: { slug: true, updatedAt: true },
     });
