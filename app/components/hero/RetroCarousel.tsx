@@ -6,17 +6,17 @@ import Image from "next/image";
 // ─── Carousel Images ─────────────────────────────────────────────────────────
 
 const carouselImages = [
-  { src: "/carousel/retro-1.png", caption: "Urban Geometry" },
-  { src: "/carousel/retro-2.png", caption: "Light & Space" },
-  { src: "/carousel/retro-3.png", caption: "Brutalist Form" },
-  { src: "/carousel/retro-4.png", caption: "Sunset Retreat" },
-  { src: "/carousel/retro-5.png", caption: "Zen Courtyard" },
-  { src: "/carousel/retro-6.png", caption: "Curved Museum" },
+  { src: "/carousel/retro-1.webp", caption: "Urban Geometry" },
+  { src: "/carousel/retro-2.webp", caption: "Light & Space" },
+  { src: "/carousel/retro-3.webp", caption: "Brutalist Form" },
+  { src: "/carousel/retro-4.webp", caption: "Sunset Retreat" },
+  { src: "/carousel/retro-5.webp", caption: "Zen Courtyard" },
+  { src: "/carousel/retro-6.webp", caption: "Curved Museum" },
 ];
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
-export default function RetroCarousel() {
+export default function RetroCarousel({ paused = false }: { paused?: boolean }) {
   const trackRef = useRef<HTMLDivElement>(null);
 
   // Pause on hover
@@ -38,7 +38,11 @@ export default function RetroCarousel() {
 
   return (
     <div className="retro-carousel-wrapper">
-      <div className="retro-carousel-track" ref={trackRef}>
+      <div
+        className="retro-carousel-track"
+        ref={trackRef}
+        style={{ animationPlayState: paused ? "paused" : undefined }}
+      >
         {allImages.map((img, i) => (
           <div key={`${img.src}-${i}`} className="retro-photo-frame">
             {/* Outer aged paper frame */}
@@ -51,7 +55,12 @@ export default function RetroCarousel() {
                   fill
                   sizes="(max-width: 640px) 70vw, (max-width: 1024px) 35vw, 28vw"
                   className="retro-photo-img"
-                  quality={85}
+                  quality={70}
+                  // Only the first loop's lead frames are needed immediately;
+                  // the duplicated loop + trailing frames decode lazily so
+                  // they don't compete with the first scroll.
+                  loading={i % carouselImages.length < 2 ? "eager" : "lazy"}
+                  decoding="async"
                 />
                 {/* VHS scan-line overlay */}
                 <div className="retro-scanlines" />

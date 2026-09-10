@@ -22,9 +22,26 @@ export default function Projects({ data }: ProjectsProps) {
   const totalLabel = String(totalCount).padStart(2, "0");
 
   useEffect(() => {
-    if (carouselRef.current) {
-      setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
-    }
+    const el = carouselRef.current;
+    if (!el) return;
+    // Re-measure on resize + late image/font loads. The old code measured once
+    // on mount (often before images decoded), leaving stale drag constraints
+    // that made the first drag/scroll into this section jump.
+    const measure = () => {
+      setWidth(Math.max(0, el.scrollWidth - el.offsetWidth));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    window.addEventListener("resize", measure);
+    window.addEventListener("load", measure);
+    const t = setTimeout(measure, 1200);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("load", measure);
+      clearTimeout(t);
+    };
   }, []);
 
   return (

@@ -23,11 +23,19 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
 
     // Lazy-load Lenis to keep it out of the critical path
     let destroyed = false;
+    let lenis: { raf: (time: number) => void; destroy: () => void; stop: () => void; start: () => void } | null = null;
+    const handleStop = () => lenis?.stop();
+    const handleStart = () => lenis?.start();
+    window.addEventListener("lenis:stop", handleStop);
+    window.addEventListener("lenis:start", handleStart);
+
     import("lenis").then(({ default: Lenis }) => {
       if (destroyed) return;
 
-      const lenis = new Lenis({
-        duration: 1.6,
+      lenis = new Lenis({
+        // ~1.15s keeps the buttery feel without the long floaty tail that
+        // reads as "lag" on the first wheel tick (was 1.6).
+        duration: 1.15,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         orientation: "vertical",
         gestureOrientation: "vertical",
@@ -36,9 +44,15 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
         touchMultiplier: 2,
       });
 
+      // If the intro loader is up (body locked by the home page), start
+      // stopped so wheel input can't queue up and release as a jump.
+      if (document.body.style.overflow === "hidden") {
+        lenis.stop();
+      }
+
       let frameId: number;
       function raf(time: number) {
-        lenis.raf(time);
+        lenis?.raf(time);
         frameId = requestAnimationFrame(raf);
       }
 
@@ -48,7 +62,8 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       const cleanup = () => {
         destroyed = true;
         cancelAnimationFrame(frameId);
-        lenis.destroy();
+        lenis?.destroy();
+        lenis = null;
       };
 
       // Attach cleanup to the outer scope
@@ -57,6 +72,8 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
 
     return () => {
       destroyed = true;
+      window.removeEventListener("lenis:stop", handleStop);
+      window.removeEventListener("lenis:start", handleStart);
       const cleanup = (window as unknown as Record<string, (() => void) | undefined>).__lenisCleanup;
       if (cleanup) {
         cleanup();

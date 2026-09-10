@@ -2,13 +2,19 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import type { HeroData } from "../../data/types";
 import RetroCarousel from "./RetroCarousel";
 import localFont from "next/font/local";
 
 interface PoeticHeroProps {
   data: HeroData;
+  // When false (intro loader visible), entrance animations stay parked so they
+  // don't burn main-thread frames underneath the loader and collide with the
+  // first scroll. Parent flips this to true the moment loading finishes.
+  active?: boolean;
+  // Pauses the retro carousel marquee while the loader covers the screen.
+  carouselPaused?: boolean;
 }
 
 const archia = localFont({
@@ -27,18 +33,20 @@ const staggerContainer = {
 };
 
 const slideUp = {
-  hidden: { opacity: 0, y: 40, filter: "blur(4px)" },
+  // NOTE: transform + opacity only — no `filter: blur()` here. Animating blur
+  // forces a repaint of the whole hero on every frame and was a major source
+  // of first-scroll jank while the entrance played.
+  hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
 
 
-export default function PoeticHero({ data }: PoeticHeroProps) {
+export default function PoeticHero({ data, active = true, carouselPaused = false }: PoeticHeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
 
@@ -53,12 +61,14 @@ export default function PoeticHero({ data }: PoeticHeroProps) {
       {/* ── Background Image (Raw & Crystal Clear, No Zoom) ── */}
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/her-image-2.png"
+          src="/her-image-2.webp"
           alt="Architectural scenic landscape"
           fill
           priority
+          fetchPriority="high"
+          sizes="100vw"
           className="object-cover object-center"
-          quality={100}
+          quality={75}
         />
       </div>
 
@@ -72,7 +82,7 @@ export default function PoeticHero({ data }: PoeticHeroProps) {
           className="max-w-4xl flex flex-col items-center text-center"
           variants={staggerContainer}
           initial="hidden"
-          animate="visible"
+          animate={active ? "visible" : "hidden"}
         >
 
           {/* Headline using Playfair Serif font */}
@@ -101,7 +111,7 @@ export default function PoeticHero({ data }: PoeticHeroProps) {
 
       {/* ── Retro Photo Carousel ── */}
       <div className="w-full max-w-4xl mx-auto mb-8 z-20">
-        <RetroCarousel />
+        <RetroCarousel paused={carouselPaused} />
       </div>
 
     </section>

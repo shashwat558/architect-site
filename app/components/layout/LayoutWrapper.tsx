@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Header from "./Header";
 import Footer from "./Footer";
+import SiteGlow from "./SiteGlow";
 
 // Header and Footer are client components so this wrapper must stay "use client".
 // Optimization: memoize the pathname check so the expensive Header/Footer
@@ -21,6 +22,7 @@ export default function LayoutWrapper({
 
   return (
     <div className="min-h-screen relative">
+      <SiteGlow />
       <Header />
       <div id="main-content">{children}</div>
       <Footer />

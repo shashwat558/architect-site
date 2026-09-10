@@ -194,14 +194,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${playfair.variable} antialiased relative min-h-screen`}
       >
         <CursorProvider>
-          {/* Amber Glow Background */}
-          <div
-            className="fixed inset-0 -z-10"
-            style={{
-              backgroundImage: `radial-gradient(125% 125% at 50% 10%, #fff 40%, #f59e0b 100%)`,
-              backgroundSize: "100% 100%",
-            }}
-          />
           <SmoothScroll>
             <CustomCursor />
             <LayoutWrapper>

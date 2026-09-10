@@ -266,7 +266,7 @@ export default function ProcessPage() {
   const activeStepData = processSteps.find((s) => s.id === activeStep) || processSteps[0];
 
   return (
-    <div className="bg-[#FAF6F1] min-h-screen text-[#3D2B1F] selection:bg-[#D97706] selection:text-white" ref={containerRef}>
+    <div className="bg-transparent min-h-screen text-[#3D2B1F] selection:bg-[#D97706] selection:text-white" ref={containerRef}>
       
       {/* ── Editorial Blueprint Hero ── */}
       <section className="relative min-h-[90vh] flex flex-col justify-center items-center px-4 overflow-hidden border-b border-[#3D2B1F]/10">

@@ -181,10 +181,12 @@ html.custom-cursor-active [contenteditable="true"] {
 
 /* content-visibility: auto on below-fold heavy sections — the browser skips
    layout and paint for off-screen sections, dramatically reducing TBT.
-   contain-intrinsic-size prevents CLS when the section enters the viewport. */
+   `auto` keeps the last rendered size (no jump on revisit); 800px is the
+   first-visit estimate. NOTE: width must be `auto`, not 0 — a 0 width
+   collapses the box while skipped and shifts layout when revealed. */
 .cv-auto {
   content-visibility: auto;
-  contain-intrinsic-size: 0 600px;
+  contain-intrinsic-size: auto 800px;
 }
 
 /* mask-gradient for testimonials carousel edges */

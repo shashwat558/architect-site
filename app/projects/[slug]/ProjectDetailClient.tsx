@@ -172,7 +172,7 @@ export default function ProjectDetailClient({ project }: { project: SanityProjec
 
   return (
     <div
-      className="bg-[#FAF6F1] min-h-screen text-[#3D2B1F] selection:bg-[#D97706] selection:text-white"
+      className="bg-transparent min-h-screen text-[#3D2B1F] selection:bg-[#D97706] selection:text-white"
       ref={containerRef}
     >
       {/* ── Hero ── */}

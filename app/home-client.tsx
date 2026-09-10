@@ -7,7 +7,6 @@ import { Suspense } from "react";
 import { getActiveLoader } from "./components/loaders/loaderConfig";
 import PoeticHero from "./components/hero/PoeticHero";
 import { Testimonials } from "./components/sections";
-import ConstructImage from "./components/ui/ConstructImage";
 import type {
   HeroData,
   OffersSectionData,
@@ -53,13 +52,26 @@ export default function HomeClient({
 }: HomeClientProps) {
   const [loading, setLoading] = useState(true);
 
-  // Prevent body scroll while the intro loader is visible
+  // Prevent body scroll while the intro loader is visible, and tell the
+  // Lenis smooth-scroller (mounted in the root layout) to stop/start with it.
+  // Without this, wheel input queues up inside Lenis during the intro and
+  // releases as a jump the moment the loader lifts — felt as first-scroll lag.
   useEffect(() => {
     document.body.style.overflow = loading ? "hidden" : "auto";
+    window.dispatchEvent(
+      new CustomEvent(loading ? "lenis:stop" : "lenis:start")
+    );
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [loading]);
+
+  // If this page unmounts mid-intro (navigation), make sure Lenis is running.
+  useEffect(() => {
+    return () => {
+      window.dispatchEvent(new CustomEvent("lenis:start"));
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-transparent relative">
@@ -71,12 +83,12 @@ export default function HomeClient({
         className={
           loading
             ? "opacity-0 invisible"
-            : "opacity-100 visible transition-opacity duration-700"
+            : "opacity-100 visible transition-opacity duration-500"
         }
       >
         <main>
           <div className="relative w-full overflow-hidden">
-            <PoeticHero data={heroData} />
+            <PoeticHero data={heroData} active={!loading} carouselPaused={loading} />
           </div>
 
           <Suspense fallback={<div className="h-24" />}>

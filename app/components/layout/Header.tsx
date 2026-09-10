@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import MenuOverlay from "./MenuOverlay";
 import Magnetic from "../ui/Magnetic";
 import { primaryNav } from "../../config/navigation";
@@ -13,17 +13,26 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollY } = useScroll();
+  // Refs mirror the booleans so we only call setState on actual flips.
+  // Previously every scroll-value change triggered two setStates (and a full
+  // header re-render + backdrop-blur repaint) — right in the first-scroll path.
+  const hiddenRef = useRef(false);
+  const scrolledRef = useRef(false);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() || 0;
-    
-    if (latest > previous && latest > 150) {
-        setHidden(true);
-    } else {
-        setHidden(false);
+    const previous = scrollY.getPrevious() ?? 0;
+
+    const shouldHide = latest > previous && latest > 150;
+    if (shouldHide !== hiddenRef.current) {
+      hiddenRef.current = shouldHide;
+      setHidden(shouldHide);
     }
-    
-    setScrolled(latest > 50);
+
+    const shouldBeScrolled = latest > 50;
+    if (shouldBeScrolled !== scrolledRef.current) {
+      scrolledRef.current = shouldBeScrolled;
+      setScrolled(shouldBeScrolled);
+    }
   });
 
   return (

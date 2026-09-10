@@ -49,7 +49,9 @@ export default function CinematicLoader({ onComplete }: { onComplete: () => void
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#0d0d0d] overflow-hidden"
       exit={{ 
         opacity: 0,
-        transition: { duration: 1.0, ease: "easeInOut" } 
+        // Kept short on purpose: a long exit overlaps the hero entrance +
+        // scroll-unlock on the main thread and reads as first-scroll jank.
+        transition: { duration: 0.45, ease: "easeInOut" } 
       }}
     >
         {/* BG Texture */}
