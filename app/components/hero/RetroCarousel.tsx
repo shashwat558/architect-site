@@ -3,9 +3,10 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 
-// ─── Carousel Images ─────────────────────────────────────────────────────────
+// ─── Fallback slides (self-hosted) ─────────────────────────────────────────────
+// Used only when Sanity has no hero slides (offline / empty dataset).
 
-const carouselImages = [
+const fallbackSlides = [
   { src: "/carousel/retro-1.webp", caption: "Urban Geometry" },
   { src: "/carousel/retro-2.webp", caption: "Light & Space" },
   { src: "/carousel/retro-3.webp", caption: "Brutalist Form" },
@@ -16,8 +17,16 @@ const carouselImages = [
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
-export default function RetroCarousel({ paused = false }: { paused?: boolean }) {
+export default function RetroCarousel({
+  paused = false,
+  slides,
+}: {
+  paused?: boolean;
+  slides?: { src: string; caption: string }[];
+}) {
   const trackRef = useRef<HTMLDivElement>(null);
+
+  const carouselImages = slides && slides.length > 0 ? slides : fallbackSlides;
 
   // Pause on hover
   useEffect(() => {

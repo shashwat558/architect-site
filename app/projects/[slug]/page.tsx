@@ -1,9 +1,20 @@
 import { notFound } from "next/navigation";
 import { client } from "../../../sanity/lib/client";
 import { projectBySlugQuery, projectSlugsQuery } from "../../../sanity/lib/queries";
+import { sanityImg, type SanityImageObject } from "../../../sanity/lib/sanityImage";
 import ProjectDetailClient from "./ProjectDetailClient";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
+
+// Raw Sanity shape (image fields are full objects — optimized URLs are built
+// in toProjectDetail so the client component keeps receiving plain strings).
+type SanityGalleryImage = SanityImageObject & {
+  src: string;
+  alt?: string;
+  label?: string;
+  width?: string;
+  aspectRatio?: string;
+};
 
 export type SanityProjectDetail = {
   _id: string;
@@ -11,18 +22,43 @@ export type SanityProjectDetail = {
   subtitle?: string;
   slug: string;
   category: string;
-  heroImage: string;
+  heroImage: SanityImageObject | string;
   meta: { label: string; value: string }[];
   brief: string;
   approach: string;
   challenge?: string;
   solution?: string;
   materials: { name: string; origin: string }[];
-  gallery: { src: string; alt?: string; width: string; aspectRatio: string }[];
-  processGallery: { src: string; alt?: string; width: string; aspectRatio: string }[];
+  gallery: SanityGalleryImage[];
+  processGallery: SanityGalleryImage[];
   testimonial: { text: string; author: string; role: string };
   team: { role: string; name: string }[];
 };
+
+// What ProjectDetailClient actually renders (all images are final URLs).
+export type ProjectDetail = Omit<SanityProjectDetail, "heroImage" | "gallery" | "processGallery"> & {
+  heroImage: string;
+  gallery: { src: string; alt?: string; width?: string; aspectRatio?: string }[];
+  processGallery: { src: string; alt?: string; width?: string; aspectRatio?: string }[];
+};
+
+/** Build right-sized CDN URLs (AVIF/WebP) for every image on the page. */
+function toProjectDetail(p: SanityProjectDetail): ProjectDetail {
+  const mapGallery = (items: SanityGalleryImage[], width: number) =>
+    (items ?? []).map((img) => ({
+      src: sanityImg(img, width) || img.src || "",
+      alt: img.alt,
+      width: img.width,
+      aspectRatio: img.aspectRatio,
+    }));
+
+  return {
+    ...p,
+    heroImage: sanityImg(p.heroImage, 1920) || (typeof p.heroImage === "string" ? p.heroImage : ""),
+    gallery: mapGallery(p.gallery, 1400),
+    processGallery: mapGallery(p.processGallery, 1000),
+  };
+}
 
 // ── Static params (optional pre-rendering) ────────────────────────────────────
 
@@ -35,13 +71,14 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const project: SanityProjectDetail | null = await client.fetch(
+  const raw: SanityProjectDetail | null = await client.fetch(
     projectBySlugQuery,
     { slug },
     { next: { revalidate: 600 } }
   );
 
-  if (!project) return { title: "Project Not Found" };
+  if (!raw) return { title: "Project Not Found" };
+  const project = toProjectDetail(raw);
 
   return {
     title: `${project.title} | Ad.Rs Design Studio`,
@@ -63,13 +100,13 @@ export default async function ProjectDetailPage({
 }) {
   const { slug } = await params;
 
-  const project: SanityProjectDetail | null = await client.fetch(
+  const raw: SanityProjectDetail | null = await client.fetch(
     projectBySlugQuery,
     { slug },
     { next: { revalidate: 600 } }
   );
 
-  if (!project) notFound();
+  if (!raw) notFound();
 
-  return <ProjectDetailClient project={project} />;
+  return <ProjectDetailClient project={toProjectDetail(raw)} />;
 }

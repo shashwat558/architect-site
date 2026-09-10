@@ -35,6 +35,10 @@ const ActiveLoader = getActiveLoader();
 
 type HomeClientProps = {
   heroData: HeroData;
+  /** Optimized Sanity hero background URL (optional — falls back to static). */
+  heroBgUrl?: string;
+  /** Live hero carousel slides (optional — falls back to static local set). */
+  heroSlides?: { src: string; caption: string }[];
   projectsSectionData: ProjectsSectionData;
   pillarsSectionData: PillarsSectionData;
   offersSectionData: OffersSectionData;
@@ -44,6 +48,8 @@ type HomeClientProps = {
 
 export default function HomeClient({
   heroData,
+  heroBgUrl,
+  heroSlides,
   projectsSectionData,
   pillarsSectionData,
   offersSectionData,
@@ -88,7 +94,7 @@ export default function HomeClient({
       >
         <main>
           <div className="relative w-full overflow-hidden">
-            <PoeticHero data={heroData} active={!loading} carouselPaused={loading} />
+            <PoeticHero data={heroData} active={!loading} carouselPaused={loading} bgUrl={heroBgUrl} slides={heroSlides} />
           </div>
 
           <Suspense fallback={<div className="h-24" />}>

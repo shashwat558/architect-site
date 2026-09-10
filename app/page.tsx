@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import HomeClient from "./home-client";
 import { client } from "../sanity/lib/client";
-import { featuredProjectsQuery } from "../sanity/lib/queries";
+import {
+  featuredProjectsQuery,
+  siteContentQuery,
+  siteSettingsQuery,
+  testimonialsQuery,
+} from "../sanity/lib/queries";
+import { sanityImg, type SanityImageObject } from "../sanity/lib/sanityImage";
 import {
   heroData,
   offersSectionData,
@@ -10,7 +16,13 @@ import {
   projectsSectionData,
   testimonialsSectionData,
 } from "./data/content";
-import type { ProjectsSectionData } from "./data/types";
+import type {
+  OffersSectionData,
+  PillarsSectionData,
+  ProjectCTAData,
+  ProjectsSectionData,
+  TestimonialsSectionData,
+} from "./data/types";
 
 const baseUrl = "https://adrs-design.com";
 
@@ -67,9 +79,55 @@ type SanityProject = {
   title: string;
   slug: string;
   category: string;
-  heroImage: string;
+  heroImage: SanityImageObject | string;
   meta?: { label: string; value: string }[];
 };
+
+type SiteSettings = {
+  homeHero?: {
+    backgroundImage?: SanityImageObject | null;
+  } | null;
+};
+
+type SanityTestimonial = {
+  _id: string;
+  text: string;
+  author: string;
+  role?: string;
+  project?: string;
+  avatar?: SanityImageObject | null;
+  rating?: number;
+};
+
+type SanityHeroSlide = {
+  image: SanityImageObject;
+  caption: string;
+};
+
+type SanityPillar = {
+  pid?: string;
+  title: string;
+  description?: string;
+  points?: { highlight?: string; text: string }[];
+  outro?: string;
+  link?: string;
+};
+
+type SanityOffer = {
+  title: string;
+  description?: string;
+  link?: string;
+  ctaLabel?: string;
+};
+
+type SiteContent = {
+  heroSlides?: SanityHeroSlide[] | null;
+  testimonialsHeader?: { eyebrow?: string; title?: string; subtitle?: string } | null;
+  pillarsHeader?: { eyebrow?: string; title?: string; subtitle?: string; backgroundText?: string } | null;
+  pillars?: SanityPillar[] | null;
+  offersHeader?: { eyebrow?: string } | null;
+  offers?: SanityOffer[] | null;
+} | null;
 
 // ── Data mappers ───────────────────────────────────────────────────────────────
 
@@ -79,7 +137,9 @@ function toProjectCard(p: SanityProject, i: number) {
     title: p.title,
     category: p.category ?? "Architecture",
     year: p.meta?.find((m) => m.label === "Year")?.value ?? "",
-    image: p.heroImage ?? "",
+    // Right-sized Sanity CDN URL (AVIF/WebP via auto=format); falls back to
+    // the raw string when the field is a plain URL.
+    image: sanityImg(p.heroImage, 900) || "",
     link: `/projects/${p.slug}`,
   };
 }
@@ -87,9 +147,20 @@ function toProjectCard(p: SanityProject, i: number) {
 // ── Page ───────────────────────────────────────────────────────────────────────
 
 export default async function Home() {
-  // Fetch featured projects and team members from Sanity in parallel
-  const [sanityProjects] = await Promise.all([
+  // Fetch live content from Sanity in parallel (settings fetch is guarded —
+  // the homepage must survive a settings outage; section queries fall back
+  // to static data when empty).
+  const [sanityProjects, siteSettings, sanityTestimonials, siteContent] = await Promise.all([
     client.fetch<SanityProject[]>(featuredProjectsQuery, {}, { next: { revalidate: 300 } }),
+    client
+      .fetch<SiteSettings | null>(siteSettingsQuery, {}, { next: { revalidate: 300 } })
+      .catch(() => null),
+    client
+      .fetch<SanityTestimonial[]>(testimonialsQuery, {}, { next: { revalidate: 300 } })
+      .catch(() => [] as SanityTestimonial[]),
+    client
+      .fetch<SiteContent>(siteContentQuery, {}, { next: { revalidate: 300 } })
+      .catch(() => null),
   ]);
 
   // (teamMembersQuery not needed on home — team shown as ConstructImage teaser only)
@@ -98,19 +169,84 @@ export default async function Home() {
   const liveProjectsSection: ProjectsSectionData =
     sanityProjects.length > 0
       ? {
-          ...projectsSectionData,
-          projects: sanityProjects.map(toProjectCard),
-        }
+        ...projectsSectionData,
+        projects: sanityProjects.map(toProjectCard),
+      }
       : projectsSectionData;
+
+  // Testimonials — live docs first, static fallback when empty
+  const liveTestimonials: TestimonialsSectionData =
+    sanityTestimonials.length > 0
+      ? {
+          eyebrow:
+            siteContent?.testimonialsHeader?.eyebrow ?? testimonialsSectionData.eyebrow,
+          title: siteContent?.testimonialsHeader?.title ?? testimonialsSectionData.title,
+          subtitle:
+            siteContent?.testimonialsHeader?.subtitle ?? testimonialsSectionData.subtitle,
+          testimonials: sanityTestimonials.map((t, i) => ({
+            id: i + 1,
+            text: t.text,
+            author: t.author,
+            role: t.role ?? "",
+            project: t.project,
+            image: sanityImg(t.avatar, 200) || undefined,
+            rating: t.rating ?? 5,
+          })),
+        }
+      : testimonialsSectionData;
+
+  // Pillars — live docs first, static fallback when empty
+  const livePillars: PillarsSectionData =
+    (siteContent?.pillars?.length ?? 0) > 0
+      ? {
+          eyebrow: siteContent?.pillarsHeader?.eyebrow ?? pillarsSectionData.eyebrow,
+          title: siteContent?.pillarsHeader?.title ?? pillarsSectionData.title,
+          subtitle: siteContent?.pillarsHeader?.subtitle ?? pillarsSectionData.subtitle,
+          backgroundText:
+            siteContent?.pillarsHeader?.backgroundText ?? pillarsSectionData.backgroundText,
+          pillars: (siteContent?.pillars ?? []).map((p, i) => ({
+            id: p.pid ?? String(i + 1).padStart(2, "0"),
+            title: p.title,
+            description: p.description,
+            points: p.points,
+            outro: p.outro,
+            link: p.link ?? "/process",
+          })),
+        }
+      : pillarsSectionData;
+
+  // Offers — live docs first, static fallback when empty
+  const liveOffers: OffersSectionData =
+    (siteContent?.offers?.length ?? 0) > 0
+      ? {
+          eyebrow: siteContent?.offersHeader?.eyebrow ?? offersSectionData.eyebrow,
+          offers: (siteContent?.offers ?? []).map((o) => ({
+            title: o.title,
+            description: o.description ?? "",
+            link: o.link ?? "/contact",
+            ctaLabel: o.ctaLabel ?? "Learn more",
+          })),
+        }
+      : offersSectionData;
+
+  // Hero carousel slides — live Sanity images, static local files as fallback
+  const heroSlides = (siteContent?.heroSlides ?? [])
+    .map((s) => ({
+      src: sanityImg(s.image, 800),
+      caption: s.caption,
+    }))
+    .filter((s) => s.src && s.caption);
 
 
   return (
     <HomeClient
       heroData={heroData}
+      heroBgUrl={sanityImg(siteSettings?.homeHero?.backgroundImage, 1920) || undefined}
+      heroSlides={heroSlides.length > 0 ? heroSlides : undefined}
       projectsSectionData={liveProjectsSection}
-      pillarsSectionData={pillarsSectionData}
-      offersSectionData={offersSectionData}
-      testimonialsSectionData={testimonialsSectionData}
+      pillarsSectionData={livePillars}
+      offersSectionData={liveOffers}
+      testimonialsSectionData={liveTestimonials}
       projectCTAData={projectCTAData}
     />
   );

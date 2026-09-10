@@ -8,7 +8,7 @@ import MenuOverlay from "./MenuOverlay";
 import Magnetic from "../ui/Magnetic";
 import { primaryNav } from "../../config/navigation";
 
-export default function Header() {
+export default function Header({ logoUrl }: { logoUrl?: string | null }) {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -54,9 +54,9 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
           <Magnetic>
              <div className="relative w-32 h-10">
-               <Image 
-                 src="/logo.png" 
-                 alt="AD.RS Design Studio" 
+                <Image 
+                  src={logoUrl || "/logo.png"} 
+                  alt="AD.RS Design Studio"
                  fill 
                  className="object-contain object-left" 
                  priority

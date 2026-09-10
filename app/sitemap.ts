@@ -40,20 +40,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let projectPages: MetadataRoute.Sitemap = [];
   try {
-    // Dynamic import so prisma/pg are NOT initialised at module load time
-    // (avoids pg SSL warnings during build prerender phase)
-    const { prisma } = await import("@/lib/prisma");
-    const projects = await prisma.project.findMany({
-      select: { slug: true, updatedAt: true },
-    });
-    projectPages = projects.map((p: (typeof projects)[number]) => ({
+    const { client } = await import("../sanity/lib/client");
+    const projects = await client.fetch<{ slug: string; _updatedAt: string }[]>(
+      `*[_type == "project" && defined(slug.current)] {
+        "slug": slug.current,
+        _updatedAt
+      }`
+    );
+    projectPages = projects.map((p) => ({
       url: `${baseUrl}/projects/${p.slug}`,
-      lastModified: p.updatedAt,
+      lastModified: new Date(p._updatedAt),
       changeFrequency: "monthly" as const,
       priority: 0.7,
     }));
-  } catch {
-    // Database may be unavailable at build-time; fall back to static set.
+  } catch (err) {
+    console.error("[Sitemap] Failed to fetch projects from Sanity:", err);
+    // Fall back to static set.
   }
 
   return [...staticPages, ...projectPages];

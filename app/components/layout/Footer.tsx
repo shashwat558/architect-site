@@ -29,7 +29,7 @@ const LinkList = ({ items }: { items: { name: string; href: string }[] }) => (
   </ul>
 );
 
-export default function Footer() {
+export default function Footer({ footerBgUrl }: { footerBgUrl?: string | null }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -69,7 +69,7 @@ export default function Footer() {
         <div className="absolute inset-0 -z-10 select-none pointer-events-none overflow-hidden">
           <motion.div style={{ y: bgY }} className="absolute inset-0 h-[120%] w-full -top-[10%]">
             <Image
-              src="/footer.jpeg"
+              src={footerBgUrl || "/footer.jpeg"}
               alt="AD.RS Design Studio Background"
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 95vw, 90vw"

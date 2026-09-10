@@ -12,6 +12,8 @@ import { createClient } from '@sanity/client';
 import { getTeamMemberSeeds } from './generators/teamMembers.mjs';
 import { getProjectSeeds }    from './generators/projects.mjs';
 import { siteSettingsSeeds } from './generators/siteSettings.mjs';
+import { getTestimonialSeeds } from './generators/testimonials.mjs';
+import { getSiteContentSeed } from './generators/siteContent.mjs';
 import { log, summary }    from './utils/logger.mjs';
 import { uploadImageFromUrl } from './utils/uploadImage.mjs';
 
@@ -67,6 +69,25 @@ async function resolveImage(url, label, alt) {
   return { ...imageAsset, alt };
 }
 
+// Local-file variant (repo assets like the hero carousel webps).
+// Uses a stable label so re-runs skip re-uploading via the shared cache below.
+const localUploadCache = new Map();
+async function resolveLocalImage(absPath, label, alt) {
+  if (localUploadCache.has(absPath)) {
+    const cached = localUploadCache.get(absPath);
+    return { ...cached, alt };
+  }
+  log.info(`  ↑ Uploading local image: ${label}…`);
+  const { readFileSync } = await import('node:fs');
+  const asset = await withRetry(
+    () => client.assets.upload('image', readFileSync(absPath), { filename: label }),
+    `upload-local-${label}`
+  );
+  const imageAsset = { _type: 'image', asset: { _type: 'reference', _ref: asset._id } };
+  localUploadCache.set(absPath, imageAsset);
+  return { ...imageAsset, alt };
+}
+
 // ─── Seed All ─────────────────────────────────────────────────────────────────
 
 async function seed() {
@@ -88,6 +109,16 @@ async function seed() {
   // 3. Site Settings (singleton, no images)
   counts.siteSettings = await seedCollection('siteSettings', siteSettingsSeeds);
 
+  // 4. Testimonials — upload avatars first, then seed
+  log.step('Uploading testimonial avatars…');
+  const testimonialSeeds = await getTestimonialSeeds(resolveImage);
+  counts.testimonial = await seedCollection('testimonial', testimonialSeeds);
+
+  // 5. Site Content singleton (hero slides from local repo assets)
+  log.step('Uploading site content imagery…');
+  const siteContentSeeds = await getSiteContentSeed(resolveImage, resolveLocalImage);
+  counts.siteContent = await seedCollection('siteContent', siteContentSeeds);
+
   summary(counts);
 }
 
@@ -96,7 +127,7 @@ async function seed() {
 async function clear() {
   log.title('AD.RS Design Studio — Clearing Seeded Demo Content');
 
-  const types = ['project', 'teamMember', 'siteSettings'];
+  const types = ['project', 'teamMember', 'siteSettings', 'testimonial', 'siteContent'];
 
   for (const type of types) {
     log.step(`Fetching demo documents of type "${type}"…`);

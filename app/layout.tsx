@@ -4,6 +4,9 @@ import "./globals.css";
 import { CursorProvider } from "./context/CursorContext";
 import CustomCursor from "./components/ui/CustomCursor";
 import SmoothScroll from "./components/ui/SmoothScroll";
+import { client } from "../sanity/lib/client";
+import { siteSettingsQuery } from "../sanity/lib/queries";
+import { sanityImg, type SanityImageObject } from "../sanity/lib/sanityImage";
 
 import LayoutWrapper from "./components/layout/LayoutWrapper";
 
@@ -95,18 +98,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Global brand imagery from Sanity (logo + footer backdrop). Never allowed
+  // to break the layout: any fetch failure falls back to self-hosted files.
+  let logoUrl: string | null = null;
+  let footerBgUrl: string | null = null;
+  try {
+    const settings = await client.fetch<{
+      logo?: SanityImageObject | null;
+      footerBackground?: SanityImageObject | null;
+    } | null>(siteSettingsQuery, {}, { next: { revalidate: 300 } });
+    logoUrl = sanityImg(settings?.logo, 512) || null;
+    footerBgUrl = sanityImg(settings?.footerBackground, 1600) || null;
+  } catch {
+    // Statics in Header/Footer cover this case.
+  }
   return (
     <>
       <html lang="en">
       <head>
-        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        
         {/* JSON-LD Schema Markup - Organization */}
         <script
           type="application/ld+json"
@@ -196,7 +210,7 @@ export default function RootLayout({
         <CursorProvider>
           <SmoothScroll>
             <CustomCursor />
-            <LayoutWrapper>
+            <LayoutWrapper siteImagery={{ logoUrl, footerBgUrl }}>
               {children}
             </LayoutWrapper>
           </SmoothScroll>

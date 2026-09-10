@@ -17,7 +17,7 @@ export default function AnimatedTestimonialsSection({ data }: Props) {
     quote: t.text,
     name: t.author,
     designation: t.role,
-    src: t.image || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop",
+    src: t.image || "/about-hero.png",
   }));
 
   return (

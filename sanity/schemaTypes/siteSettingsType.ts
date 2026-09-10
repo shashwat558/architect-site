@@ -82,6 +82,40 @@ export const siteSettingsType = defineType({
       ],
     }),
     defineField({
+      name: 'processHeroImage',
+      title: 'Process Page Hero Image',
+      type: 'image',
+      description: 'Large backdrop for the process page hero. Hotspot enabled.',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative Text',
+          type: 'string',
+          initialValue: 'Architectural workspace',
+        }),
+      ],
+    }),
+    defineField({
+      name: 'footerBackground',
+      title: 'Footer Background Image',
+      type: 'image',
+      description: 'Wide backdrop photo inside the rounded footer card.',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative Text',
+          type: 'string',
+          initialValue: 'AD.RS Design Studio Background',
+        }),
+      ],
+    }),
+    defineField({
       name: 'contactInfo',
       title: 'Contact Information',
       type: 'object',

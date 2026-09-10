@@ -27,29 +27,30 @@ export const heroData: HeroData = {
   highlighted: "profound feeling.",
   description:
     "Architecture as an emotional canvas. We design environments that breathe, listen, and hold the essence of life.",
+  // Fallback slides (self-hosted). Live slides come from Sanity siteContent.
   images: [
     {
-      src: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80",
+      src: "/carousel/retro-1.webp",
       alt: "Modern living room interior",
     },
     {
-      src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
+      src: "/carousel/retro-2.webp",
       alt: "Contemporary design space",
     },
     {
-      src: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80",
+      src: "/carousel/retro-3.webp",
       alt: "Elegant bedroom design",
     },
     {
-      src: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80",
+      src: "/carousel/retro-4.webp",
       alt: "Kitchen interior design",
     },
     {
-      src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
+      src: "/carousel/retro-5.webp",
       alt: "Luxury home exterior",
     },
     {
-      src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80",
+      src: "/carousel/retro-6.webp",
       alt: "Modern bathroom design",
     },
   ],
@@ -64,14 +65,14 @@ export const projectsSectionData: ProjectsSectionData = {
   ctaLabel: "All Projects",
   ctaHref: "/projects",
   dragHint: "Drag to explore",
+  // Fallback cards (self-hosted). Live projects come from Sanity.
   projects: [
     {
       id: 1,
       title: "Modern Residence",
       category: "Residential",
       year: "2024",
-      image:
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
+      image: "/carousel/retro-1.webp",
       link: "/projects/modern-residence",
     },
     {
@@ -79,8 +80,7 @@ export const projectsSectionData: ProjectsSectionData = {
       title: "Green Living Space",
       category: "Sustainable",
       year: "2023",
-      image:
-        "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&q=80",
+      image: "/carousel/retro-2.webp",
       link: "/projects/green-living-space",
     },
     {
@@ -88,8 +88,7 @@ export const projectsSectionData: ProjectsSectionData = {
       title: "Rustic Chalet",
       category: "Hospitality",
       year: "2024",
-      image:
-        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80",
+      image: "/carousel/retro-3.webp",
       link: "/projects/rustic-chalet",
     },
     {
@@ -97,8 +96,7 @@ export const projectsSectionData: ProjectsSectionData = {
       title: "Urban Loft",
       category: "Renovation",
       year: "2022",
-      image:
-        "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80",
+      image: "/carousel/retro-4.webp",
       link: "/projects/urban-loft",
     },
   ],
@@ -123,8 +121,7 @@ export const projectsContentData: ProjectsContentData = {
       category: "Residential",
       year: "2024",
       location: "Bhopal, India",
-      image:
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
+      image: "/carousel/retro-1.webp",
       link: "/projects/modern-residence",
     },
     {
@@ -133,8 +130,7 @@ export const projectsContentData: ProjectsContentData = {
       category: "Sustainable",
       year: "2023",
       location: "Indore, India",
-      image:
-        "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&q=80",
+      image: "/carousel/retro-2.webp",
       link: "/projects/green-living-space",
     },
     {
@@ -143,8 +139,7 @@ export const projectsContentData: ProjectsContentData = {
       category: "Hospitality",
       year: "2024",
       location: "Manali, India",
-      image:
-        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80",
+      image: "/carousel/retro-3.webp",
       link: "/projects/rustic-chalet",
     },
     {
@@ -153,8 +148,7 @@ export const projectsContentData: ProjectsContentData = {
       category: "Renovation",
       year: "2022",
       location: "Mumbai, India",
-      image:
-        "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80",
+      image: "/carousel/retro-4.webp",
       link: "/projects/urban-loft",
     },
     {
@@ -163,8 +157,7 @@ export const projectsContentData: ProjectsContentData = {
       category: "Commercial",
       year: "2023",
       location: "Delhi, India",
-      image:
-        "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80",
+      image: "/carousel/retro-5.webp",
       link: "/projects/corporate-hq",
     },
     {
@@ -173,8 +166,7 @@ export const projectsContentData: ProjectsContentData = {
       category: "Residential",
       year: "2023",
       location: "Udaipur, India",
-      image:
-        "https://images.unsplash.com/photo-1600596542815-bfad4c1539a9?w=1200&q=80",
+      image: "/carousel/retro-6.webp",
       link: "/projects/lakeside-villa",
     },
   ],
@@ -279,14 +271,9 @@ export const teamSectionData: TeamSectionData = {
       id: 1,
       name: "Elena Rodriguez",
       title: "Principal Architect",
-      image:
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=1000&fit=crop",
+      image: "/about-hero.png",
       bio: "Elena serves as the visionary force behind AD.RS Design. With over 15 years of experience in high-end residential and commercial architecture, she believes that spaces should allow life to unfold naturally. Her approach combines rigorous structural logic with a deep sensitivity to light and material.",
-      gallery: [
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
-        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80",
-        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=80",
-      ],
+      gallery: ["/about-hero.png"],
       socials: [
         { name: "LinkedIn", url: "#" },
         { name: "Instagram", url: "#" },
@@ -297,14 +284,9 @@ export const teamSectionData: TeamSectionData = {
       id: 2,
       name: "Marcus Chen",
       title: "Lead Designer",
-      image:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=800&h=1000&fit=crop",
+      image: "/about-hero.png",
       bio: "Marcus brings a sculptor's eye to interior spaces. A graduate of RISD, his philosophy centers on the dialogue between object and void. He specializes in bespoke furniture design and spatial planning, ensuring that every centimeter of a project serves both function and contemplation.",
-      gallery: [
-        "https://images.unsplash.com/photo-1600607686527-6fb886090705?w=1200&q=80",
-        "https://images.unsplash.com/photo-1600566752355-35792bedcfe1?w=1200&q=80",
-        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80",
-      ],
+      gallery: ["/about-hero.png"],
       socials: [
         { name: "LinkedIn", url: "#" },
         { name: "Behance", url: "#" },
@@ -315,14 +297,9 @@ export const teamSectionData: TeamSectionData = {
       id: 3,
       name: "Sophia Williams",
       title: "Interior Specialist",
-      image:
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800&h=1000&fit=crop",
+      image: "/about-hero.png",
       bio: "Sophia is the master of atmosphere. With a background in textile design, she curates palettes that evoke warmth and serenity. She oversees the selection of fabrics, finishes, and fixtures, ensuring a cohesive tactile experience throughout every AD.RS project.",
-      gallery: [
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
-        "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=1200&q=80",
-        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=1200&q=80",
-      ],
+      gallery: ["/about-hero.png"],
       socials: [
         { name: "LinkedIn", url: "#" },
         { name: "Instagram", url: "#" },
@@ -333,14 +310,9 @@ export const teamSectionData: TeamSectionData = {
       id: 4,
       name: "Daniel Foster",
       title: "Project Manager",
-      image:
-        "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&h=1000&fit=crop",
+      image: "/about-hero.png",
       bio: "Daniel is the bridge between vision and reality. He ensures that complex designs are executed with precision, on time and on budget. His technical expertise and calm leadership style make him indispensable in navigating the complexities of construction and renovation.",
-      gallery: [
-        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1200&q=80",
-        "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80",
-        "https://images.unsplash.com/photo-1600566752355-35792bedcfe1?w=1200&q=80",
-      ],
+      gallery: ["/about-hero.png"],
       socials: [
         { name: "LinkedIn", url: "#" },
         { name: "Email", url: "#" },
@@ -350,14 +322,9 @@ export const teamSectionData: TeamSectionData = {
       id: 5,
       name: "Amara Okonkwo",
       title: "Sustainability Lead",
-      image:
-        "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&h=1000&fit=crop",
+      image: "/about-hero.png",
       bio: "Amara champions the ecological conscience of the studio. She researches and integrates bio-sourced materials and energy-efficient systems. Her goal is to prove that luxury and sustainability are not mutually exclusive, but rather synergistic.",
-      gallery: [
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
-        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80",
-        "https://images.unsplash.com/photo-1518005052304-a32d18df52fa?w=1200&q=80",
-      ],
+      gallery: ["/about-hero.png"],
       socials: [
         { name: "LinkedIn", url: "#" },
         { name: "Twitter", url: "#" },
@@ -368,14 +335,9 @@ export const teamSectionData: TeamSectionData = {
       id: 6,
       name: "Luca Moretti",
       title: "Technical Director",
-      image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=1000&fit=crop",
+      image: "/about-hero.png",
       bio: "Luca translates abstract concepts into buildable structures. With a background in structural engineering, he solves the most challenging design problems. He loves pushing the boundaries of what materials can do, exploring new joinery techniques and structural systems.",
-      gallery: [
-        "https://images.unsplash.com/photo-1594498653385-d51755754540?w=1200&q=80",
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
-        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=80",
-      ],
+      gallery: ["/about-hero.png"],
       socials: [
         { name: "LinkedIn", url: "#" },
         { name: "GitHub", url: "#" },
@@ -398,8 +360,6 @@ export const testimonialsSectionData: TestimonialsSectionData = {
       author: "Priya & Arjun Malhotra",
       role: "Homeowners",
       project: "Modern Residence",
-      image:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop",
       rating: 5,
     },
     {
@@ -408,8 +368,6 @@ export const testimonialsSectionData: TestimonialsSectionData = {
       author: "Vikram Chandra",
       role: "CEO",
       project: "Corporate HQ",
-      image:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
       rating: 5,
     },
     {
@@ -418,8 +376,6 @@ export const testimonialsSectionData: TestimonialsSectionData = {
       author: "Sarah Martinez",
       role: "Entrepreneur",
       project: "Urban Loft",
-      image:
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop",
       rating: 5,
     },
     {
@@ -428,8 +384,6 @@ export const testimonialsSectionData: TestimonialsSectionData = {
       author: "Rajesh & Meera Sharma",
       role: "Business Owners",
       project: "Lakeside Villa",
-      image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
       rating: 5,
     },
     {
@@ -438,8 +392,6 @@ export const testimonialsSectionData: TestimonialsSectionData = {
       author: "Kavita Desai",
       role: "Hospitality Director",
       project: "Rustic Chalet",
-      image:
-        "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop",
       rating: 5,
     },
     {
@@ -448,8 +400,6 @@ export const testimonialsSectionData: TestimonialsSectionData = {
       author: "Michael & Lisa Chen",
       role: "Family",
       project: "Green Living Space",
-      image:
-        "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop",
       rating: 5,
     },
   ],

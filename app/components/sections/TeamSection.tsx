@@ -468,7 +468,7 @@ export default function TeamSection({ data }: TeamSectionProps) {
           {/* Constructing Team Image Overlay */}
           <div className="w-full mb-16 md:mb-32 h-[40vh] md:h-[70vh] rounded-2xl">
             <ConstructImage
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&fit=crop&q=80"
+              src="/about-hero.png"
               stripes={12}
               className="w-full h-full"
             />

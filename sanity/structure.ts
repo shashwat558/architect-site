@@ -17,11 +17,22 @@ export const structure: StructureResolver = (S) =>
             .documentId('siteSettings')
             .title('Site Settings')
         ),
+
+      // 1b. Singleton: Site Content (homepage sections)
+      S.listItem()
+        .title('Site Content')
+        .icon(CogIcon)
+        .child(
+          S.document()
+            .schemaType('siteContent')
+            .documentId('siteContent')
+            .title('Site Content')
+        ),
       
       S.divider(),
 
-      // 2. Filtered list: Display all other document types (Projects, Team Members)
+      // 2. Filtered list: Display all other document types (Projects, Team Members, Testimonials)
       ...S.documentTypeListItems().filter(
-        (listItem) => !['siteSettings'].includes(listItem.getId() || '')
+        (listItem) => !['siteSettings', 'siteContent'].includes(listItem.getId() || '')
       ),
     ])

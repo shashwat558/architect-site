@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import AboutClient from "./AboutClient";
 import { client } from "../../sanity/lib/client";
 import { teamMembersQuery } from "../../sanity/lib/queries";
+import { sanityImg, type SanityImageObject } from "../../sanity/lib/sanityImage";
 import { teamSectionData, pillarsSectionData, projectCTAData } from "../data/content";
 import type { TeamSectionData } from "../data/types";
 
@@ -54,7 +55,7 @@ type SanityTeamMember = {
   _id: string;
   name: string;
   role: string;
-  image: string;
+  image: SanityImageObject | string;
   displayOrder?: number;
 };
 
@@ -82,7 +83,7 @@ export default async function AboutPage() {
             id: i + 1,
             name: m.name,
             title: m.role,
-            image: m.image ?? "",
+            image: sanityImg(m.image, 800) || "",
             bio: "",
             gallery: [],
             socials: [],

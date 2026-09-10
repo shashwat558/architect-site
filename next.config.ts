@@ -14,13 +14,12 @@ const nextConfig: NextConfig = {
   },
 
   images: {
+    // Custom loader (sanity-image-loader.ts): cdn.sanity.io URLs resolve
+    // straight to the edge (no _next/image upstream fetch, which times out
+    // on slow egress); local + other remote files use the default optimizer.
+    loader: "custom",
+    loaderFile: "./sanity-image-loader.ts",
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        port: "",
-        pathname: "/**",
-      },
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
@@ -74,7 +73,7 @@ const nextConfig: NextConfig = {
           // Preconnect to Sanity CDN for faster image loading
           {
             key: "Link",
-            value: "<https://cdn.sanity.io>; rel=preconnect; crossorigin, <https://images.unsplash.com>; rel=preconnect; crossorigin",
+            value: "<https://cdn.sanity.io>; rel=preconnect; crossorigin",
           },
         ],
       },

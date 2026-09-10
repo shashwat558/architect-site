@@ -15,6 +15,11 @@ interface PoeticHeroProps {
   active?: boolean;
   // Pauses the retro carousel marquee while the loader covers the screen.
   carouselPaused?: boolean;
+  // Optimized Sanity background URL. Falls back to the self-hosted file so
+  // the hero still renders if Sanity is unreachable.
+  bgUrl?: string;
+  // Live carousel slides. Falls back to the static local set.
+  slides?: { src: string; caption: string }[];
 }
 
 const archia = localFont({
@@ -46,7 +51,7 @@ const slideUp = {
 
 
 
-export default function PoeticHero({ data, active = true, carouselPaused = false }: PoeticHeroProps) {
+export default function PoeticHero({ data, active = true, carouselPaused = false, bgUrl, slides }: PoeticHeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
 
@@ -61,7 +66,7 @@ export default function PoeticHero({ data, active = true, carouselPaused = false
       {/* ── Background Image (Raw & Crystal Clear, No Zoom) ── */}
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/her-image-2.webp"
+          src={bgUrl || "/her-image-2.webp"}
           alt="Architectural scenic landscape"
           fill
           priority
@@ -111,7 +116,7 @@ export default function PoeticHero({ data, active = true, carouselPaused = false
 
       {/* ── Retro Photo Carousel ── */}
       <div className="w-full max-w-4xl mx-auto mb-8 z-20">
-        <RetroCarousel paused={carouselPaused} />
+        <RetroCarousel paused={carouselPaused} slides={slides} />
       </div>
 
     </section>

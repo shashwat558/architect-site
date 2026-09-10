@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import CursorImageTrail from "../ui/ImagePath";
 import type { ProjectCTAData } from "../../data/types";
 
 export type ProjectCTAProps = {
@@ -11,7 +10,7 @@ export type ProjectCTAProps = {
 export default function ProjectCTA({ data }: ProjectCTAProps) {
   return (
     <section className="py-16 px-6 md:px-12 lg:px-20 bg-transparent">
-      <CursorImageTrail className="w-full rounded-2xl bg-[#EDE5D8]/30 border border-[#3D2B1F]/10 overflow-hidden hover:bg-[#EDE5D8]/50 transition-colors duration-500">
+      <div className="relative w-full rounded-2xl bg-[#EDE5D8]/30 border border-[#3D2B1F]/10 overflow-hidden hover:bg-[#EDE5D8]/50 transition-colors duration-500">
         <div className="flex flex-col items-center justify-center py-24 md:py-32 text-center relative z-10 px-6">
           <div className="space-y-8 max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-5xl lg:text-7xl text-[#3D2B1F] leading-[1.1] vibrate-text">
@@ -45,7 +44,7 @@ export default function ProjectCTA({ data }: ProjectCTAProps) {
               {data.footerLabel}
             </p>
         </div>
-      </CursorImageTrail>
+      </div>
     </section>
   );
 }

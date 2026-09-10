@@ -9,7 +9,9 @@ export const featuredProjectsQuery = groq`
     title,
     "slug": slug.current,
     category,
-    "heroImage": heroImage.asset->url,
+    // Full image object (asset ref + hotspot/crop + alt) — callers build
+    // right-sized CDN URLs with the sanityImg() helper instead of raw originals.
+    heroImage,
     meta[label in ["Year", "Location"]],
   }
 `
@@ -23,7 +25,7 @@ export const teamMembersQuery = groq`
     name,
     role,
     "slug": slug.current,
-    "image": image.asset->url,
+    image,
     displayOrder,
   }
 `
@@ -40,8 +42,7 @@ export const projectsListQuery = groq`
     category,
     status,
     isFeatured,
-    "heroImage": heroImage.asset->url,
-    "heroImageDimensions": heroImage.asset->metadata.dimensions,
+    heroImage,
     meta,
   }
 `
@@ -58,7 +59,7 @@ export const projectBySlugQuery = groq`
     category,
     status,
     isFeatured,
-    "heroImage": heroImage.asset->url,
+    heroImage,
     meta,
     brief,
     approach,
@@ -68,17 +69,15 @@ export const projectBySlugQuery = groq`
       name,
       origin,
     },
+    // Spread keeps the full image object (hotspot/crop + width/aspectRatio/alt
+    // or label subfields); src stays as the unoptimized raw fallback.
     gallery[] {
+      ...,
       "src": asset->url,
-      alt,
-      width,
-      aspectRatio,
     },
     processGallery[] {
+      ...,
       "src": asset->url,
-      alt,
-      width,
-      aspectRatio,
     },
     testimonial {
       text,
@@ -96,5 +95,63 @@ export const projectBySlugQuery = groq`
 export const projectSlugsQuery = groq`
   *[_type == "project" && defined(slug.current)] {
     "slug": slug.current
+  }
+`
+
+// ─── Site Settings (singleton) ──────────────────────────────────────────────
+
+/**
+ * Global brand imagery + settings. Prefers the `siteSettings` singleton the
+ * Studio edits; falls back to the most recently updated settings doc (so
+ * older seeded datasets keep working until the singleton is created).
+ */
+export const siteSettingsQuery = groq`
+  coalesce(
+    *[_id == "siteSettings"][0],
+    *[_type == "siteSettings"] | order(_updatedAt desc) [0]
+  ) {
+    siteName,
+    logo,
+    homeHero,
+    processHeroImage,
+    footerBackground,
+    contactInfo,
+    socialLinks,
+  }
+`
+
+// ─── Testimonials ───────────────────────────────────────────────────────────
+
+/** All testimonials ordered by displayOrder */
+export const testimonialsQuery = groq`
+  *[_type == "testimonial"] | order(displayOrder asc) {
+    _id,
+    text,
+    author,
+    role,
+    project,
+    avatar,
+    rating,
+    displayOrder,
+  }
+`
+
+// ─── Site Content (singleton) ───────────────────────────────────────────────
+
+/**
+ * Homepage sections (hero slides, pillars, offers + headers). Prefers the
+ * `siteContent` singleton; falls back to the newest siteContent doc.
+ */
+export const siteContentQuery = groq`
+  coalesce(
+    *[_id == "siteContent"][0],
+    *[_type == "siteContent"] | order(_updatedAt desc) [0]
+  ) {
+    heroSlides,
+    testimonialsHeader,
+    pillarsHeader,
+    pillars,
+    offersHeader,
+    offers,
   }
 `

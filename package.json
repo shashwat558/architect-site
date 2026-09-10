@@ -9,6 +9,7 @@
     "lint": "eslint",
     "create-admin": "npx tsx scripts/create-admin.ts",
     "seed": "node scripts/seed/index.mjs",
+    "seed:imagery": "node scripts/seed-site-imagery.mjs",
     "seed:clear": "node scripts/seed/index.mjs clear"
   },
   "dependencies": {

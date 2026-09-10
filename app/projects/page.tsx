@@ -5,6 +5,7 @@ import ProjectsContent from "../components/sections/ProjectsContent";
 import { projectCTAData } from "../data/content";
 import { client } from "../../sanity/lib/client";
 import { projectsListQuery } from "../../sanity/lib/queries";
+import { sanityImg, type SanityImageObject } from "../../sanity/lib/sanityImage";
 import type { ProjectsContentData } from "../data/types";
 
 const baseUrl = "https://adrs-design.com";
@@ -61,7 +62,7 @@ type SanityProject = {
   category: string;
   status: string;
   isFeatured: boolean;
-  heroImage: string;
+  heroImage: SanityImageObject | string;
   meta?: { label: string; value: string }[];
 };
 
@@ -72,7 +73,7 @@ function toProjectCard(p: SanityProject, index: number) {
     title: p.title,
     category: p.category ?? "Architecture",
     year: p.meta?.find((m) => m.label === "Year")?.value ?? "",
-    image: p.heroImage,
+    image: sanityImg(p.heroImage, 1000) || "",
     link: `/projects/${p.slug}`,
     location: p.meta?.find((m) => m.label === "Location")?.value,
   };

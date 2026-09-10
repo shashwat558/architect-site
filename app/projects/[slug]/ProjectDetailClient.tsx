@@ -8,7 +8,7 @@ import TestimonialSection from "../../components/sections/SimpleTestimonial";
 import ProjectReviewForm from "../../components/sections/ProjectReviewForm";
 
 import { BeforeAfterSlider } from "../../components/ui/BeforeAfterSlider";
-import type { SanityProjectDetail } from "./page";
+import type { ProjectDetail } from "./page";
 
 // ── Sub-components ─────────────────────────────────────────────────────────────
 
@@ -71,7 +71,7 @@ const SmoothLine = () => {
   );
 };
 
-const MaterialBoard = ({ materials }: { materials: SanityProjectDetail["materials"] }) => (
+const MaterialBoard = ({ materials }: { materials: ProjectDetail["materials"] }) => (
   <section className="py-20 md:py-32 border-t border-[#3D2B1F]/10">
     <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#D97706] mb-12">
       Material Palette
@@ -97,7 +97,7 @@ const MaterialBoard = ({ materials }: { materials: SanityProjectDetail["material
   </section>
 );
 
-const ProjectCredits = ({ team }: { team: SanityProjectDetail["team"] }) => (
+const ProjectCredits = ({ team }: { team: ProjectDetail["team"] }) => (
   <section className="py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 border-t border-[#3D2B1F]/10">
     <div className="md:col-span-1">
       <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#D97706]">Project Team</h3>
@@ -148,7 +148,7 @@ const ToggleSwitch = ({ isOn, onToggle }: { isOn: boolean; onToggle: () => void 
 
 // ── Main Client Component ──────────────────────────────────────────────────────
 
-export default function ProjectDetailClient({ project }: { project: SanityProjectDetail }) {
+export default function ProjectDetailClient({ project }: { project: ProjectDetail }) {
   const [showProcess, setShowProcess] = useState(false);
   const containerRef = useRef(null);
 
