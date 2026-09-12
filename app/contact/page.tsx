@@ -86,8 +86,8 @@ export default function Contact() {
                         <h3 className="font-serif text-2xl mb-4 text-[var(--foreground)] vibrate-text">Visit Us</h3>
                         <address className="not-italic text-[var(--muted)] text-lg leading-relaxed">
                             AD.RS Design Studio<br/>
-                            123 Arera Colony, E-7 Sector<br/>
-                            Bhopal, Madhya Pradesh 462016<br/>
+                            A-344, New Minal Residency,<br/>
+                            J.K. Road, Bhopal -21<br/>
                             India
                         </address>
                     </div>
@@ -95,17 +95,20 @@ export default function Contact() {
                     <div>
                         <h3 className="font-serif text-2xl mb-4 text-[var(--foreground)] vibrate-text">Contact</h3>
                         <p className="text-[var(--muted)] text-lg mb-2">
-                           <a href="mailto:hello@adrs-studio.com" className="hover:text-[var(--accent)] transition-colors">hello@adrs-studio.com</a>
+                           <a href="mailto:adrsdesignstudio@gmail.com" className="hover:text-[var(--accent)] transition-colors">adrsdesignstudio@gmail.com</a>
                         </p>
                         <p className="text-[var(--muted)] text-lg">
-                           <a href="tel:+919876543210" className="hover:text-[var(--accent)] transition-colors">+91 987 654 3210</a>
+                           <a href="tel:+919406557292" className="hover:text-[var(--accent)] transition-colors">+91 94065 57292</a>
+                        </p>
+                        <p className="text-[var(--muted)] text-lg">
+                           <a href="tel:+919406541910" className="hover:text-[var(--accent)] transition-colors">+91 94065 41910</a>
                         </p>
                     </div>
 
                     <div>
                         <h3 className="font-serif text-2xl mb-4 text-[var(--foreground)]">Follow</h3>
                         <ul className="text-[var(--muted)] text-lg space-y-2">
-                            <li><a href="#" className="hover:text-[var(--accent)] transition-colors">Instagram</a></li>
+                            <li><a href="https://instagram.com/ad.rsdesignstudio" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors">Instagram — ad.rsdesignstudio</a></li>
                             <li><a href="#" className="hover:text-[var(--accent)] transition-colors">LinkedIn</a></li>
                             <li><a href="#" className="hover:text-[var(--accent)] transition-colors">Pinterest</a></li>
                         </ul>
@@ -117,7 +120,7 @@ export default function Contact() {
                     <p className="text-[var(--muted)] mb-4">
                         We are always looking for talented architects and designers. Send your portfolio to:
                     </p>
-                    <a href="mailto:careers@adrs-studio.com" className="text-[var(--accent)] font-medium hover:underline">careers@adrs-studio.com</a>
+                    <a href="mailto:adrsdesignstudio@gmail.com" className="text-[var(--accent)] font-medium hover:underline">adrsdesignstudio@gmail.com</a>
                 </div>
             </motion.div>
 

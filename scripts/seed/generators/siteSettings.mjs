@@ -13,13 +13,13 @@ export const siteSettingsSeeds = [
     },
     contactInfo: {
       _type: 'object',
-      email: 'info@adrs-design.com',
-      phone: '+91 755 420 0000',
-      address: '14, Arera Colony, Zone-II\nBhopal, Madhya Pradesh 462016\nIndia',
+      email: 'adrsdesignstudio@gmail.com',
+      phone: '+91 94065 57292, +91 94065 41910',
+      address: 'A-344, New Minal Residency, J.K. Road\nBhopal -21\nIndia',
       officeHours: 'Mon – Fri: 9:00 AM – 6:30 PM IST',
     },
     socialLinks: [
-      { _key: 'sl-ig', _type: 'object', platform: 'instagram', url: 'https://instagram.com/adrs.design' },
+      { _key: 'sl-ig', _type: 'object', platform: 'instagram', url: 'https://instagram.com/ad.rsdesignstudio' },
       { _key: 'sl-li', _type: 'object', platform: 'linkedin',  url: 'https://linkedin.com/company/adrs-design' },
       { _key: 'sl-pi', _type: 'object', platform: 'pinterest', url: 'https://pinterest.com/adrsdesign' },
     ],

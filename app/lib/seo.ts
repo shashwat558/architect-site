@@ -11,8 +11,14 @@ export const SEO_CONFIG = {
   // Business Information
   business: {
     name: 'AD.RS Design Studio',
-    email: 'info@adrs-design.com',
-    phone: '+91-XXXXXXXXXX',
+    email: 'adrsdesignstudio@gmail.com',
+    phone: '+91-9406557292',
+    secondaryPhone: '+91-9406541910',
+    address: {
+      street: 'A-344, New Minal Residency, J.K. Road',
+      city: 'Bhopal',
+      postalCode: '462021',
+    },
     location: {
       city: 'Bhopal',
       state: 'MP',
@@ -21,7 +27,7 @@ export const SEO_CONFIG = {
       lng: 79.9864,
     },
     socials: {
-      instagram: 'https://instagram.com/adrsdesign',
+      instagram: 'https://instagram.com/ad.rsdesignstudio',
       facebook: 'https://facebook.com/adrsdesign',
       linkedin: 'https://linkedin.com/company/adrs-design-studio',
     },
@@ -58,8 +64,10 @@ export function generateOrganizationSchema() {
     sameAs: Object.values(SEO_CONFIG.business.socials),
     address: {
       '@type': 'PostalAddress',
+      streetAddress: SEO_CONFIG.business.address.street,
       addressLocality: SEO_CONFIG.business.location.city,
       addressRegion: SEO_CONFIG.business.location.state,
+      postalCode: SEO_CONFIG.business.address.postalCode,
       addressCountry: SEO_CONFIG.business.location.country,
     },
     contactPoint: {
@@ -84,8 +92,10 @@ export function generateLocalBusinessSchema() {
     email: SEO_CONFIG.business.email,
     address: {
       '@type': 'PostalAddress',
+      streetAddress: SEO_CONFIG.business.address.street,
       addressLocality: SEO_CONFIG.business.location.city,
       addressRegion: SEO_CONFIG.business.location.state,
+      postalCode: SEO_CONFIG.business.address.postalCode,
       addressCountry: SEO_CONFIG.business.location.country,
     },
     geo: {

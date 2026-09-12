@@ -36,7 +36,7 @@ export const footerProjects: NavLink[] = [
 
 /** External social network links */
 export const socialNetworks: NavLink[] = [
-  { name: "Instagram", href: "https://instagram.com" },
+  { name: "Instagram", href: "https://instagram.com/ad.rsdesignstudio" },
   { name: "LinkedIn", href: "https://linkedin.com" },
 ];
 

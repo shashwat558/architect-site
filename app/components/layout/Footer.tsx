@@ -97,15 +97,21 @@ export default function Footer({ footerBgUrl }: { footerBgUrl?: string | null })
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[#3D2B1F] text-sm pt-2">
               <div className="space-y-1">
-                <p className="font-serif italic text-base font-bold">Bhopal, India</p>
+                <p className="font-serif italic text-base font-bold">A-344, New Minal Residency, J.K. Road, Bhopal -21</p>
                 <p className="text-[#3D2B1F]/60 text-xs font-mono font-semibold">({time || "00:00:00"} IST)</p>
               </div>
               <div className="space-y-1">
                 <p className="hover:text-[#D97706] transition-colors font-bold">
-                  <a href="mailto:contact@adrs.design">contact@adrs.design</a>
+                  <a href="mailto:adrsdesignstudio@gmail.com">adrsdesignstudio@gmail.com</a>
                 </p>
                 <p className="hover:text-[#D97706] transition-colors font-bold">
-                  <a href="tel:+919876543210">+91 98765 43210</a>
+                  <a href="tel:+919406557292">+91 94065 57292</a>
+                </p>
+                <p className="hover:text-[#D97706] transition-colors font-bold">
+                  <a href="tel:+919406541910">+91 94065 41910</a>
+                </p>
+                <p className="hover:text-[#D97706] transition-colors font-bold">
+                  <a href="https://instagram.com/ad.rsdesignstudio" target="_blank" rel="noopener noreferrer">IG: ad.rsdesignstudio</a>
                 </p>
               </div>
             </div>
