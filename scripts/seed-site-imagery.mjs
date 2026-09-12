@@ -7,7 +7,7 @@
  * files from /public into their Sanity image fields:
  *
  *   public/logo.png          → logo
- *   public/her-image-2.webp  → homeHero.backgroundImage
+ *   public/hero-image-3.png  → homeHero.backgroundImage
  *   public/process.jpeg      → processHeroImage
  *   public/footer.jpeg       → footerBackground
  *
@@ -47,7 +47,7 @@ const SINGLETON_ID = 'siteSettings';
 
 const uploads = [
   { file: 'public/logo.png', field: 'logo', alt: 'AD.RS Design Studio logo', filename: 'logo.png' },
-  { file: 'public/her-image-2.webp', field: 'homeHero.backgroundImage', alt: 'Architectural scenic landscape', filename: 'hero-background.webp' },
+  { file: 'public/hero-image-3.png', field: 'homeHero.backgroundImage', alt: 'Architectural scenic landscape', filename: 'hero-background.png' },
   { file: 'public/process.jpeg', field: 'processHeroImage', alt: 'Architectural workspace', filename: 'process-hero.jpeg' },
   { file: 'public/footer.jpeg', field: 'footerBackground', alt: 'AD.RS Design Studio Background', filename: 'footer-background.jpeg' },
 ];

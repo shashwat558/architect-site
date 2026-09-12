@@ -66,7 +66,7 @@ export default function PoeticHero({ data, active = true, carouselPaused = false
       {/* ── Background Image (Raw & Crystal Clear, No Zoom) ── */}
       <div className="absolute inset-0 -z-10">
         <Image
-          src={bgUrl || "/her-image-2.webp"}
+          src={bgUrl || "/hero-image-3.png"}
           alt="Architectural scenic landscape"
           fill
           priority
