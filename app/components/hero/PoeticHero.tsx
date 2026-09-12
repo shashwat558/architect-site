@@ -93,7 +93,7 @@ export default function PoeticHero({ data, active = true, bgUrl }: PoeticHeroPro
           priority
           fetchPriority="high"
           sizes="100vw"
-          className="object-cover object-center"
+          className="object-cover object-[62%_center] md:object-center"
           quality={75}
         />
       </div>
@@ -102,7 +102,7 @@ export default function PoeticHero({ data, active = true, bgUrl }: PoeticHeroPro
 
 
       {/* ── Top-left headline ── */}
-      <div className="max-w-[1400px] w-full mx-auto px-6 sm:px-12 lg:px-20 pt-44 md:pt-52 z-20 flex justify-start gap-10">
+      <div className="max-w-[1400px] w-full mx-auto px-6 sm:px-12 lg:px-20 pt-28 md:pt-52 z-20 flex justify-start gap-10">
 
         <motion.div
 
@@ -133,16 +133,16 @@ export default function PoeticHero({ data, active = true, bgUrl }: PoeticHeroPro
           </h1>
 
           {/* CTAs */}
-          <motion.div variants={slideUp} className="mt-8 flex flex-wrap items-center gap-4">
+          <motion.div variants={slideUp} className="mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
             <Link
               href="/projects"
-              className="inline-flex items-center justify-center px-8 py-3.5 rounded-[40px] bg-[#3D2B1F] text-[#FAF6F1] text-sm font-bold tracking-wide border border-[#3D2B1F] shadow-[0_8px_20px_rgba(61,43,31,0.25)] transition-all duration-300 hover:bg-[#D97706] hover:border-[#D97706] hover:-translate-y-[2px] hover:shadow-[0_16px_32px_rgba(217,119,6,0.3)] active:translate-y-0 active:scale-[0.98]"
+              className="inline-flex w-full items-center justify-center px-8 py-3.5 rounded-[40px] bg-[#3D2B1F] text-[#FAF6F1] text-sm font-bold tracking-wide border border-[#3D2B1F] shadow-[0_8px_20px_rgba(61,43,31,0.25)] transition-all duration-300 hover:bg-[#D97706] hover:border-[#D97706] hover:-translate-y-[2px] hover:shadow-[0_16px_32px_rgba(217,119,6,0.3)] active:translate-y-0 active:scale-[0.98] sm:w-auto"
             >
               View Our Projects
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center px-8 py-3.5 rounded-[40px] bg-transparent text-[#3D2B1F] text-sm font-bold tracking-wide border-[1.5px] border-[#3D2B1F] transition-all duration-300 hover:bg-[#3D2B1F] hover:text-[#FAF6F1] hover:-translate-y-[2px] active:translate-y-0 active:scale-[0.98]"
+              className="inline-flex w-full items-center justify-center px-8 py-3.5 rounded-[40px] bg-transparent text-[#3D2B1F] text-sm font-bold tracking-wide border-[1.5px] border-[#3D2B1F] transition-all duration-300 hover:bg-[#3D2B1F] hover:text-[#FAF6F1] hover:-translate-y-[2px] active:translate-y-0 active:scale-[0.98] sm:w-auto"
             >
               Get in Touch
             </Link>
