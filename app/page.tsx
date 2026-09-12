@@ -10,14 +10,12 @@ import {
 import { sanityImg, type SanityImageObject } from "../sanity/lib/sanityImage";
 import {
   heroData,
-  offersSectionData,
   pillarsSectionData,
   projectCTAData,
   projectsSectionData,
   testimonialsSectionData,
 } from "./data/content";
 import type {
-  OffersSectionData,
   PillarsSectionData,
   ProjectCTAData,
   ProjectsSectionData,
@@ -113,20 +111,11 @@ type SanityPillar = {
   link?: string;
 };
 
-type SanityOffer = {
-  title: string;
-  description?: string;
-  link?: string;
-  ctaLabel?: string;
-};
-
 type SiteContent = {
   heroSlides?: SanityHeroSlide[] | null;
   testimonialsHeader?: { eyebrow?: string; title?: string; subtitle?: string } | null;
   pillarsHeader?: { eyebrow?: string; title?: string; subtitle?: string; backgroundText?: string } | null;
   pillars?: SanityPillar[] | null;
-  offersHeader?: { eyebrow?: string } | null;
-  offers?: SanityOffer[] | null;
 } | null;
 
 // ── Data mappers ───────────────────────────────────────────────────────────────
@@ -215,20 +204,6 @@ export default async function Home() {
         }
       : pillarsSectionData;
 
-  // Offers — live docs first, static fallback when empty
-  const liveOffers: OffersSectionData =
-    (siteContent?.offers?.length ?? 0) > 0
-      ? {
-          eyebrow: siteContent?.offersHeader?.eyebrow ?? offersSectionData.eyebrow,
-          offers: (siteContent?.offers ?? []).map((o) => ({
-            title: o.title,
-            description: o.description ?? "",
-            link: o.link ?? "/contact",
-            ctaLabel: o.ctaLabel ?? "Learn more",
-          })),
-        }
-      : offersSectionData;
-
   // Hero carousel slides — live Sanity images, static local files as fallback
   const heroSlides = (siteContent?.heroSlides ?? [])
     .map((s) => ({
@@ -245,7 +220,6 @@ export default async function Home() {
       heroSlides={heroSlides.length > 0 ? heroSlides : undefined}
       projectsSectionData={liveProjectsSection}
       pillarsSectionData={livePillars}
-      offersSectionData={liveOffers}
       testimonialsSectionData={liveTestimonials}
       projectCTAData={projectCTAData}
     />

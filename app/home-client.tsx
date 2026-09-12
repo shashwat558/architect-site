@@ -9,7 +9,6 @@ import PoeticHero from "./components/hero/PoeticHero";
 import { Testimonials } from "./components/sections";
 import type {
   HeroData,
-  OffersSectionData,
   PillarsSectionData,
   ProjectCTAData,
   ProjectsSectionData,
@@ -22,9 +21,6 @@ const Projects = dynamic(() => import("./components/sections/Projects"), {
   loading: () => <div className="h-24" />,
 });
 const Pillars = dynamic(() => import("./components/sections/Pillars"), {
-  loading: () => <div className="h-24" />,
-});
-const Offers = dynamic(() => import("./components/sections/Offers"), {
   loading: () => <div className="h-24" />,
 });
 const ProjectCTA = dynamic(() => import("./components/sections/ProjectCTA"), {
@@ -41,7 +37,6 @@ type HomeClientProps = {
   heroSlides?: { src: string; caption: string }[];
   projectsSectionData: ProjectsSectionData;
   pillarsSectionData: PillarsSectionData;
-  offersSectionData: OffersSectionData;
   testimonialsSectionData: TestimonialsSectionData;
   projectCTAData: ProjectCTAData;
 };
@@ -52,7 +47,6 @@ export default function HomeClient({
   heroSlides,
   projectsSectionData,
   pillarsSectionData,
-  offersSectionData,
   testimonialsSectionData,
   projectCTAData,
 }: HomeClientProps) {
@@ -105,12 +99,6 @@ export default function HomeClient({
               <Pillars data={pillarsSectionData} />
             </Suspense>
           </div>
-          <div className="cv-auto">
-            <Suspense fallback={<div className="h-24" />}>
-              <Offers data={offersSectionData} />
-            </Suspense>
-          </div>
-
           <Testimonials data={testimonialsSectionData} />
           <Suspense fallback={<div className="h-24" />}>
             <ProjectCTA data={projectCTAData} />

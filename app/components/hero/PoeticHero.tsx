@@ -2,9 +2,9 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "motion/react";
 import type { HeroData } from "../../data/types";
-import RetroCarousel from "./RetroCarousel";
 import localFont from "next/font/local";
 
 interface PoeticHeroProps {
@@ -25,6 +25,27 @@ interface PoeticHeroProps {
 const archia = localFont({
   src: '../../../public/fonts/archia/Archia-Regular.otf',
   variable: "--font-archia",
+});
+
+const cabinetGrotesk = localFont({
+  src: [
+    {
+      path: '../../../public/fonts/cabinet-grotesk/CabinetGrotesk-Regular.otf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../../../public/fonts/cabinet-grotesk/CabinetGrotesk-Medium.otf',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../../../public/fonts/cabinet-grotesk/CabinetGrotesk-Bold.otf',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
+  variable: "--font-cabinet-grotesk",
 });
 
 // ─── Animation Variants ──────────────────────────────────────────────────────
@@ -51,7 +72,7 @@ const slideUp = {
 
 
 
-export default function PoeticHero({ data, active = true, carouselPaused = false, bgUrl, slides }: PoeticHeroProps) {
+export default function PoeticHero({ data, active = true, bgUrl }: PoeticHeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
 
@@ -61,7 +82,7 @@ export default function PoeticHero({ data, active = true, carouselPaused = false
   return (
     <section
       ref={containerRef}
-      className={`${archia.className} relative w-full h-[100svh] min-h-[600px] overflow-hidden flex flex-col justify-center select-none`}
+      className={`${archia.className} relative w-full h-[85svh] min-h-[500px] md:h-[100svh] md:min-h-[600px] overflow-hidden flex flex-col justify-start select-text`}
     >
       {/* ── Background Image (Raw & Crystal Clear, No Zoom) ── */}
       <div className="absolute inset-0 -z-10">
@@ -79,23 +100,24 @@ export default function PoeticHero({ data, active = true, carouselPaused = false
 
 
 
-      {/* ── Main Centered Content ── */}
-      <div className="max-w-[1400px] w-full mx-auto px-6 sm:px-12 lg:px-20 mt-20 z-20 flex justify-center gap-10">
+
+      {/* ── Top-left headline ── */}
+      <div className="max-w-[1400px] w-full mx-auto px-6 sm:px-12 lg:px-20 pt-44 md:pt-52 z-20 flex justify-start gap-10">
 
         <motion.div
 
-          className="max-w-4xl flex flex-col items-center text-center"
+          className="max-w-3xl flex flex-col items-start text-left"
           variants={staggerContainer}
           initial="hidden"
           animate={active ? "visible" : "hidden"}
         >
 
-          {/* Headline using Playfair Serif font */}
-          <h1 className="font-serif leading-[1.05] tracking-tight text-[#2E2017] drop-shadow-[0_2px_10px_rgba(255,255,255,0.15)]">
+          {/* Headline in Cabinet Grotesk */}
+          <h1 className={`${cabinetGrotesk.className} leading-[1.05] tracking-tight text-[#2E2017] drop-shadow-[0_2px_10px_rgba(255,255,255,0.15)]`}>
             <span className="block pb-1">
               <motion.span
                 variants={slideUp}
-                className="inline-block text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold"
+                className="inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold"
               >
                 {data.headline}
               </motion.span>
@@ -103,20 +125,30 @@ export default function PoeticHero({ data, active = true, carouselPaused = false
             <span className="block italic font-semibold pt-1">
               <motion.span
                 variants={slideUp}
-                className="inline-block text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-[#D97706] "
+                className="inline-block text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-[#D97706] "
               >
                 {data.highlighted}
               </motion.span>
             </span>
           </h1>
 
+          {/* CTAs */}
+          <motion.div variants={slideUp} className="mt-8 flex flex-wrap items-center gap-4">
+            <Link
+              href="/projects"
+              className="inline-flex items-center justify-center px-8 py-3.5 rounded-[40px] bg-[#3D2B1F] text-[#FAF6F1] text-sm font-bold tracking-wide border border-[#3D2B1F] shadow-[0_8px_20px_rgba(61,43,31,0.25)] transition-all duration-300 hover:bg-[#D97706] hover:border-[#D97706] hover:-translate-y-[2px] hover:shadow-[0_16px_32px_rgba(217,119,6,0.3)] active:translate-y-0 active:scale-[0.98]"
+            >
+              View Our Projects
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center px-8 py-3.5 rounded-[40px] bg-transparent text-[#3D2B1F] text-sm font-bold tracking-wide border-[1.5px] border-[#3D2B1F] transition-all duration-300 hover:bg-[#3D2B1F] hover:text-[#FAF6F1] hover:-translate-y-[2px] active:translate-y-0 active:scale-[0.98]"
+            >
+              Get in Touch
+            </Link>
+          </motion.div>
 
         </motion.div>
-      </div>
-
-      {/* ── Retro Photo Carousel ── */}
-      <div className="w-full max-w-4xl mx-auto mb-8 z-20">
-        <RetroCarousel paused={carouselPaused} slides={slides} />
       </div>
 
     </section>
